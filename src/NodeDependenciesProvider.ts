@@ -99,6 +99,21 @@ export class NodeDependenciesProvider
   > = this._onDidChangeTreeData.event;
 
   refresh(): void {
+    console.log("refreshing");
+    const foo = vscode.workspace
+      .findFiles("**/*", "node_modules", 10)
+      .then((f) => {
+        console.log(f);
+      });
+    vscode.workspace.fs
+      .readDirectory(vscode.Uri.file(this.workspaceRoot))
+      .then((f) => {
+        console.log(f);
+      });
+    console.log("pussy");
+
+    // vscode.workspace.openTextDocument();
+
     this._onDidChangeTreeData.fire();
   }
 }

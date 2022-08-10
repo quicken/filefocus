@@ -11,13 +11,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:nodeDependencies"
+    "onView:fileFocusTree"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "nodeDependencies.refreshEntry",
+        "command": "fileFocusTree.refreshEntry",
         "title": "Refresh",
         "icon": {
           "light": "resources/light/refresh.svg",
@@ -28,16 +28,16 @@
     "views": {
       "explorer": [
         {
-          "id": "nodeDependencies",
-          "name": "My Node Dependencies"
+          "id": "fileFocusTree",
+          "name": "File Focus"
         }
       ]
     },
     "menus": {
       "view/title": [
         {
-          "command": "nodeDependencies.refreshEntry",
-          "when": "view == nodeDependencies",
+          "command": "fileFocusTree.refreshEntry",
+          "when": "view == fileFocusTree",
           "group": "navigation"
         }
       ]
