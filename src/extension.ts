@@ -1,6 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+import { FileFocus } from "./FileFocus";
+import { StorageService } from "./StorageService";
 import { FileFocusTreeProvider } from "./FileFocusTreeProvider";
 
 // this method is called when your extension is activated
@@ -8,13 +10,15 @@ import { FileFocusTreeProvider } from "./FileFocusTreeProvider";
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "file-focus" is now active!');
+
+  const fileFocus = new FileFocus(new StorageService(context.workspaceState));
+
   const rootPath =
     vscode.workspace.workspaceFolders &&
     vscode.workspace.workspaceFolders.length > 0
       ? vscode.workspace.workspaceFolders[0].uri.fsPath
       : "";
-  const fileFocusTreeProvider = new FileFocusTreeProvider(rootPath);
+  const fileFocusTreeProvider = new FileFocusTreeProvider(rootPath, fileFocus);
   vscode.window.registerTreeDataProvider(
     "fileFocusTree",
     fileFocusTreeProvider

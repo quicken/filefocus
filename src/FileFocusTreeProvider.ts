@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { FileFocus } from "./FileFocus";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -9,7 +10,7 @@ https://github.com/microsoft/vscode-extension-samples/blob/main/tree-view-sample
 export class FileFocusTreeProvider
   implements vscode.TreeDataProvider<FocusItem>
 {
-  constructor(private workspaceRoot: string) {}
+  constructor(private workspaceRoot: string, private fileFocus: FileFocus) {}
 
   getTreeItem(element: FocusItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
     console.log("get Tree Item");
@@ -21,6 +22,8 @@ export class FileFocusTreeProvider
       vscode.window.showInformationMessage("No FocusItem in empty workspace.");
       return Promise.resolve([]);
     }
+
+    console.log(this.fileFocus.group);
 
     /* when element is defined the user has picked an element. */
     if (element) {
@@ -103,11 +106,11 @@ export class FileFocusTreeProvider
     FocusItem | undefined | null | void
   > = this._onDidChangeTreeData.event;
 
-  refresh(): void {
-    console.log("refreshing");
-
-    // vscode.workspace.openTextDocument();
-
+  async refresh(): Promise<void> {
+    console.log(this.fileFocus.group);
+    const group = await vscode.window.showInputBox({});
+    this.fileFocus.addGroup(group, group);
+    console.log(this.fileFocus.group);
     this._onDidChangeTreeData.fire();
   }
 }
