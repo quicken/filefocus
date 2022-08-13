@@ -1,9 +1,9 @@
 {
   "name": "file-focus",
   "displayName": "File Focus",
-  "icon": "https://github.com/quicken/filefocus/blob/master/resources/file_focus_icon_256x256.png?raw=true",
+  "icon": "images/icon.PNG",
   "description": "With File focus you can re-organise the files and folders in virtual folders. Useful when working on a large project and wanting quick access to a set of files and folders.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
