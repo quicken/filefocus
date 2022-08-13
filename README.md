@@ -46,7 +46,7 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
-### 0.0.1
+### 0.0.3
 
 Initial release:
 

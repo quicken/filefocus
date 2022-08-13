@@ -2,8 +2,8 @@
   "name": "file-focus",
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
-  "description": "With File focus you can re-organise the files and folders in virtual folders. Useful when working on a large project and wanting quick access to a set of files and folders.",
-  "version": "0.0.2",
+  "description": "With File focus you can re-organise your files and folders into virtual groups. Useful when working on a large project and wanting quick access to a set of files and folders.",
+  "version": "0.0.3",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -19,7 +19,7 @@
     "active folders"
   ],
   "galleryBanner": {
-    "color": "#C80000",
+    "color": "#414F6A",
     "theme": "dark"
   },
   "preview": true,
