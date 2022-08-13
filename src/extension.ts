@@ -1,10 +1,12 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { MenuViewController } from "./MenuViewController";
 import { FileFocus } from "./FileFocus";
 import { StorageService } from "./StorageService";
-import { FileFocusTreeProvider } from "./FileFocusTreeProvider";
+import {
+  FileFocusTreeProvider,
+  FocusItem,
+  GroupItem,
+} from "./FileFocusTreeProvider";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -38,9 +40,23 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.commands.registerCommand(
+    "menuViewController.renameGroup",
+    (groupItem: GroupItem) => {
+      menuViewController.renameGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
     "menuViewController.addGroupResource",
     (path: string) => {
       menuViewController.addGroupResource(path);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "menuViewController.removeGroupResource",
+    (focusItem: FocusItem) => {
+      menuViewController.removeGroupResource(focusItem.groupId, focusItem.uri);
     }
   );
 }

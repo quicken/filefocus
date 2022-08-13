@@ -24,7 +24,7 @@ export class FileFocusTreeProvider
         const focusItem = element as FocusItem;
         switch (focusItem.type) {
           case vscode.FileType.Directory: {
-            return this.getFolderContents(focusItem.uri);
+            return this.getFolderContents(focusItem.groupId, focusItem.uri);
           }
 
           case vscode.FileType.File:
@@ -41,19 +41,23 @@ export class FileFocusTreeProvider
     }
   }
 
-  private async getResourceForGroup(id: string): Promise<FocusItem[]> {
+  private async getResourceForGroup(groupId: string): Promise<FocusItem[]> {
     const out: FocusItem[] = [];
-    const resources = this.fileFocus.root.get(id)?.resources;
+    const resources = this.fileFocus.root.get(groupId)?.resources;
     if (resources) {
       for (const uri of resources) {
         const fileStats = await vscode.workspace.fs.stat(uri);
         switch (fileStats.type) {
           case vscode.FileType.File:
-            out.push(this.createFileItem(Utils.basename(uri), uri));
+            out.push(
+              this.createFileItem(Utils.basename(uri), uri, true, groupId)
+            );
             break;
 
           case vscode.FileType.Directory:
-            out.push(this.createFolderItem(Utils.basename(uri), uri));
+            out.push(
+              this.createFolderItem(Utils.basename(uri), uri, true, groupId)
+            );
         }
       }
     }
@@ -70,7 +74,10 @@ export class FileFocusTreeProvider
     return out;
   }
 
-  private async getFolderContents(uri: vscode.Uri): Promise<FocusItem[]> {
+  private async getFolderContents(
+    groupId: string,
+    uri: vscode.Uri
+  ): Promise<FocusItem[]> {
     const result = await vscode.workspace.fs.readDirectory(uri);
 
     const out: FocusItem[] = [];
@@ -79,11 +86,11 @@ export class FileFocusTreeProvider
 
       switch (item[1]) {
         case vscode.FileType.File:
-          out.push(this.createFileItem(item[0], resourceUri));
+          out.push(this.createFileItem(item[0], resourceUri, false, groupId));
           break;
 
         case vscode.FileType.Directory:
-          out.push(this.createFolderItem(item[0], resourceUri));
+          out.push(this.createFolderItem(item[0], resourceUri, false, groupId));
           break;
 
         default:
@@ -93,11 +100,18 @@ export class FileFocusTreeProvider
     return out;
   }
 
-  private createFileItem(label: string, uri: vscode.Uri) {
+  private createFileItem(
+    label: string,
+    uri: vscode.Uri,
+    isRootItem: boolean,
+    groupId: string
+  ) {
     const fileItem = new FocusItem(
       label,
       vscode.FileType.File,
       uri,
+      isRootItem,
+      groupId,
       vscode.TreeItemCollapsibleState.None
     );
     fileItem.command = {
@@ -107,32 +121,38 @@ export class FileFocusTreeProvider
     };
     fileItem.resourceUri = uri;
     fileItem.iconPath = vscode.ThemeIcon.File;
+    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
     return fileItem;
   }
 
-  private createFolderItem(label: string, uri: vscode.Uri) {
-    const fileItem = new FocusItem(
+  private createFolderItem(
+    label: string,
+    uri: vscode.Uri,
+    isRootItem: boolean,
+    groupId: string
+  ) {
+    const folderItem = new FocusItem(
       label,
       vscode.FileType.Directory,
       uri,
+      isRootItem,
+      groupId,
       vscode.TreeItemCollapsibleState.Collapsed
     );
-    fileItem.command = {
-      command: "vscode.open",
-      title: "Open File",
-      arguments: [uri],
-    };
-    fileItem.resourceUri = uri;
-    fileItem.iconPath = vscode.ThemeIcon.File;
-    return fileItem;
+    folderItem.resourceUri = uri;
+    folderItem.iconPath = vscode.ThemeIcon.File;
+    folderItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
+    return folderItem;
   }
 
   private createGroupItem(group: Group) {
-    return new GroupItem(
+    const groupItem = new GroupItem(
       group.name,
       group.id,
       vscode.TreeItemCollapsibleState.Collapsed
     );
+
+    return groupItem;
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -147,21 +167,23 @@ export class FileFocusTreeProvider
   }
 }
 
-class FocusItem extends vscode.TreeItem {
+export class FocusItem extends vscode.TreeItem {
   objtype = "FocusItem";
   constructor(
     public readonly label: string,
     public readonly type: vscode.FileType,
     public readonly uri: vscode.Uri,
+    public readonly isRootItem: boolean,
+    public readonly groupId: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState
   ) {
     super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
-    this.description = "dsc";
+    // this.tooltip = `${this.label}`;
+    // this.description = "";
   }
 }
 
-class GroupItem extends vscode.TreeItem {
+export class GroupItem extends vscode.TreeItem {
   objtype = "GroupItem";
   constructor(
     public readonly label: string,
@@ -170,5 +192,6 @@ class GroupItem extends vscode.TreeItem {
   ) {
     super(label, collapsibleState);
     this.tooltip = `${this.label}`;
+    this.contextValue = "GroupItem";
   }
 }

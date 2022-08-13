@@ -1,3 +1,4 @@
+import { v5 as uuidv5 } from "uuid";
 import { StorageService } from "./StorageService";
 import { Group } from "./Group";
 import { Uri } from "vscode";
@@ -16,6 +17,11 @@ export type GroupNode = {
 };
 
 export class FileFocus {
+  static makeGroupId(name: string) {
+    const namespace = "cc51e20a-7c32-434c-971f-5b3ea332deaa";
+    return uuidv5(name, namespace);
+  }
+
   public readonly root: Map<string, Group> = new Map();
 
   constructor(private storage: StorageService) {
@@ -34,6 +40,18 @@ export class FileFocus {
     this.root.delete(id);
     this.deleteGroupId(id);
   };
+
+  public renameGroup = (id: string, name: string) => {
+    this.renameGroupId(id, name);
+  };
+
+  public get groupNames() {
+    const names: string[] = [];
+    this.root.forEach((group) => {
+      names.push(group.name);
+    });
+    return names;
+  }
 
   private loadRootNodes() {
     const groupStore = this.storage.getValue<GroupStore>("groupstore", {});
@@ -83,5 +101,20 @@ export class FileFocus {
     groupStore = Object.fromEntries(storeMap.entries());
     this.storage.setValue<GroupStore>("groupstore", groupStore);
     this.storage.deleteValue(`A-${id}`);
+  }
+
+  private renameGroupId(id: string, name: string) {
+    const src = this.loadGroupNode(id);
+    if (src) {
+      const dst = new Group(FileFocus.makeGroupId(name));
+      dst.name = name;
+      for (const uri of src.resources) {
+        if (uri) {
+          dst.addResource(uri);
+        }
+      }
+      this.removeGroup(id);
+      this.addGroup(dst);
+    }
   }
 }

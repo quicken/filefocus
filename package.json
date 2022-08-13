@@ -19,22 +19,32 @@
       {
         "command": "fileFocusTree.refreshEntry",
         "title": "Refresh",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
+        "icon": "$(extensions-refresh)"
       },
       {
         "command": "menuViewController.addGroup",
-        "title": "New Focus Group"
+        "title": "Add Focus Group",
+        "icon": "$(new-folder)"
       },
       {
         "command": "menuViewController.removeGroup",
-        "title": "Remove Focus Group"
+        "title": "Delete Focus Group",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "menuViewController.renameGroup",
+        "title": "Rename Focus Group",
+        "icon": "$(edit)"
       },
       {
         "command": "menuViewController.addGroupResource",
-        "title": "Add to Focus Group"
+        "title": "Add to Focus Group",
+        "icon": "$(tag-add)"
+      },
+      {
+        "command": "menuViewController.removeGroupResource",
+        "title": "Remove from Focus Group",
+        "icon": "$(remove-close)"
       }
     ],
     "views": {
@@ -48,23 +58,31 @@
     "menus": {
       "view/title": [
         {
+          "command": "menuViewController.addGroup",
+          "when": "view == fileFocusTree",
+          "group": "navigation"
+        },
+        {
           "command": "fileFocusTree.refreshEntry",
           "when": "view == fileFocusTree",
           "group": "navigation"
         }
       ],
-      "explorer/context": [
+      "view/item/context": [
         {
-          "command": "menuViewController.addGroup",
-          "group": "z_commands"
+          "command": "menuViewController.renameGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
         },
         {
           "command": "menuViewController.removeGroup",
-          "group": "z_commands"
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
         },
         {
-          "command": "menuViewController.addGroupResource",
-          "group": "z_commands"
+          "command": "menuViewController.removeGroupResource",
+          "when": "view == fileFocusTree && viewItem == FocusRootItem",
+          "group": "inline"
         }
       ]
     }
