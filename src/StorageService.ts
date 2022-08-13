@@ -3,8 +3,8 @@ import { Memento } from "vscode";
 export class StorageService {
   constructor(private storage: Memento) {}
 
-  public getValue<T>(key: string): T {
-    return this.storage.get<T>(key, null);
+  public getValue<T>(key: string, defaultValue: T): T {
+    return this.storage.get<T>(key, defaultValue);
   }
 
   public setValue<T>(key: string, value: T) {

@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
+import { MenuViewController } from "./MenuViewController";
 import { FileFocus } from "./FileFocus";
 import { StorageService } from "./StorageService";
 import { FileFocusTreeProvider } from "./FileFocusTreeProvider";
@@ -10,8 +11,9 @@ import { FileFocusTreeProvider } from "./FileFocusTreeProvider";
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-
+  console.log(context.storageUri);
   const fileFocus = new FileFocus(new StorageService(context.workspaceState));
+  const menuViewController = new MenuViewController(fileFocus);
 
   const rootPath =
     vscode.workspace.workspaceFolders &&
@@ -23,8 +25,23 @@ export function activate(context: vscode.ExtensionContext) {
     "fileFocusTree",
     fileFocusTreeProvider
   );
+
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
+  );
+  vscode.commands.registerCommand("menuViewController.addGroup", () => {
+    menuViewController.addGroup();
+  });
+
+  vscode.commands.registerCommand("menuViewController.removeGroup", () => {
+    menuViewController.removeGroup();
+  });
+
+  vscode.commands.registerCommand(
+    "menuViewController.addGroupResource",
+    (path: string) => {
+      menuViewController.addGroupResource(path);
+    }
   );
 }
 

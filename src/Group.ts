@@ -1,0 +1,36 @@
+import { Uri } from "vscode";
+
+export type FocusGroup = {
+  id: string;
+  label: string;
+};
+
+export class Group {
+  private _resource: Uri[] = [];
+  public name = "";
+
+  constructor(public readonly id: string) {}
+
+  get resources() {
+    return this._resource;
+  }
+
+  public addResource = (uri: Uri) => {
+    if (this._resourceContains(uri)) {
+      return;
+    }
+    this._resource.push(uri);
+  };
+
+  public removeResource = (uri: Uri) => {
+    const i = this._resource.indexOf(uri);
+    if (i < 0) {
+      return;
+    }
+    this._resource.splice(i, 1);
+  };
+
+  private _resourceContains = (uri: Uri) => {
+    return this._resource.includes(uri);
+  };
+}

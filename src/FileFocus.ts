@@ -1,112 +1,87 @@
 import { StorageService } from "./StorageService";
+import { Group } from "./Group";
 import { Uri } from "vscode";
 
-export type FocusGroup = {
+export type GroupRecord = {
   id: string;
   label: string;
 };
 
+export type GroupStore = {
+  [key: string]: GroupRecord;
+};
+
+export type GroupNode = {
+  [key: string]: Group;
+};
+
 export class FileFocus {
-  public readonly group: FocusGroup[] = [];
-  private _active: string = "";
-  private _resource: Uri[] = [];
+  public readonly root: Map<string, Group> = new Map();
 
   constructor(private storage: StorageService) {
-    this.group = this.loadGroups();
-    if (!this.group) {
-      this.group = [];
+    this.root = this.loadRootNodes();
+    if (!this.root) {
+      this.root = new Map();
     }
   }
 
-  get active() {
-    return this._active;
-  }
-
-  get _resources() {
-    return this._resource;
-  }
-
-  public activate = (id: string) => {
-    if (!this.groupContains(id)) {
-      return;
-    }
-
-    this._active = id;
-    this._resource = this.loadResources(id);
+  public addGroup = (group: Group) => {
+    this.root.set(group.id, group);
+    this.saveGroup(group);
   };
 
-  public addGroup = (id: string, label: string) => {
-    if (this.groupContains(id)) {
-      return;
-    }
-
-    this.group.push({ id: id, label: label });
-    this.saveGroups(this.group);
-    this.saveResources(id, []);
+  public removeGroup = (id: string) => {
+    this.root.delete(id);
+    this.deleteGroupId(id);
   };
 
-  public deleteGroup = (id: string) => {
-    const i = this.group.findIndex((_group) => {
-      return _group.id === id;
-    });
-    if (i < 0) {
-      return;
-    }
+  private loadRootNodes() {
+    const groupStore = this.storage.getValue<GroupStore>("groupstore", {});
+    const storeMap = new Map(Object.entries(groupStore));
 
-    if (this._active === id) {
-      this._active = "";
-      this._resource = [];
-    }
-
-    this.saveGroups(this.group.splice(i, 1));
-    this.deleteResources(id);
-  };
-
-  public addResource = (uri: Uri) => {
-    if (this._resourceContains(uri)) {
-      return;
-    }
-    this._resource.push(uri);
-  };
-
-  public removeResource = (uri: Uri) => {
-    const i = this._resource.indexOf(uri);
-    if (i < 0) {
-      return;
-    }
-    this._resource.splice(i, 1);
-  };
-
-  private groupContains = (id: string) => {
-    for (const item of this.group) {
-      if (item.id === id) {
-        return true;
+    const groupMap: Map<string, Group> = new Map();
+    for (const [id, record] of storeMap) {
+      const group = this.loadGroupNode(id);
+      if (group) {
+        groupMap.set(group.id, group);
       }
     }
-    return false;
-  };
 
-  private _resourceContains = (uri: Uri) => {
-    return this._resource.includes(uri);
-  };
-
-  private loadResources(id: string) {
-    return this.storage.getValue<Uri[]>(`A-${id}`);
+    return groupMap;
   }
 
-  private saveResources(id: string, resources: Uri[]) {
-    this.storage.setValue(`A-${id}`, resources);
+  private loadGroupNode(id: string) {
+    const groupStore = this.storage.getValue<GroupStore>("groupstore", {});
+    const groupMap = new Map(Object.entries(groupStore));
+    const groupRecord = groupMap.get(id);
+    if (groupRecord) {
+      const group = new Group(groupRecord.id);
+      group.name = groupRecord.label;
+      const paths = this.storage.getValue<string[]>(`A-${group.id}`, []);
+      for (const path of paths) {
+        group.addResource(Uri.parse(path));
+      }
+      return group;
+    }
   }
 
-  private deleteResources(id: string) {
+  public saveGroup(group: Group) {
+    let groupStore = this.storage.getValue<GroupStore>("groupstore", {});
+    const storeMap = new Map(Object.entries(groupStore));
+    storeMap.set(group.id, { id: group.id, label: group.name });
+    groupStore = Object.fromEntries(storeMap.entries());
+    this.storage.setValue<GroupStore>("groupstore", groupStore);
+
+    const paths = group.resources.map((uri) => uri.toString());
+    this.storage.setValue(`A-${group.id}`, paths);
+  }
+
+  private deleteGroupId(id: string) {
+    let groupStore = this.storage.getValue<GroupStore>("groupstore", {});
+    const storeMap = new Map(Object.entries(groupStore));
+    storeMap.delete(id);
+    groupStore = Object.fromEntries(storeMap.entries());
+    this.storage.setValue<GroupStore>("groupstore", groupStore);
     this.storage.deleteValue(`A-${id}`);
-  }
-
-  private loadGroups() {
-    return this.storage.getValue<FocusGroup[]>("group");
-  }
-
-  private saveGroups(groups: FocusGroup[]) {
-    this.storage.setValue("group", groups);
   }
 }
