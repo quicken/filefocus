@@ -35,14 +35,17 @@ export function activate(context: vscode.ExtensionContext) {
     menuViewController.addGroup();
   });
 
-  vscode.commands.registerCommand("menuViewController.removeGroup", () => {
-    menuViewController.removeGroup();
-  });
-
   vscode.commands.registerCommand(
     "menuViewController.renameGroup",
     (groupItem: GroupItem) => {
       menuViewController.renameGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "menuViewController.removeGroup",
+    (groupItem: GroupItem) => {
+      menuViewController.removeGroup(groupItem.groupId);
     }
   );
 

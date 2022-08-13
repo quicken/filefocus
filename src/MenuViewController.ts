@@ -28,13 +28,10 @@ export class MenuViewController {
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
-  async removeGroup(): Promise<void> {
-    const groupName = await vscode.window.showInputBox({});
-    if (groupName) {
-      const groupId = FileFocus.makeGroupId(groupName);
-      this.fileFocus.removeGroup(groupId);
-      vscode.commands.executeCommand("fileFocusTree.refreshEntry");
-    }
+  async removeGroup(groupId: string): Promise<void> {
+    console.log(groupId);
+    this.fileFocus.removeGroup(groupId);
+    vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
   async renameGroup(groupId: string): Promise<void> {
