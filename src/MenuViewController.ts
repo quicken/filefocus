@@ -29,7 +29,6 @@ export class MenuViewController {
   }
 
   async removeGroup(groupId: string): Promise<void> {
-    console.log(groupId);
     this.fileFocus.removeGroup(groupId);
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }

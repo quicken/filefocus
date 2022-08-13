@@ -90,6 +90,18 @@
           "command": "menuViewController.addGroupResource",
           "group": "z_commands"
         }
+      ],
+      "editor/title/context": [
+        {
+          "command": "menuViewController.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "menuViewController.addGroupResource",
+          "group": "z_commands"
+        }
       ]
     }
   },
