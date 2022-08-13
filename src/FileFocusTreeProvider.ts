@@ -13,12 +13,7 @@ export class FileFocusTreeProvider
   }
 
   getChildren(element?: any): vscode.ProviderResult<FocusItem[] | GroupItem[]> {
-    if (!this.workspaceRoot) {
-      vscode.window.showInformationMessage("No FocusItem in empty workspace.");
-      return Promise.resolve([]);
-    }
-
-    /* When element is defined the user has picked an element. */
+    /* When   is defined the user has picked an element. */
     if (element && element.hasOwnProperty("objtype")) {
       if (element.objtype === "FocusItem") {
         const focusItem = element as FocusItem;
@@ -34,8 +29,6 @@ export class FileFocusTreeProvider
         const groupItem = element as GroupItem;
         return this.getResourceForGroup(groupItem.groupId);
       }
-
-      return Promise.resolve([]);
     } else {
       return this.getGroupItem();
     }
@@ -45,6 +38,10 @@ export class FileFocusTreeProvider
     const out: FocusItem[] = [];
     const resources = this.fileFocus.root.get(groupId)?.resources;
     if (resources) {
+      resources.sort((a, b) =>
+        Utils.basename(a).localeCompare(Utils.basename(b))
+      );
+
       for (const uri of resources) {
         const fileStats = await vscode.workspace.fs.stat(uri);
         switch (fileStats.type) {
@@ -70,6 +67,8 @@ export class FileFocusTreeProvider
     for (const [id, group] of this.fileFocus.root) {
       out.push(this.createGroupItem(group));
     }
+
+    out.sort((a, b) => a.label.localeCompare(b.label));
 
     return out;
   }
