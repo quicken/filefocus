@@ -33,8 +33,8 @@ export class MenuViewController {
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
-  async renameGroup(groupId: string): Promise<void> {
-    const group = this.fileFocus.root.get(groupId);
+  async renameGroup(srcGroupId: string): Promise<void> {
+    const group = this.fileFocus.root.get(srcGroupId);
     if (group) {
       const groupName = await vscode.window.showInputBox({
         placeHolder: "Enter a name for the focus group",
@@ -49,15 +49,15 @@ export class MenuViewController {
         return;
       }
 
-      const groupId = FileFocus.makeGroupId(groupName);
-      if (this.fileFocus.root.has(groupId)) {
+      const destinationId = FileFocus.makeGroupId(groupName);
+      if (this.fileFocus.root.has(destinationId)) {
         await vscode.window.showErrorMessage(
           "A focus group with this name already exists."
         );
         return;
       }
 
-      this.fileFocus.renameGroup(groupId, groupName);
+      this.fileFocus.renameGroup(srcGroupId, groupName);
       vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
