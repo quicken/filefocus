@@ -84,6 +84,12 @@
           "when": "view == fileFocusTree && viewItem == FocusRootItem",
           "group": "inline"
         }
+      ],
+      "explorer/context": [
+        {
+          "command": "menuViewController.addGroupResource",
+          "group": "z_commands"
+        }
       ]
     }
   },
