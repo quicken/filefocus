@@ -1,15 +1,28 @@
 {
   "name": "file-focus",
   "displayName": "File Focus",
-  "description": "At any one time we typically are focused on working on a small subset of files. Especially in large projects and mono repos we only need to focus on a subset of files. File focus allows you to create arbitrary sub sets of only those files you need to work on for a specific feature. Multiple groups can be created to logically organise files relevant to the features your are working on.",
+  "icon": "https://github.com/quicken/filefocus/blob/master/resources/file_focus_icon_256x256.png?raw=true",
+  "description": "With File focus you can re-organise the files and folders in virtual folders. Useful when working on a large project and wanting quick access to a set of files and folders.",
   "version": "0.0.1",
-  "publisher": "Marcel Scherzer - www.herdingbits.com",
+  "publisher": "herdingbits",
+  "repository": "https://github.com/quicken/filefocus",
   "engines": {
     "vscode": "^1.70.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "virtual folder",
+    "group files",
+    "focus group",
+    "active folders"
+  ],
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "preview": true,
   "activationEvents": [
     "onView:fileFocusTree"
   ],
