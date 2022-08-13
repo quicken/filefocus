@@ -24,7 +24,7 @@ For bug reports and code contributions head on over to:
 - Add a file or folder to a focus group from the File Explorer Context Menu.
 - Files can also be added to a focus group from the editor context menu.
 
-![Getting Started](./resources/file-focus_700x700.gif)
+![Getting Started](https://github.com/quicken/filefocus/blob/master/resources/file-focus_700x700.gif?raw=true)
 
 ## Extension Settings
 
