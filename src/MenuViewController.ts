@@ -25,6 +25,7 @@ export class MenuViewController {
     const group = new Group(groupId);
     group.name = groupName;
     this.fileFocus.addGroup(group);
+    vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
   async removeGroup(): Promise<void> {
@@ -32,6 +33,7 @@ export class MenuViewController {
     if (groupName) {
       const groupId = FileFocus.makeGroupId(groupName);
       this.fileFocus.removeGroup(groupId);
+      vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
 
@@ -60,6 +62,7 @@ export class MenuViewController {
       }
 
       this.fileFocus.renameGroup(groupId, groupName);
+      vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
 
@@ -78,6 +81,7 @@ export class MenuViewController {
         if (group) {
           group.addResource(vscode.Uri.parse(path));
           this.fileFocus.saveGroup(group);
+          vscode.commands.executeCommand("fileFocusTree.refreshEntry");
         }
       }
     }
@@ -88,6 +92,7 @@ export class MenuViewController {
     if (group) {
       group.removeResource(uri);
       this.fileFocus.saveGroup(group);
+      vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
 }
