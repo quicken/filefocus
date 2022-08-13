@@ -1,71 +1,58 @@
-# file-focus README
+# File Focus
 
-This is the README for your extension "file-focus". After writing up a brief description, we recommend including the following sections.
+File focus is useful when you are working on a large project and want quick access to a set of files and folders that are spread throughout your project.
+
+By creating “Focus Groups” you can re-organise the files and folders in virtual folders.
+
+For example, when working in mono-repo you can organise a subset of files and folders from multiple projects inside a virtual folder for quick access.
+
+If you like this extension please consider subscribing to my channel.
+
+- https://www.youtube.com/channel/UCaWdpWiu450QyJYb_Hie6lA
+- https://www.herdingbits.com
+
+For bug reports and code contributions head on over to:
+
+- https://github.com/quicken/filefocus
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Folders added to a "focus group" can be browsed.
+- Create multiple "focus groups" using the add folder icon.
+- Rename a "focus group" with the edit icon.
+- Delete a "focus group" with the trash icon. Your files and folders will not be touched.
+- Add a file or folder to a focus group from the File Explorer Context Menu.
+- Files can also be added to a focus group from the editor context menu.
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![Getting Started](./resources/file-focus_700x700.gif)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Please suggest any settings you would like to tweak.
+https://github.com/quicken/filefocus
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- Only one level of "focus groups" can be created.
+- Status changes to files in the file explorer might not be reflected in Focus Groups. As a workaround click the refresh icon in the File Focus Pane.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+This is an early release that is functionally complete.
 
-### 1.0.0
+That means "It works on my machine". Of course, what we want is that the extension works on your machine.
 
-Initial release of ...
+Please submit any issues you find to Git-Hub or better yet submit a pull request.
 
-### 1.0.1
+https://github.com/quicken/filefocus
 
-Fixed issue #.
+### 0.0.1
 
-### 1.1.0
+Initial release:
 
-Added features X, Y, and Z.
+- Add, Rename, Delete Focus Groups.
+- Use context menus to Add Files or Folders to a Focus Group.
+- Support navigating folders that are added to a Focus Group.
+- Maintain File Icons
 
 ---
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
