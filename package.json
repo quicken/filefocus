@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -22,7 +22,7 @@
     "color": "#414F6A",
     "theme": "dark"
   },
-  "preview": true,
+  "preview": false,
   "activationEvents": [
     "onView:fileFocusTree"
   ],
