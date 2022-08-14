@@ -19,7 +19,7 @@ For bug reports and code contributions head on over to:
 2. Click the Add Focus Group Icon. Type a name for your focus group.
 3. As you work open the context menu in the file explore or editor and select: Add to focus group.
 
-You can open files directly from a focus group. Folders added to "focus group" can be navigated.
+You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
 
 ### Tips
 
@@ -68,5 +68,8 @@ Initial release:
 
 - Add keyboard extension: "ctrl+shift+8" to add the file in the active editor to a focus group.
 - Improve language used in dialogs.
+- Ask for confirmation before deleting a focus group.
+- When there is only one defined focus group, skip showing the focus group quick picker.
+- When there are no defined focus groups the add resource action will show a dialog and function as an "add focus group" action.
 
 ---

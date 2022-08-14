@@ -29,8 +29,15 @@ export class MenuViewController {
   }
 
   async removeGroup(groupId: string): Promise<void> {
-    this.fileFocus.removeGroup(groupId);
-    vscode.commands.executeCommand("fileFocusTree.refreshEntry");
+    const action = await vscode.window.showInformationMessage(
+      "Discard this focus group?",
+      { modal: true },
+      "Discard"
+    );
+    if (action === "Discard") {
+      this.fileFocus.removeGroup(groupId);
+      vscode.commands.executeCommand("fileFocusTree.refreshEntry");
+    }
   }
 
   async renameGroup(srcGroupId: string): Promise<void> {
@@ -63,13 +70,27 @@ export class MenuViewController {
   }
 
   async addGroupResource(path: string): Promise<void> {
-    const groupName = await vscode.window.showQuickPick(
-      this.fileFocus.groupNames,
-      {
+    /* If no focus group as been defined define a focus group. */
+    if (this.fileFocus.root.size === 0) {
+      await vscode.window.showInformationMessage(
+        "Please setup at least one focus group. Then retry adding this resource.",
+        { modal: true }
+      );
+      vscode.commands.executeCommand("fileFocusExtension.addGroup");
+      return;
+    }
+
+    let groupName;
+    /* Skip showing the quick picker if there is only one focus group to choose. from. */
+    if (this.fileFocus.groupNames.length === 1) {
+      groupName = this.fileFocus.groupNames[0];
+    } else {
+      groupName = await vscode.window.showQuickPick(this.fileFocus.groupNames, {
         canPickMany: false,
         placeHolder: "Select the focus group for this resource.",
-      }
-    );
+      });
+    }
+
     if (groupName) {
       const groupId = FileFocus.makeGroupId(groupName);
       if (this.fileFocus.root.has(groupId)) {
