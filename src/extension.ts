@@ -31,33 +31,42 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
   );
-  vscode.commands.registerCommand("menuViewController.addGroup", () => {
+  vscode.commands.registerCommand("fileFocusExtension.addGroup", () => {
     menuViewController.addGroup();
   });
 
   vscode.commands.registerCommand(
-    "menuViewController.renameGroup",
+    "fileFocusExtension.renameGroup",
     (groupItem: GroupItem) => {
       menuViewController.renameGroup(groupItem.groupId);
     }
   );
 
   vscode.commands.registerCommand(
-    "menuViewController.removeGroup",
+    "fileFocusExtension.removeGroup",
     (groupItem: GroupItem) => {
       menuViewController.removeGroup(groupItem.groupId);
     }
   );
 
   vscode.commands.registerCommand(
-    "menuViewController.addGroupResource",
-    (path: string) => {
-      menuViewController.addGroupResource(path);
+    "fileFocusExtension.addGroupResource",
+    (path: string | undefined) => {
+      if (path === undefined) {
+        path = vscode.window.activeTextEditor?.document.fileName;
+        if (path) {
+          path = vscode.Uri.file(path).toString();
+        }
+      }
+      console.log(path);
+      if (path) {
+        menuViewController.addGroupResource(path);
+      }
     }
   );
 
   vscode.commands.registerCommand(
-    "menuViewController.removeGroupResource",
+    "fileFocusExtension.removeGroupResource",
     (focusItem: FocusItem) => {
       menuViewController.removeGroupResource(focusItem.groupId, focusItem.uri);
     }

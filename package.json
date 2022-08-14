@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -35,43 +35,78 @@
         "icon": "$(extensions-refresh)"
       },
       {
-        "command": "menuViewController.addGroup",
+        "command": "fileFocusExtension.addGroup",
         "title": "Add Focus Group",
         "icon": "$(new-folder)"
       },
       {
-        "command": "menuViewController.removeGroup",
+        "command": "fileFocusExtension.removeGroup",
         "title": "Delete Focus Group",
         "icon": "$(trash)"
       },
       {
-        "command": "menuViewController.renameGroup",
+        "command": "fileFocusExtension.renameGroup",
         "title": "Rename Focus Group",
         "icon": "$(edit)"
       },
       {
-        "command": "menuViewController.addGroupResource",
+        "command": "fileFocusExtension.addGroupResource",
         "title": "Add to Focus Group",
         "icon": "$(tag-add)"
       },
       {
-        "command": "menuViewController.removeGroupResource",
+        "command": "fileFocusExtension.removeGroupResource",
         "title": "Remove from Focus Group",
         "icon": "$(remove-close)"
       }
     ],
-    "views": {
-      "explorer": [
-        {
-          "id": "fileFocusTree",
-          "name": "File Focus"
-        }
-      ]
-    },
+    "keybindings": [
+      {
+        "command": "fileFocusExtension.addGroupResource",
+        "key": "ctrl+shift+8",
+        "mac": "cmd+shift+8",
+        "when": "editorTextFocus"
+      }
+    ],
     "menus": {
+      "editor/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "fileFocusExtension.renameGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.removeGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.removeGroupResource",
+          "when": "view == fileFocusTree && viewItem == FocusRootItem",
+          "group": "inline"
+        }
+      ],
       "view/title": [
         {
-          "command": "menuViewController.addGroup",
+          "command": "fileFocusExtension.addGroup",
           "when": "view == fileFocusTree",
           "group": "navigation"
         },
@@ -80,40 +115,13 @@
           "when": "view == fileFocusTree",
           "group": "navigation"
         }
-      ],
-      "view/item/context": [
+      ]
+    },
+    "views": {
+      "explorer": [
         {
-          "command": "menuViewController.renameGroup",
-          "when": "view == fileFocusTree && viewItem == GroupItem",
-          "group": "inline"
-        },
-        {
-          "command": "menuViewController.removeGroup",
-          "when": "view == fileFocusTree && viewItem == GroupItem",
-          "group": "inline"
-        },
-        {
-          "command": "menuViewController.removeGroupResource",
-          "when": "view == fileFocusTree && viewItem == FocusRootItem",
-          "group": "inline"
-        }
-      ],
-      "explorer/context": [
-        {
-          "command": "menuViewController.addGroupResource",
-          "group": "z_commands"
-        }
-      ],
-      "editor/title/context": [
-        {
-          "command": "menuViewController.addGroupResource",
-          "group": "z_commands"
-        }
-      ],
-      "editor/context": [
-        {
-          "command": "menuViewController.addGroupResource",
-          "group": "z_commands"
+          "id": "fileFocusTree",
+          "name": "File Focus"
         }
       ]
     }
