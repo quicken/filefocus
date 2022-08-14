@@ -21,8 +21,6 @@ For bug reports and code contributions head on over to:
 
 You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
 
-### Tips
-
 ## Features
 
 - Folders added to a "focus group" can be browsed.
