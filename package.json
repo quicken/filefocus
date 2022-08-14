@@ -2,7 +2,7 @@
   "name": "file-focus",
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
-  "description": "With File focus you can re-organise your files and folders into virtual groups. Useful when working on a large project and wanting quick access to a set of files and folders.",
+  "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
   "version": "0.0.3",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",

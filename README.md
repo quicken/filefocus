@@ -1,12 +1,10 @@
 # File Focus
 
-File focus is useful when you are working on a large project and want quick access to a set of files and folders that are spread throughout your project.
+Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation.
 
-By creating “Focus Groups” you can re-organise the files and folders in virtual folders.
+As you work on a project you can add files and folders to one or more “focus groups”. You can then quickly navigate folders or open files within a “focus group”.
 
-For example, when working in mono-repo you can organise a subset of files and folders from multiple projects inside a virtual folder for quick access.
-
-If you like this extension please consider subscribing to my channel.
+If you like this vs-code extension please consider subscribing to my channel.
 
 - https://www.youtube.com/channel/UCaWdpWiu450QyJYb_Hie6lA
 - https://www.herdingbits.com
@@ -14,6 +12,14 @@ If you like this extension please consider subscribing to my channel.
 For bug reports and code contributions head on over to:
 
 - https://github.com/quicken/filefocus
+
+## Getting Started
+
+1. Expand the File Focus Explorer View.
+2. Click the Add Focus Group Icon. Type a name for your focus group.
+3. As you work open the context menu in the file explore or editor and select: Add to focus group.
+
+You can open files directly from a focus group. Folders added to "focus group" can be navigated.
 
 ## Features
 
@@ -24,7 +30,7 @@ For bug reports and code contributions head on over to:
 - Add a file or folder to a focus group from the File Explorer Context Menu.
 - Files can also be added to a focus group from the editor context menu.
 
-![Getting Started](https://github.com/quicken/filefocus/blob/master/resources/file-focus_700x700.gif?raw=true)
+![Getting Started](https://github.com/quicken/filefocus/blob/master/resources/file-focus_demo.gif?raw=true)
 
 ## Extension Settings
 
