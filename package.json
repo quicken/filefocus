@@ -1,161 +1,161 @@
 {
-	"name": "file-focus",
-	"displayName": "File Focus",
-	"icon": "images/icon.PNG",
-	"description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
-	"version": "1.0.0",
-	"publisher": "herdingbits",
-	"repository": "https://github.com/quicken/filefocus",
-	"engines": {
-		"vscode": "^1.70.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"keywords": [
-		"virtual folder",
-		"group files",
-		"focus group",
-		"active folders"
-	],
-	"galleryBanner": {
-		"color": "#414F6A",
-		"theme": "dark"
-	},
-	"preview": false,
-	"activationEvents": [
-		"onView:fileFocusTree"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "fileFocusTree.refreshEntry",
-				"title": "Refresh",
-				"icon": "$(extensions-refresh)"
-			},
-			{
-				"command": "fileFocusExtension.addGroup",
-				"title": "Add Focus Group",
-				"icon": "$(new-folder)"
-			},
-			{
-				"command": "fileFocusExtension.removeGroup",
-				"title": "Delete Focus Group",
-				"icon": "$(trash)"
-			},
-			{
-				"command": "fileFocusExtension.renameGroup",
-				"title": "Rename Focus Group",
-				"icon": "$(edit)"
-			},
-			{
-				"command": "fileFocusExtension.addGroupResource",
-				"title": "Add to Focus Group",
-				"icon": "$(tag-add)"
-			},
-			{
-				"command": "fileFocusExtension.removeGroupResource",
-				"title": "Remove from Focus Group",
-				"icon": "$(remove-close)"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "fileFocusExtension.addGroupResource",
-				"key": "ctrl+shift+8",
-				"mac": "cmd+shift+8",
-				"when": "editorTextFocus"
-			}
-		],
-		"menus": {
-			"editor/context": [
-				{
-					"command": "fileFocusExtension.addGroupResource",
-					"group": "z_commands"
-				}
-			],
-			"editor/title/context": [
-				{
-					"command": "fileFocusExtension.addGroupResource",
-					"group": "z_commands"
-				}
-			],
-			"explorer/context": [
-				{
-					"command": "fileFocusExtension.addGroupResource",
-					"group": "z_commands"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "fileFocusExtension.renameGroup",
-					"when": "view == fileFocusTree && viewItem == GroupItem",
-					"group": "inline"
-				},
-				{
-					"command": "fileFocusExtension.removeGroup",
-					"when": "view == fileFocusTree && viewItem == GroupItem",
-					"group": "inline"
-				},
-				{
-					"command": "fileFocusExtension.removeGroupResource",
-					"when": "view == fileFocusTree && viewItem == FocusRootItem",
-					"group": "inline"
-				}
-			],
-			"view/title": [
-				{
-					"command": "fileFocusExtension.addGroup",
-					"when": "view == fileFocusTree",
-					"group": "navigation"
-				},
-				{
-					"command": "fileFocusTree.refreshEntry",
-					"when": "view == fileFocusTree",
-					"group": "navigation"
-				}
-			]
-		},
-		"views": {
-			"explorer": [
-				{
-					"id": "fileFocusTree",
-					"name": "File Focus"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.2.0",
-		"@types/mocha": "^9.1.1",
-		"@types/node": "16.x",
-		"@types/uuid": "^8.3.4",
-		"@types/vscode": "^1.70.0",
-		"@typescript-eslint/eslint-plugin": "^5.31.0",
-		"@typescript-eslint/parser": "^5.31.0",
-		"@vscode/test-electron": "^2.1.5",
-		"eslint": "^8.20.0",
-		"glob": "^8.0.3",
-		"mocha": "^10.0.0",
-		"typescript": "^4.7.4"
-	},
-	"dependencies": {
-		"uuid": "^8.3.2",
-		"vscode-uri": "^3.0.3"
-	},
-	"__metadata": {
-		"id": "fbd58705-7727-43e2-8702-adc9e22740b3",
-		"publisherDisplayName": "Herding Bits - M. Scherzer",
-		"publisherId": "8e5ec25c-4336-4325-9b09-31cfa9bf5f02",
-		"isPreReleaseVersion": false
-	}
+  "name": "file-focus",
+  "displayName": "File Focus",
+  "icon": "images/icon.PNG",
+  "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
+  "version": "1.0.1",
+  "publisher": "herdingbits",
+  "repository": "https://github.com/quicken/filefocus",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "virtual folder",
+    "group files",
+    "focus group",
+    "active folders"
+  ],
+  "galleryBanner": {
+    "color": "#414F6A",
+    "theme": "dark"
+  },
+  "preview": false,
+  "activationEvents": [
+    "onView:fileFocusTree"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fileFocusTree.refreshEntry",
+        "title": "Refresh",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "fileFocusExtension.addGroup",
+        "title": "Add Focus Group",
+        "icon": "$(new-folder)"
+      },
+      {
+        "command": "fileFocusExtension.removeGroup",
+        "title": "Delete Focus Group",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "fileFocusExtension.renameGroup",
+        "title": "Rename Focus Group",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "fileFocusExtension.addGroupResource",
+        "title": "Add to Focus Group",
+        "icon": "$(tag-add)"
+      },
+      {
+        "command": "fileFocusExtension.removeGroupResource",
+        "title": "Remove from Focus Group",
+        "icon": "$(remove-close)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "fileFocusExtension.addGroupResource",
+        "key": "ctrl+shift+8",
+        "mac": "cmd+shift+8",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "fileFocusExtension.addGroupResource",
+          "group": "z_commands"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "fileFocusExtension.renameGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.removeGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.removeGroupResource",
+          "when": "view == fileFocusTree && viewItem == FocusRootItem",
+          "group": "inline"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "fileFocusExtension.addGroup",
+          "when": "view == fileFocusTree",
+          "group": "navigation"
+        },
+        {
+          "command": "fileFocusTree.refreshEntry",
+          "when": "view == fileFocusTree",
+          "group": "navigation"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "fileFocusTree",
+          "name": "File Focus"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/uuid": "^8.3.4",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^8.20.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2",
+    "vscode-uri": "^3.0.3"
+  },
+  "__metadata": {
+    "id": "fbd58705-7727-43e2-8702-adc9e22740b3",
+    "publisherDisplayName": "Herding Bits - M. Scherzer",
+    "publisherId": "8e5ec25c-4336-4325-9b09-31cfa9bf5f02",
+    "isPreReleaseVersion": false
+  }
 }

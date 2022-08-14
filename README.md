@@ -29,7 +29,7 @@ You can open files directly from a focus group. Folders added to a "focus group"
 - Delete a "focus group" with the trash icon. Your files and folders will not be touched.
 - Add a file or folder to a focus group from the File Explorer Context Menu.
 - Files can also be added to a focus group from the editor context menu.
-- "ctrl + shit + 8" will add the file in the active editor to a focus group.
+- "ctrl + shift + 8" will add the file in the active editor to a focus group.
 
 ![Feature add to Focus Group](https://github.com/quicken/filefocus/blob/master/resources/file-focus_demo.gif?raw=true)
 
@@ -62,7 +62,7 @@ Initial release:
 - Support navigating folders that are added to a Focus Group.
 - Maintain File Icons
 
-### 0.0.4
+### 1.0.1
 
 - Add keyboard extension: "ctrl+shift+8" to add the file in the active editor to a focus group.
 - Improve language used in dialogs.
