@@ -4,9 +4,85 @@ import { Utils } from "vscode-uri";
 import { Group } from "./Group";
 
 export class FileFocusTreeProvider
-  implements vscode.TreeDataProvider<FocusItem | GroupItem>
+  implements
+    vscode.TreeDataProvider<FocusItem | GroupItem>,
+    vscode.TreeDragAndDropController<FocusItem | GroupItem>
 {
-  constructor(private fileFocus: FileFocus) {}
+  dropMimeTypes = ["application/vnd.code.tree.fileFocusTree"];
+  dragMimeTypes = ["text/uri-list"];
+
+  constructor(context: vscode.ExtensionContext, private fileFocus: FileFocus) {
+    const view = vscode.window.createTreeView("fileFocusTree", {
+      treeDataProvider: this,
+      showCollapseAll: true,
+      canSelectMany: true,
+      dragAndDropController: this,
+    });
+    context.subscriptions.push(view);
+  }
+
+  public async handleDrag(
+    source: (FocusItem | GroupItem)[],
+    treeDataTransfer: vscode.DataTransfer,
+    token: vscode.CancellationToken
+  ): Promise<void> {
+    /* Only allow dragging Root FocusItems for now.*/
+    for (const item of source) {
+      if (item.objtype !== "FocusItem") {
+        return;
+      } else {
+        const focusItem = item as FocusItem;
+        if (!focusItem.isRootItem) {
+          return;
+        }
+      }
+    }
+
+    treeDataTransfer.set(
+      "application/vnd.code.tree.fileFocusTree",
+      new vscode.DataTransferItem(source)
+    );
+  }
+
+  public async handleDrop(
+    target: FocusItem | undefined,
+    sources: vscode.DataTransfer,
+    token: vscode.CancellationToken
+  ): Promise<void> {
+    const transferItem = sources.get("application/vnd.code.tree.fileFocusTree");
+    if (!transferItem || !target) {
+      return;
+    }
+
+    const targetGroup = this.fileFocus.root.get(target.groupId);
+    if (!targetGroup) {
+      return;
+    }
+
+    const treeItems: FocusItem[] = transferItem.value;
+    const dirtyGroups = new Set<string>();
+    for (const sourceItem of treeItems) {
+      const sourceGroup = this.fileFocus.root.get(sourceItem.groupId);
+      if (!sourceGroup || sourceGroup.id === targetGroup.id) {
+        continue;
+      }
+
+      dirtyGroups.add(sourceGroup.id);
+
+      sourceGroup.removeResource(sourceItem.uri);
+      targetGroup.addResource(sourceItem.uri);
+      this.refresh();
+    }
+
+    for (const groupId of dirtyGroups) {
+      const group = this.fileFocus.root.get(groupId);
+      if (group) {
+        this.fileFocus.saveGroup(group);
+      }
+    }
+
+    this.fileFocus.saveGroup(targetGroup);
+  }
 
   getTreeItem(element: FocusItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
     return element;

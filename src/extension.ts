@@ -17,11 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
   const fileFocus = new FileFocus(new StorageService(context.workspaceState));
   const menuViewController = new MenuViewController(fileFocus);
 
-  const fileFocusTreeProvider = new FileFocusTreeProvider(fileFocus);
-  vscode.window.registerTreeDataProvider(
-    "fileFocusTree",
-    fileFocusTreeProvider
-  );
+  const fileFocusTreeProvider = new FileFocusTreeProvider(context, fileFocus);
 
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
