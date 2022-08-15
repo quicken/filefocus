@@ -17,17 +17,6 @@ For bug reports and code contributions head on over to:
 
 - https://github.com/quicken/filefocus
 
-## Getting Started
-
-1. Expand the File Focus Explorer View.
-2. Click the Add Icon (see image below). Type a name for your focus group.
-3. As you work open the context menu in the file explorer or editor and select: Add to focus group.
-4. You can also use "ctrl + shift + 8" to add the file open in the active editor to a focus group.
-
-You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
-
-![Adding the first Focus Group](https://github.com/quicken/filefocus/blob/master/resources/started.png?raw=true)
-
 ## Features
 
 - Folders added to a "focus group" can be browsed.
@@ -38,6 +27,17 @@ You can open files directly from a focus group. Folders added to a "focus group"
 - Files can also be added to a focus group from the editor context menu.
 - "ctrl + shift + 8" will add the file in the active editor to a focus group.
 - Drag and Drop root resources between focus groups.
+
+## Getting Started
+
+1. Expand the File Focus Explorer View.
+2. Click the Add Icon (see image below). Type a name for your focus group.
+3. As you work open the context menu in the file explorer or editor and select: Add to focus group.
+4. You can also use "ctrl + shift + 8" to add the file open in the active editor to a focus group.
+
+You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
+
+![Adding the first Focus Group](https://github.com/quicken/filefocus/blob/master/resources/started.png?raw=true)
 
 ## Extension Settings
 
