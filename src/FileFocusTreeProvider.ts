@@ -177,8 +177,19 @@ export class FocusItem extends vscode.TreeItem {
     public readonly collapsibleState: vscode.TreeItemCollapsibleState
   ) {
     super(label, collapsibleState);
-    // this.tooltip = `${this.label}`;
-    // this.description = "";
+    this.tooltip = `${uri.fsPath}`;
+    this.description = this.getResourceLocationHint(uri);
+  }
+
+  private getResourceLocationHint(uri: vscode.Uri) {
+    if (this.isRootItem) {
+      const parentFolders = uri.path
+        .split("/")
+        .slice(0, -1)
+        .slice(-2)
+        .join("/");
+      return `[${parentFolders}]`;
+    }
   }
 }
 
