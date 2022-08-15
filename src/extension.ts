@@ -13,16 +13,11 @@ import {
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log(context.storageUri);
+
   const fileFocus = new FileFocus(new StorageService(context.workspaceState));
   const menuViewController = new MenuViewController(fileFocus);
 
-  const rootPath =
-    vscode.workspace.workspaceFolders &&
-    vscode.workspace.workspaceFolders.length > 0
-      ? vscode.workspace.workspaceFolders[0].uri.fsPath
-      : "";
-  const fileFocusTreeProvider = new FileFocusTreeProvider(rootPath, fileFocus);
+  const fileFocusTreeProvider = new FileFocusTreeProvider(fileFocus);
   vscode.window.registerTreeDataProvider(
     "fileFocusTree",
     fileFocusTreeProvider

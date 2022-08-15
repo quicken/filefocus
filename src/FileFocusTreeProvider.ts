@@ -6,7 +6,7 @@ import { Group } from "./Group";
 export class FileFocusTreeProvider
   implements vscode.TreeDataProvider<FocusItem | GroupItem>
 {
-  constructor(private workspaceRoot: string, private fileFocus: FileFocus) {}
+  constructor(private fileFocus: FileFocus) {}
 
   getTreeItem(element: FocusItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
     return element;
