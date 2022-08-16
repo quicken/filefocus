@@ -27,6 +27,7 @@ For bug reports and code contributions head on over to:
 - Files can also be added to a focus group from the editor context menu.
 - "ctrl + shift + 8" will add the file in the active editor to a focus group.
 - Drag and Drop root resources between focus groups.
+- Pin a focus group to skip the focus group selection dialog. A pinned focus group automatically receives any added resources.
 
 ## Getting Started
 
@@ -49,6 +50,7 @@ https://github.com/quicken/filefocus
 - Only one level of "focus groups" can be created.
 - Status changes to files in the file explorer might not be reflected in Focus Groups. As a workaround click the refresh icon in the File Focus Pane.
 - Drag & Drop support is currently limited to the first level (root) items only.
+- A pinned focus group is always shown on the top. This is currently by accident.
 
 ## Release Notes
 
@@ -77,5 +79,10 @@ Initial release:
 
 - Show a hint of the folder location for root items. Handy where multiple root items might have the same name.
 - Drag & Drop Support for Root Items between focus groups.
+
+### 1.2.0
+
+- Fix bug, the same resource could be added multiple times.
+- A focus group can now be pinned. When a focus group is pinned it automatically receives any added resources.
 
 ---
