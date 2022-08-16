@@ -31,6 +31,6 @@ export class Group {
   };
 
   private _resourceContains = (uri: Uri) => {
-    return this._resource.includes(uri);
+    return this._resource.some((value) => value.fsPath === uri.fsPath);
   };
 }
