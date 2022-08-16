@@ -23,12 +23,21 @@ export class FileFocus {
   }
 
   public readonly root: Map<string, Group> = new Map();
+  private _pinnedGroupId = "";
 
   constructor(private storage: StorageService) {
     this.root = this.loadRootNodes();
     if (!this.root) {
       this.root = new Map();
     }
+  }
+
+  get pinnedGroupId() {
+    return this._pinnedGroupId;
+  }
+
+  set pinnedGroupId(value: string) {
+    this._pinnedGroupId = value;
   }
 
   public addGroup = (group: Group) => {

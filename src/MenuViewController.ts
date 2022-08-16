@@ -28,6 +28,12 @@ export class MenuViewController {
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
+  pinGroup(groupId: string): void {
+    this.fileFocus.pinnedGroupId =
+      this.fileFocus.pinnedGroupId === groupId ? "" : groupId;
+    vscode.commands.executeCommand("fileFocusTree.refreshEntry");
+  }
+
   async removeGroup(groupId: string): Promise<void> {
     const action = await vscode.window.showInformationMessage(
       "Discard this focus group?",
@@ -84,6 +90,11 @@ export class MenuViewController {
     /* Skip showing the quick picker if there is only one focus group to choose. from. */
     if (this.fileFocus.groupNames.length === 1) {
       groupName = this.fileFocus.groupNames[0];
+    } else if (
+      this.fileFocus.pinnedGroupId &&
+      this.fileFocus.root.has(this.fileFocus.pinnedGroupId)
+    ) {
+      groupName = this.fileFocus.root.get(this.fileFocus.pinnedGroupId)?.name;
     } else {
       groupName = await vscode.window.showQuickPick(this.fileFocus.groupNames, {
         canPickMany: false,

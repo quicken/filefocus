@@ -221,10 +221,12 @@ export class FileFocusTreeProvider
   }
 
   private createGroupItem(group: Group) {
+    const isFavourite = group.id === this.fileFocus.pinnedGroupId;
     const groupItem = new GroupItem(
       group.name,
       group.id,
-      vscode.TreeItemCollapsibleState.Collapsed
+      vscode.TreeItemCollapsibleState.Collapsed,
+      isFavourite
     );
 
     return groupItem;
@@ -271,13 +273,15 @@ export class FocusItem extends vscode.TreeItem {
 
 export class GroupItem extends vscode.TreeItem {
   objtype = "GroupItem";
+
   constructor(
     public readonly label: string,
     public readonly groupId: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly isFavourite: boolean
   ) {
     super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
     this.contextValue = "GroupItem";
+    this.label = this.isFavourite ? `⭐${this.label}` : this.label;
   }
 }

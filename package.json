@@ -40,6 +40,11 @@
         "icon": "$(new-folder)"
       },
       {
+        "command": "fileFocusExtension.pinGroup",
+        "title": "Pin Group",
+        "icon": "$(pin)"
+      },
+      {
         "command": "fileFocusExtension.removeGroup",
         "title": "Delete Focus Group",
         "icon": "$(trash)"
@@ -89,12 +94,17 @@
       ],
       "view/item/context": [
         {
-          "command": "fileFocusExtension.renameGroup",
+          "command": "fileFocusExtension.removeGroup",
           "when": "view == fileFocusTree && viewItem == GroupItem",
           "group": "inline"
         },
         {
-          "command": "fileFocusExtension.removeGroup",
+          "command": "fileFocusExtension.pinGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.renameGroup",
           "when": "view == fileFocusTree && viewItem == GroupItem",
           "group": "inline"
         },

@@ -27,6 +27,13 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.commands.registerCommand(
+    "fileFocusExtension.pinGroup",
+    (groupItem: GroupItem) => {
+      menuViewController.pinGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
     "fileFocusExtension.renameGroup",
     (groupItem: GroupItem) => {
       menuViewController.renameGroup(groupItem.groupId);
@@ -49,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
           path = vscode.Uri.file(path).toString();
         }
       }
-      console.log(path);
+
       if (path) {
         menuViewController.addGroupResource(path);
       }
