@@ -131,10 +131,12 @@ export class FileFocusTreeProvider
             out.push(
               this.createFolderItem(Utils.basename(uri), uri, true, groupId)
             );
+            break;
           case vscode.FileType.Unknown:
             out.push(
               this.createUnknownItem(Utils.basename(uri), uri, true, groupId)
             );
+            break;
         }
       }
     }
