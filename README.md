@@ -85,4 +85,8 @@ Initial release:
 - Fix bug, the same resource could be added multiple times.
 - A focus group can now be pinned. When a focus group is pinned it automatically receives any added resources.
 
+### 1.2.1
+
+- Fix bug, when a resource was deleted from the file system the focus group would crash/vanish. Now a warning marker is shown next to missing resources.
+
 ---
