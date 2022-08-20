@@ -119,8 +119,8 @@ export class FileFocusTreeProvider
       );
 
       for (const uri of resources) {
-        const fileStats = await vscode.workspace.fs.stat(uri);
-        switch (fileStats.type) {
+        const fileType = await this.getResourceType(uri);
+        switch (fileType) {
           case vscode.FileType.File:
             out.push(
               this.createFileItem(Utils.basename(uri), uri, true, groupId)
@@ -131,11 +131,25 @@ export class FileFocusTreeProvider
             out.push(
               this.createFolderItem(Utils.basename(uri), uri, true, groupId)
             );
+          case vscode.FileType.Unknown:
+            out.push(
+              this.createUnknownItem(Utils.basename(uri), uri, true, groupId)
+            );
         }
       }
     }
 
     return out;
+  }
+
+  private async getResourceType(uri: vscode.Uri) {
+    try {
+      return await (
+        await vscode.workspace.fs.stat(uri)
+      ).type;
+    } catch (error) {
+      return vscode.FileType.Unknown;
+    }
   }
 
   private async getGroupItem(): Promise<GroupItem[]> {
@@ -218,6 +232,26 @@ export class FileFocusTreeProvider
     folderItem.iconPath = vscode.ThemeIcon.File;
     folderItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
     return folderItem;
+  }
+
+  private createUnknownItem(
+    label: string,
+    uri: vscode.Uri,
+    isRootItem: boolean,
+    groupId: string
+  ) {
+    const fileItem = new FocusItem(
+      label,
+      vscode.FileType.Unknown,
+      uri,
+      isRootItem,
+      groupId,
+      vscode.TreeItemCollapsibleState.None
+    );
+    fileItem.resourceUri = uri;
+    fileItem.iconPath = new vscode.ThemeIcon("warning");
+    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
+    return fileItem;
   }
 
   private createGroupItem(group: Group) {
