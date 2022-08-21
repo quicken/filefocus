@@ -27,7 +27,7 @@ For bug reports and code contributions head on over to:
 - Files can also be added to a focus group from the editor context menu.
 - "ctrl + shift + 8" will add the file in the active editor to a focus group.
 - Drag and Drop root resources between focus groups.
-- Pin a focus group to skip the focus group selection dialog. A pinned focus group automatically receives any added resources.
+- Pin a focus group to skip the focus group selection dialogue. A pinned focus group automatically receives any added resources.
 
 ## Getting Started
 
@@ -52,41 +52,10 @@ https://github.com/quicken/filefocus
 - Drag & Drop support is currently limited to the first level (root) items only.
 - A pinned focus group is always shown on the top. This is currently by accident.
 
-## Release Notes
+## What is New
 
-Please submit any issues you find to Git-Hub or better yet submit a pull request.
+Improved Drag & Drop Support.
 
-https://github.com/quicken/filefocus
-
-### 0.0.3
-
-Initial release:
-
-- Add, Rename, Delete Focus Groups.
-- Use context menus to Add Files or Folders to a Focus Group.
-- Support navigating folders that are added to a Focus Group.
-- Maintain File Icons
-
-### 1.0.1
-
-- Add keyboard extension: "ctrl+shift+8" to add the file in the active editor to a focus group.
-- Improve language used in dialogs.
-- Ask for confirmation before deleting a focus group.
-- When there is only one defined focus group, skip showing the focus group quick picker.
-- When there are no defined focus groups the add resource action will show a dialog and function as an "add focus group" action.
-
-### 1.1.0
-
-- Show a hint of the folder location for root items. Handy where multiple root items might have the same name.
-- Drag & Drop Support for Root Items between focus groups.
-
-### 1.2.0
-
-- Fix bug, the same resource could be added multiple times.
-- A focus group can now be pinned. When a focus group is pinned it automatically receives any added resources.
-
-### 1.2.1
-
-- Fix bug, when a resource was deleted from the file system the focus group would crash/vanish. Now a warning marker is shown next to missing resources.
-
----
+- Drag items from the file explorer into a focus group.
+- Drag a file from a focus group to the editor window to open a file.
+- Drag files in focus group subfolders to another focus group.

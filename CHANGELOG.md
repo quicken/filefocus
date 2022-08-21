@@ -36,3 +36,9 @@ Initial release:
 ### 1.2.1
 
 - Fix bug, causing a focus group to crash when a resource was deleted from the file system. Now shows a warning marker next to non-existing resources.
+
+### 1.3.0
+
+- Drag any file from a focus group into an editor to open the file. Handy for opening files side by side.
+- Drag a file from a focus group sub-folder into another focus group.
+- Drag and Drop files and folders from the file explorer into a focus group.
