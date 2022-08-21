@@ -39,9 +39,6 @@ export class FileFocusTreeProvider
         return;
       } else {
         const focusItem = item as FocusItem;
-        if (!focusItem.isRootItem) {
-          return;
-        }
         uriList.push(focusItem.uri.toString());
       }
     }
