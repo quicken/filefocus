@@ -51,10 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
     "fileFocusExtension.addGroupResource",
     (path: string | undefined) => {
       if (path === undefined) {
-        path = vscode.window.activeTextEditor?.document.fileName;
-        if (path) {
-          path = vscode.Uri.file(path).toString();
-        }
+        path = vscode.window.activeTextEditor?.document.uri.toString();
       }
 
       if (path) {

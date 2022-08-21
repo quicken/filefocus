@@ -40,6 +40,14 @@ You can open files directly from a focus group. Folders added to a "focus group"
 
 ![Adding the first Focus Group](https://github.com/quicken/filefocus/blob/master/resources/started.png?raw=true)
 
+## What is New
+
+Improved Drag & Drop Support.
+
+- Drag items from the file explorer into a focus group.
+- Drag a file from a focus group to the editor window to open a file.
+- Drag files in focus group subfolders to another focus group.
+
 ## Extension Settings
 
 Please suggest any settings you would like to tweak.
@@ -49,13 +57,12 @@ https://github.com/quicken/filefocus
 
 - Only one level of "focus groups" can be created.
 - Status changes to files in the file explorer might not be reflected in Focus Groups. As a workaround click the refresh icon in the File Focus Pane.
-- Drag & Drop support is currently limited to the first level (root) items only.
 - A pinned focus group is always shown on the top. This is currently by accident.
 
-## What is New
+### Windows Subsystem for Linux (WSL)
 
-Improved Drag & Drop Support.
+Drag to open only works for files that have been added to a "focus group" by drag & drop from the file explorer. Items added to a focus group
+through any other means can not be opened by dragging. This appears to be due to a limitation in the way the vscode SDK operates.
 
-- Drag items from the file explorer into a focus group.
-- Drag a file from a focus group to the editor window to open a file.
-- Drag files in focus group subfolders to another focus group.
+If anyone knows how to determine the base path for a WSL remote inside of an extension or how to convert file paths to vscode remote paths please
+share and I can resolve this issue.
