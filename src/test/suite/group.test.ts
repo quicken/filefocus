@@ -5,7 +5,7 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 import { Group } from "../../Group";
 
-suite("Extension Test Suite", () => {
+suite("Group Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");
 
   test("Prevent adding duplicate resources.", () => {

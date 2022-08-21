@@ -2,13 +2,19 @@ import * as vscode from "vscode";
 import { FileFocus } from "./FileFocus";
 import { Utils } from "vscode-uri";
 import { Group } from "./Group";
+import { FocusUtil } from "./FocusUtil";
+
+type FileFocusDropType =
+  | "application/vnd.code.tree.fileFocusTree"
+  | "text/uri-list"
+  | "";
 
 export class FileFocusTreeProvider
   implements
     vscode.TreeDataProvider<FocusItem | GroupItem>,
     vscode.TreeDragAndDropController<FocusItem | GroupItem>
 {
-  dropMimeTypes = ["application/vnd.code.tree.fileFocusTree"];
+  dropMimeTypes = ["application/vnd.code.tree.fileFocusTree", "text/uri-list"];
   dragMimeTypes = ["text/uri-list"];
 
   constructor(context: vscode.ExtensionContext, private fileFocus: FileFocus) {
@@ -26,6 +32,7 @@ export class FileFocusTreeProvider
     treeDataTransfer: vscode.DataTransfer,
     token: vscode.CancellationToken
   ): Promise<void> {
+    const uriList: string[] = [];
     /* Only allow dragging Root FocusItems for now.*/
     for (const item of source) {
       if (item.objtype !== "FocusItem") {
@@ -35,6 +42,7 @@ export class FileFocusTreeProvider
         if (!focusItem.isRootItem) {
           return;
         }
+        uriList.push(focusItem.uri.toString());
       }
     }
 
@@ -42,6 +50,13 @@ export class FileFocusTreeProvider
       "application/vnd.code.tree.fileFocusTree",
       new vscode.DataTransferItem(source)
     );
+
+    if (uriList) {
+      treeDataTransfer.set(
+        "text/uri-list",
+        new vscode.DataTransferItem(FocusUtil.arrayToUriList(uriList))
+      );
+    }
   }
 
   public async handleDrop(
@@ -49,8 +64,7 @@ export class FileFocusTreeProvider
     sources: vscode.DataTransfer,
     token: vscode.CancellationToken
   ): Promise<void> {
-    const transferItem = sources.get("application/vnd.code.tree.fileFocusTree");
-    if (!transferItem || !target) {
+    if (!target) {
       return;
     }
 
@@ -59,7 +73,39 @@ export class FileFocusTreeProvider
       return;
     }
 
-    const treeItems: FocusItem[] = transferItem.value;
+    const fileFocusDropType = this.fileFocusDropType(sources);
+    if (!fileFocusDropType) {
+      return;
+    }
+
+    switch (fileFocusDropType) {
+      case "application/vnd.code.tree.fileFocusTree": {
+        const transferItem = sources.get(
+          "application/vnd.code.tree.fileFocusTree"
+        );
+        if (transferItem) {
+          this.handleDropFileFocusItem(
+            transferItem.value as FocusItem[],
+            targetGroup
+          );
+        }
+        break;
+      }
+
+      case "text/uri-list": {
+        const transferItem = sources.get("text/uri-list");
+        if (transferItem) {
+          this.handleDropUriList(transferItem.value as string, targetGroup);
+        }
+        break;
+      }
+
+      default:
+        return;
+    }
+  }
+
+  private handleDropFileFocusItem(treeItems: FocusItem[], targetGroup: Group) {
     const dirtyGroups = new Set<string>();
     for (const sourceItem of treeItems) {
       const sourceGroup = this.fileFocus.root.get(sourceItem.groupId);
@@ -71,7 +117,6 @@ export class FileFocusTreeProvider
 
       sourceGroup.removeResource(sourceItem.uri);
       targetGroup.addResource(sourceItem.uri);
-      this.refresh();
     }
 
     for (const groupId of dirtyGroups) {
@@ -82,6 +127,31 @@ export class FileFocusTreeProvider
     }
 
     this.fileFocus.saveGroup(targetGroup);
+    this.refresh();
+  }
+
+  private handleDropUriList(uriList: string, targetGroup: Group) {
+    const paths = FocusUtil.uriListToArray(uriList);
+    for (const path of paths) {
+      const uri = vscode.Uri.parse(path);
+      targetGroup.addResource(uri);
+    }
+    this.fileFocus.saveGroup(targetGroup);
+    this.refresh();
+  }
+
+  private fileFocusDropType(sources: vscode.DataTransfer): FileFocusDropType {
+    let transferItem = sources.get("application/vnd.code.tree.fileFocusTree");
+    if (transferItem) {
+      return "application/vnd.code.tree.fileFocusTree";
+    }
+
+    transferItem = sources.get("text/uri-list");
+    if (transferItem) {
+      return "text/uri-list";
+    }
+
+    return "";
   }
 
   getTreeItem(element: FocusItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
