@@ -1,5 +1,4 @@
 import { v5 as uuidv5 } from "uuid";
-import { StorageService } from "./storage/StorageService";
 import { Group } from "./Group";
 
 import { FileFocusStorageProvider } from "./global";
@@ -51,9 +50,12 @@ export class GroupManager {
   };
 
   public removeGroup = (id: string) => {
-    this.root.delete(id);
-    this.storageMap.delete(id);
     const provider = this._storageProvider.get(this.storageMap.get(id) || "");
+
+    this.root.delete(id);
+    this.storageMap.delete(
+      id
+    ); /* Order matters: Do no delete the storageMap value prior to locating the storage provider.*/
     if (provider) {
       provider.deleteGroupId(id);
     }
