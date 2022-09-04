@@ -1,4 +1,4 @@
-import { StorageService } from "../StorageService";
+import { StorageService } from "./StorageService";
 import { FileFocusStorageProvider } from "../global";
 import { Group } from "../Group";
 import { Uri } from "vscode";

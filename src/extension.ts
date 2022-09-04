@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { MenuViewController } from "./MenuViewController";
 import { GroupManager } from "./GroupManager";
-import { StorageService } from "./StorageService";
+import { StorageService } from "./storage/StorageService";
 import { FileFocusTreeProvider } from "./tree/FileFocusTreeProvider";
 import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";

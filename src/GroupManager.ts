@@ -1,5 +1,5 @@
 import { v5 as uuidv5 } from "uuid";
-import { StorageService } from "./StorageService";
+import { StorageService } from "./storage/StorageService";
 import { Group } from "./Group";
 
 import { FileFocusStorageProvider } from "./global";
