@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
-import { FileFocus } from "./FileFocus";
+import { GroupManager } from "./GroupManager";
 import { Group } from "./Group";
 
 export class MenuViewController {
-  constructor(private fileFocus: FileFocus) {}
+  constructor(private groupManager: GroupManager) {}
 
   async addGroup(): Promise<void> {
     const groupName = await vscode.window.showInputBox({
@@ -14,8 +14,8 @@ export class MenuViewController {
       return;
     }
 
-    const groupId = FileFocus.makeGroupId(groupName);
-    if (this.fileFocus.root.has(groupId)) {
+    const groupId = GroupManager.makeGroupId(groupName);
+    if (this.groupManager.root.has(groupId)) {
       await vscode.window.showErrorMessage(
         "A focus group with this name already exists."
       );
@@ -24,13 +24,13 @@ export class MenuViewController {
 
     const group = new Group(groupId);
     group.name = groupName;
-    this.fileFocus.addGroup(group);
+    this.groupManager.addGroup(group, "local");
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
   pinGroup(groupId: string): void {
-    this.fileFocus.pinnedGroupId =
-      this.fileFocus.pinnedGroupId === groupId ? "" : groupId;
+    this.groupManager.pinnedGroupId =
+      this.groupManager.pinnedGroupId === groupId ? "" : groupId;
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
@@ -41,13 +41,13 @@ export class MenuViewController {
       "Discard"
     );
     if (action === "Discard") {
-      this.fileFocus.removeGroup(groupId);
+      this.groupManager.removeGroup(groupId);
       vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
 
   async renameGroup(srcGroupId: string): Promise<void> {
-    const group = this.fileFocus.root.get(srcGroupId);
+    const group = this.groupManager.root.get(srcGroupId);
     if (group) {
       const groupName = await vscode.window.showInputBox({
         placeHolder: "Enter a name for the focus group",
@@ -62,22 +62,22 @@ export class MenuViewController {
         return;
       }
 
-      const destinationId = FileFocus.makeGroupId(groupName);
-      if (this.fileFocus.root.has(destinationId)) {
+      const destinationId = GroupManager.makeGroupId(groupName);
+      if (this.groupManager.root.has(destinationId)) {
         await vscode.window.showErrorMessage(
           "A focus group with this name already exists."
         );
         return;
       }
 
-      this.fileFocus.renameGroup(srcGroupId, groupName);
+      this.groupManager.renameGroup(srcGroupId, groupName);
       vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }
 
   async addGroupResource(path: string): Promise<void> {
     /* If no focus group as been defined define a focus group. */
-    if (this.fileFocus.root.size === 0) {
+    if (this.groupManager.root.size === 0) {
       await vscode.window.showInformationMessage(
         "Please setup at least one focus group. Then retry adding this resource.",
         { modal: true }
@@ -88,27 +88,32 @@ export class MenuViewController {
 
     let groupName;
     /* Skip showing the quick picker if there is only one focus group to choose. from. */
-    if (this.fileFocus.groupNames.length === 1) {
-      groupName = this.fileFocus.groupNames[0];
+    if (this.groupManager.groupNames.length === 1) {
+      groupName = this.groupManager.groupNames[0];
     } else if (
-      this.fileFocus.pinnedGroupId &&
-      this.fileFocus.root.has(this.fileFocus.pinnedGroupId)
+      this.groupManager.pinnedGroupId &&
+      this.groupManager.root.has(this.groupManager.pinnedGroupId)
     ) {
-      groupName = this.fileFocus.root.get(this.fileFocus.pinnedGroupId)?.name;
+      groupName = this.groupManager.root.get(
+        this.groupManager.pinnedGroupId
+      )?.name;
     } else {
-      groupName = await vscode.window.showQuickPick(this.fileFocus.groupNames, {
-        canPickMany: false,
-        placeHolder: "Select the focus group for this resource.",
-      });
+      groupName = await vscode.window.showQuickPick(
+        this.groupManager.groupNames,
+        {
+          canPickMany: false,
+          placeHolder: "Select the focus group for this resource.",
+        }
+      );
     }
 
     if (groupName) {
-      const groupId = FileFocus.makeGroupId(groupName);
-      if (this.fileFocus.root.has(groupId)) {
-        const group = this.fileFocus.root.get(groupId);
+      const groupId = GroupManager.makeGroupId(groupName);
+      if (this.groupManager.root.has(groupId)) {
+        const group = this.groupManager.root.get(groupId);
         if (group) {
           group.addResource(vscode.Uri.parse(path));
-          this.fileFocus.saveGroup(group);
+          this.groupManager.saveGroup(group);
           vscode.commands.executeCommand("fileFocusTree.refreshEntry");
         }
       }
@@ -116,10 +121,10 @@ export class MenuViewController {
   }
 
   async removeGroupResource(groupId: string, uri: vscode.Uri): Promise<void> {
-    const group = this.fileFocus.root.get(groupId);
+    const group = this.groupManager.root.get(groupId);
     if (group) {
       group.removeResource(uri);
-      this.fileFocus.saveGroup(group);
+      this.groupManager.saveGroup(group);
       vscode.commands.executeCommand("fileFocusTree.refreshEntry");
     }
   }

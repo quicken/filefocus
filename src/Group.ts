@@ -1,10 +1,5 @@
 import { Uri } from "vscode";
 
-export type FocusGroup = {
-  id: string;
-  label: string;
-};
-
 export class Group {
   private _resource: Uri[] = [];
   public name = "";

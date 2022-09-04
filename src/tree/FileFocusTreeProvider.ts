@@ -1,8 +1,10 @@
 import * as vscode from "vscode";
-import { FileFocus } from "./FileFocus";
-import { Utils } from "vscode-uri";
-import { Group } from "./Group";
-import { FocusUtil } from "./FocusUtil";
+import { GroupManager } from "../GroupManager";
+import { Group } from "../Group";
+import { FocusUtil } from "../FocusUtil";
+import { TreeItemBuilder } from "./TreeItemBuilder";
+import { FocusItem } from "./FocusItem";
+import { GroupItem } from "./GroupItem";
 
 type FileFocusDropType =
   | "application/vnd.code.tree.fileFocusTree"
@@ -16,8 +18,12 @@ export class FileFocusTreeProvider
 {
   dropMimeTypes = ["application/vnd.code.tree.fileFocusTree", "text/uri-list"];
   dragMimeTypes = ["text/uri-list"];
-
-  constructor(context: vscode.ExtensionContext, private fileFocus: FileFocus) {
+  itemBuilder: TreeItemBuilder;
+  constructor(
+    context: vscode.ExtensionContext,
+    private groupManager: GroupManager
+  ) {
+    this.itemBuilder = new TreeItemBuilder();
     const view = vscode.window.createTreeView("fileFocusTree", {
       treeDataProvider: this,
       showCollapseAll: true,
@@ -82,7 +88,7 @@ export class FileFocusTreeProvider
       return;
     }
 
-    const targetGroup = this.fileFocus.root.get(target.groupId);
+    const targetGroup = this.groupManager.root.get(target.groupId);
     if (!targetGroup) {
       return;
     }
@@ -122,7 +128,7 @@ export class FileFocusTreeProvider
   private handleDropFileFocusItem(treeItems: FocusItem[], targetGroup: Group) {
     const dirtyGroups = new Set<string>();
     for (const sourceItem of treeItems) {
-      const sourceGroup = this.fileFocus.root.get(sourceItem.groupId);
+      const sourceGroup = this.groupManager.root.get(sourceItem.groupId);
       if (!sourceGroup || sourceGroup.id === targetGroup.id) {
         continue;
       }
@@ -134,13 +140,13 @@ export class FileFocusTreeProvider
     }
 
     for (const groupId of dirtyGroups) {
-      const group = this.fileFocus.root.get(groupId);
+      const group = this.groupManager.root.get(groupId);
       if (group) {
-        this.fileFocus.saveGroup(group);
+        this.groupManager.saveGroup(group);
       }
     }
 
-    this.fileFocus.saveGroup(targetGroup);
+    this.groupManager.saveGroup(targetGroup);
     this.refresh();
   }
 
@@ -150,7 +156,7 @@ export class FileFocusTreeProvider
       const uri = vscode.Uri.parse(path);
       targetGroup.addResource(uri);
     }
-    this.fileFocus.saveGroup(targetGroup);
+    this.groupManager.saveGroup(targetGroup);
     this.refresh();
   }
 
@@ -187,66 +193,15 @@ export class FileFocusTreeProvider
         }
       } else if (element.objtype === "GroupItem") {
         const groupItem = element as GroupItem;
-        return this.getResourceForGroup(groupItem.groupId);
+        const group = this.groupManager.root.get(groupItem.groupId);
+        return group ? this.itemBuilder.getResourceForGroup(group) : [];
       }
     } else {
-      return this.getGroupItem();
-    }
-  }
-
-  private async getResourceForGroup(groupId: string): Promise<FocusItem[]> {
-    const out: FocusItem[] = [];
-    const resources = this.fileFocus.root.get(groupId)?.resources;
-    if (resources) {
-      resources.sort((a, b) =>
-        Utils.basename(a).localeCompare(Utils.basename(b))
+      return this.itemBuilder.getGroupItem(
+        this.groupManager.root,
+        this.groupManager.pinnedGroupId
       );
-
-      for (const uri of resources) {
-        const fileType = await this.getResourceType(uri);
-        switch (fileType) {
-          case vscode.FileType.File:
-            out.push(
-              this.createFileItem(Utils.basename(uri), uri, true, groupId)
-            );
-            break;
-
-          case vscode.FileType.Directory:
-            out.push(
-              this.createFolderItem(Utils.basename(uri), uri, true, groupId)
-            );
-            break;
-          case vscode.FileType.Unknown:
-            out.push(
-              this.createUnknownItem(Utils.basename(uri), uri, true, groupId)
-            );
-            break;
-        }
-      }
     }
-
-    return out;
-  }
-
-  private async getResourceType(uri: vscode.Uri) {
-    try {
-      return await (
-        await vscode.workspace.fs.stat(uri)
-      ).type;
-    } catch (error) {
-      return vscode.FileType.Unknown;
-    }
-  }
-
-  private async getGroupItem(): Promise<GroupItem[]> {
-    const out: GroupItem[] = [];
-    for (const [id, group] of this.fileFocus.root) {
-      out.push(this.createGroupItem(group));
-    }
-
-    out.sort((a, b) => a.label.localeCompare(b.label));
-
-    return out;
   }
 
   private async getFolderContents(
@@ -261,11 +216,25 @@ export class FileFocusTreeProvider
 
       switch (item[1]) {
         case vscode.FileType.File:
-          out.push(this.createFileItem(item[0], resourceUri, false, groupId));
+          out.push(
+            this.itemBuilder.createFileItem(
+              item[0],
+              resourceUri,
+              false,
+              groupId
+            )
+          );
           break;
 
         case vscode.FileType.Directory:
-          out.push(this.createFolderItem(item[0], resourceUri, false, groupId));
+          out.push(
+            this.itemBuilder.createFolderItem(
+              item[0],
+              resourceUri,
+              false,
+              groupId
+            )
+          );
           break;
 
         default:
@@ -273,83 +242,6 @@ export class FileFocusTreeProvider
     }
 
     return out;
-  }
-
-  private createFileItem(
-    label: string,
-    uri: vscode.Uri,
-    isRootItem: boolean,
-    groupId: string
-  ) {
-    const fileItem = new FocusItem(
-      label,
-      vscode.FileType.File,
-      uri,
-      isRootItem,
-      groupId,
-      vscode.TreeItemCollapsibleState.None
-    );
-    fileItem.command = {
-      command: "vscode.open",
-      title: "Open File",
-      arguments: [uri],
-    };
-    fileItem.resourceUri = uri;
-    fileItem.iconPath = vscode.ThemeIcon.File;
-    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
-    return fileItem;
-  }
-
-  private createFolderItem(
-    label: string,
-    uri: vscode.Uri,
-    isRootItem: boolean,
-    groupId: string
-  ) {
-    const folderItem = new FocusItem(
-      label,
-      vscode.FileType.Directory,
-      uri,
-      isRootItem,
-      groupId,
-      vscode.TreeItemCollapsibleState.Collapsed
-    );
-    folderItem.resourceUri = uri;
-    folderItem.iconPath = vscode.ThemeIcon.File;
-    folderItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
-    return folderItem;
-  }
-
-  private createUnknownItem(
-    label: string,
-    uri: vscode.Uri,
-    isRootItem: boolean,
-    groupId: string
-  ) {
-    const fileItem = new FocusItem(
-      label,
-      vscode.FileType.Unknown,
-      uri,
-      isRootItem,
-      groupId,
-      vscode.TreeItemCollapsibleState.None
-    );
-    fileItem.resourceUri = uri;
-    fileItem.iconPath = new vscode.ThemeIcon("warning");
-    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
-    return fileItem;
-  }
-
-  private createGroupItem(group: Group) {
-    const isFavourite = group.id === this.fileFocus.pinnedGroupId;
-    const groupItem = new GroupItem(
-      group.name,
-      group.id,
-      vscode.TreeItemCollapsibleState.Collapsed,
-      isFavourite
-    );
-
-    return groupItem;
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -361,47 +253,5 @@ export class FileFocusTreeProvider
 
   async refresh(): Promise<void> {
     this._onDidChangeTreeData.fire();
-  }
-}
-
-export class FocusItem extends vscode.TreeItem {
-  objtype = "FocusItem";
-  constructor(
-    public readonly label: string,
-    public readonly type: vscode.FileType,
-    public readonly uri: vscode.Uri,
-    public readonly isRootItem: boolean,
-    public readonly groupId: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState
-  ) {
-    super(label, collapsibleState);
-    this.tooltip = `${uri.fsPath}`;
-    this.description = this.getResourceLocationHint(uri);
-  }
-
-  private getResourceLocationHint(uri: vscode.Uri) {
-    if (this.isRootItem) {
-      const parentFolders = uri.path
-        .split("/")
-        .slice(0, -1)
-        .slice(-2)
-        .join("/");
-      return `[${parentFolders}]`;
-    }
-  }
-}
-
-export class GroupItem extends vscode.TreeItem {
-  objtype = "GroupItem";
-
-  constructor(
-    public readonly label: string,
-    public readonly groupId: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly isFavourite: boolean
-  ) {
-    super(label, collapsibleState);
-    this.contextValue = "GroupItem";
-    this.label = this.isFavourite ? `⭐${this.label}` : this.label;
   }
 }

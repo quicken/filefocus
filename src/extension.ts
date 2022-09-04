@@ -1,23 +1,30 @@
 import * as vscode from "vscode";
 import { MenuViewController } from "./MenuViewController";
-import { FileFocus } from "./FileFocus";
+import { GroupManager } from "./GroupManager";
 import { StorageService } from "./StorageService";
-import {
-  FileFocusTreeProvider,
-  FocusItem,
-  GroupItem,
-} from "./FileFocusTreeProvider";
+import { FileFocusTreeProvider } from "./tree/FileFocusTreeProvider";
+import { GroupItem } from "./tree/GroupItem";
+import { FocusItem } from "./tree/FocusItem";
+import { LocalStorage } from "./storage/LocalStorage";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
 
-  const fileFocus = new FileFocus(new StorageService(context.workspaceState));
-  const menuViewController = new MenuViewController(fileFocus);
+  const groupManager = new GroupManager();
+  groupManager.addStorageProvider(
+    new LocalStorage(new StorageService(context.workspaceState))
+  );
+  await groupManager.loadAll();
 
-  const fileFocusTreeProvider = new FileFocusTreeProvider(context, fileFocus);
+  const menuViewController = new MenuViewController(groupManager);
+
+  const fileFocusTreeProvider = new FileFocusTreeProvider(
+    context,
+    groupManager
+  );
 
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
