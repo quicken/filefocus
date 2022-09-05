@@ -34,6 +34,8 @@ export class StateStorage implements FileFocusStorageProvider {
   constructor(private storage: StorageService) {}
 
   public loadRootNodes() {
+    this.migrateStorageV1();
+
     const groupStore = this.storage.getValue<GroupStore>("groupmap", {});
 
     const storeMap = new Map(Object.entries(groupStore));
@@ -96,6 +98,11 @@ export class StateStorage implements FileFocusStorageProvider {
   }
 
   migrateStorageV1() {
+    const storeversion = this.storage.getValue<number>("storeversion", 0);
+    if (storeversion > 0) {
+      return;
+    }
+
     let dstStore = this.storage.getValue<GroupStore>("groupmap", {});
     const dstMap = new Map(Object.entries(dstStore));
 
@@ -119,6 +126,13 @@ export class StateStorage implements FileFocusStorageProvider {
 
     dstStore = Object.fromEntries(dstMap.entries());
     this.storage.setValue<GroupStore>("groupmap", dstStore);
+
+    /* Now delete old values. */
+    for (const [groupId, srcRecord] of srcMap) {
+      this.storage.deleteValue(`A-${srcRecord.id}`);
+    }
+    this.storage.deleteValue("groupstore");
+    this.storage.setValue<number>("storeversion", 1);
   }
 
   getWorkspaceUriByName(name: string) {
