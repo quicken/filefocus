@@ -28,6 +28,9 @@ For bug reports and code contributions head on over to:
 - "ctrl + shift + 8" will add the file in the active editor to a focus group.
 - Drag and Drop root resources between focus groups.
 - Pin a focus group to skip the focus group selection dialogue. A pinned focus group automatically receives any added resources.
+- Drag items from the file explorer into a focus group.
+- Drag a file from a focus group to the editor window to open a file.
+- Drag files in focus group subfolders to another focus group.
 
 ## Getting Started
 
@@ -42,11 +45,9 @@ You can open files directly from a focus group. Folders added to a "focus group"
 
 ## What is New
 
-Improved Drag & Drop Support.
-
-- Drag items from the file explorer into a focus group.
-- Drag a file from a focus group to the editor window to open a file.
-- Drag files in focus group subfolders to another focus group.
+- Added a system setting that allows storing focus groups in the Global State instead of within the Workspace State.
+- When storing focus groups in global storage groups will sync between devices.
+- Resources are now stored relative to workspace folders to support syncing focus groups between different operating systems.
 
 ## Extension Settings
 
@@ -58,6 +59,7 @@ https://github.com/quicken/filefocus
 - Only one level of "focus groups" can be created.
 - Status changes to files in the file explorer might not be reflected in Focus Groups. As a workaround click the refresh icon in the File Focus Pane.
 - A pinned focus group is always shown on the top. This is currently by accident.
+- Switching between global and local workspace storage does not transfer any focus groups.
 
 ### Windows Subsystem for Linux (WSL)
 
