@@ -5,7 +5,7 @@ import { StorageService } from "./storage/StorageService";
 import { FileFocusTreeProvider } from "./tree/FileFocusTreeProvider";
 import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
-import { LocalStorage } from "./storage/LocalStorage";
+import { StateStorage } from "./storage/StateStorage";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -13,10 +13,22 @@ export async function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
 
+  const useGlobalStorage = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("useGlobalStorage");
+
   const groupManager = new GroupManager();
-  groupManager.addStorageProvider(
-    new LocalStorage(new StorageService(context.workspaceState))
-  );
+  if (useGlobalStorage) {
+    context.globalState.setKeysForSync(["groupmap"]);
+    groupManager.addStorageProvider(
+      new StateStorage(new StorageService(context.globalState))
+    );
+  } else {
+    groupManager.addStorageProvider(
+      new StateStorage(new StorageService(context.workspaceState))
+    );
+  }
+
   await groupManager.loadAll();
 
   const menuViewController = new MenuViewController(groupManager);

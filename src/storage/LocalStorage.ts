@@ -3,7 +3,6 @@ import { FileFocusStorageProvider } from "../global";
 import { Group } from "../Group";
 import { Uri } from "vscode";
 import { workspace } from "vscode";
-import { GroupManager } from "../GroupManager";
 
 type GroupRecord = {
   id: string;

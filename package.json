@@ -65,6 +65,18 @@
         "icon": "$(remove-close)"
       }
     ],
+    "configuration": [
+      {
+        "title": "File Focus",
+        "properties": {
+          "filefocus.useGlobalStorage": {
+            "type": "boolean",
+            "default": false,
+            "description": "Use global storage to share focus groups accross all workspaces. Global storage will sync accross devices."
+          }
+        }
+      }
+    ],
     "keybindings": [
       {
         "command": "fileFocusExtension.addGroupResource",

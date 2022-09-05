@@ -24,7 +24,7 @@ export class MenuViewController {
 
     const group = new Group(groupId);
     group.name = groupName;
-    this.groupManager.addGroup(group, "local");
+    this.groupManager.addGroup(group, "statestorage");
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
