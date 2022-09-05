@@ -11,6 +11,6 @@ export class GroupItem extends vscode.TreeItem {
   ) {
     super(label, collapsibleState);
     this.contextValue = "GroupItem";
-    this.label = this.isFavourite ? `⭐${this.label}` : this.label;
+    this.label = this.isFavourite ? `⭐ ${this.label}` : this.label;
   }
 }
