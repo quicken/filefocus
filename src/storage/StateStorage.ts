@@ -1,22 +1,17 @@
-import { StorageService } from "./StorageService";
-import { FileFocusStorageProvider } from "../global";
-import { Group } from "../Group";
 import { Uri } from "vscode";
-import { workspace } from "vscode";
-
-type GroupRecord = {
-  id: string;
-  label: string;
-  resources: Resource[];
-};
+import { StorageService } from "./StorageService";
+import { FileFocusStorageProvider, Resource } from "../global";
+import { Group } from "../Group";
+import { FocusUtil } from "../FocusUtil";
 
 type GroupStore = {
   [key: string]: GroupRecord;
 };
 
-type Resource = {
-  workspace: string;
-  path: string;
+type GroupRecord = {
+  id: string;
+  name: string;
+  resources: Resource[];
 };
 
 type DeprecateGroupStore = {
@@ -33,7 +28,7 @@ export class StateStorage implements FileFocusStorageProvider {
 
   constructor(private storage: StorageService) {}
 
-  public loadRootNodes() {
+  public async loadRootNodes() {
     this.migrateStorageV1();
 
     const groupStore = this.storage.getValue<GroupStore>("groupmap", {});
@@ -42,9 +37,9 @@ export class StateStorage implements FileFocusStorageProvider {
     const groups: Group[] = [];
     for (const [groupId, groupRecord] of storeMap) {
       const group = new Group(groupRecord.id);
-      group.name = groupRecord.label;
+      group.name = groupRecord.name;
       for (const resource of groupRecord.resources) {
-        const uri = this.resourceToUri(resource);
+        const uri = FocusUtil.resourceToUri(resource);
         if (uri) {
           group.addResource(uri);
         }
@@ -59,8 +54,8 @@ export class StateStorage implements FileFocusStorageProvider {
   public saveGroup(group: Group) {
     const groupRecord: GroupRecord = {
       id: group.id,
-      label: group.name,
-      resources: group.resources.map((uri) => this.uriToResource(uri)),
+      name: group.name,
+      resources: group.resources.map((uri) => FocusUtil.uriToResource(uri)),
     };
 
     let groupStore = this.storage.getValue<GroupStore>("groupmap", {});
@@ -77,24 +72,6 @@ export class StateStorage implements FileFocusStorageProvider {
     storeMap.delete(id);
     groupStore = Object.fromEntries(storeMap.entries());
     this.storage.setValue<GroupStore>("groupmap", groupStore);
-  }
-
-  uriToResource(uri: Uri) {
-    let resource: Resource;
-    const workspaceName = workspace.getWorkspaceFolder(uri)?.name;
-    if (workspaceName) {
-      resource = {
-        workspace: workspaceName,
-        path: workspace.asRelativePath(uri, false),
-      };
-    } else {
-      resource = {
-        workspace: "",
-        path: uri.toString(),
-      };
-    }
-
-    return resource;
   }
 
   migrateStorageV1() {
@@ -116,9 +93,9 @@ export class StateStorage implements FileFocusStorageProvider {
       const paths = this.storage.getValue<string[]>(`A-${srcRecord.id}`, []);
       const groupRecord: GroupRecord = {
         id: srcRecord.id,
-        label: srcRecord.label,
+        name: srcRecord.label,
         resources: paths.map((path) => {
-          return this.uriToResource(Uri.parse(path));
+          return FocusUtil.uriToResource(Uri.parse(path));
         }),
       };
       dstMap.set(groupRecord.id, groupRecord);
@@ -133,30 +110,5 @@ export class StateStorage implements FileFocusStorageProvider {
     }
     this.storage.deleteValue("groupstore");
     this.storage.setValue<number>("storeversion", 1);
-  }
-
-  getWorkspaceUriByName(name: string) {
-    if (workspace.workspaceFolders) {
-      for (const ws of workspace.workspaceFolders) {
-        if (ws.name === name) {
-          return ws.uri;
-        }
-      }
-    }
-
-    return undefined;
-  }
-
-  resourceToUri(resource: Resource) {
-    if (!resource.workspace) {
-      return Uri.parse(resource.path);
-    }
-
-    const workspaceUri = this.getWorkspaceUriByName(resource.workspace);
-    if (workspaceUri) {
-      return Uri.joinPath(workspaceUri, resource.path);
-    }
-
-    return undefined;
   }
 }

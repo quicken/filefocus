@@ -2,7 +2,12 @@ import { Group } from "./Group";
 
 export interface FileFocusStorageProvider {
   readonly id: string;
-  loadRootNodes(): Group[];
+  loadRootNodes(): Promise<Group[]>;
   saveGroup(record: Group): void;
   deleteGroupId(id: string): void;
 }
+
+export type Resource = {
+  workspace: string;
+  path: string;
+};
