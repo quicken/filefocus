@@ -30,7 +30,7 @@ For bug reports and code contributions head on over to:
 - Pin a focus group to skip the focus group selection dialogue. A pinned focus group automatically receives any added resources.
 - Drag items from the file explorer into a focus group.
 - Drag a file from a focus group to the editor window to open a file.
-- Drag files in focus group subfolders to another focus group.
+- Drag files in a focus group subfolder to another focus group.
 
 ## Getting Started
 
@@ -48,6 +48,7 @@ You can open files directly from a focus group. Folders added to a "focus group"
 - Added a system setting that allows storing focus groups in the Global State instead of within the Workspace State.
 - When storing focus groups in global storage groups will sync between devices.
 - Resources are now stored relative to workspace folders to support syncing focus groups between different operating systems.
+- Focus groups can now also be defined inside of a filefocus.json file stored inside of a project root folder. This allows sharing a set of focus groups between team members.
 
 ## Extension Settings
 
@@ -60,6 +61,7 @@ https://github.com/quicken/filefocus
 - Status changes to files in the file explorer might not be reflected in Focus Groups. As a workaround click the refresh icon in the File Focus Pane.
 - A pinned focus group is always shown on the top. This is currently by accident.
 - Switching between global and local workspace storage does not transfer any focus groups.
+- A project configuration file must be in the workspace root.
 
 ### Windows Subsystem for Linux (WSL)
 
@@ -68,3 +70,32 @@ through any other means can not be opened by dragging. This appears to be due to
 
 If anyone knows how to determine the base path for a WSL remote inside of an extension or how to convert file paths to vscode remote paths please
 share and I can resolve this issue.
+
+## Project Specific Focus Groups.
+
+Focus groups can be made available to all users of a project. When the extension is loaded it will search in the root of all workspace folders for a configuration file named: **.filefocus.json**.
+
+File Focus will merge the focus definition in all configuration files with the used personal defined focus groups. The file focus extension does not write to this file. Therefore, any changes
+made to project focus groups will be lost after VS Code exits.
+
+### Example Configuration File
+
+**.filefocus.json**
+
+This extension expects to find this file in the root of the workspace folder.
+
+```json
+{
+  "store": [
+    // Each item defines a focus group. (root folder)
+    {
+      "name": "Config", // The name of the focus group.
+      "path": ["package.json", ".gitignore", "tsconfig.json"] // The relative paths from the project root to the resource.
+    },
+    {
+      "name": "Entry Points",
+      "path": ["src/extension.ts", "test/suite/index.ts"]
+    }
+  ]
+}
+```

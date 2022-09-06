@@ -6,13 +6,14 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
-### 1.4.0
+### 1.4.1
 
 - Files are now stored relative to the workspace folder path.
 - Add a setting that allows choosing between storing focus groups globally or specific to a workspace (default).
 - When using global storage focus groups will sync between devices.
 - Fix an issue where renaming a focus group would loose all resources.
 - On first loading migrate any existing storage groups to the new storage format.
+- Project specific focus gruops can now be defined inside of a .filefocus.json file that is stored in the root of a workspace folder.
 
 ### 1.3.0
 
