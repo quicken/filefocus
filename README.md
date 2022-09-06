@@ -85,6 +85,8 @@ made to project focus groups will be lost after VS Code exits.
 This extension expects to find this file in the root of the workspace folder.
 
 ```json
+// ATTENTION: Be sure to remove all comments, otherwise this will not be a valid JSON file!
+
 {
   "store": [
     // Each item defines a focus group. (root folder)
