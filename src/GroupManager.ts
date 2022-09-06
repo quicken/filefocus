@@ -26,6 +26,7 @@ export class GroupManager {
   }
 
   async loadAll() {
+    this.root.clear();
     for (const storageProvider of this._storageProvider) {
       const groups = await storageProvider[1].loadRootNodes();
       for (const group of groups) {
@@ -33,6 +34,13 @@ export class GroupManager {
         this.storageMap.set(group.id, storageProvider[1].id);
       }
     }
+  }
+
+  async resetStorage() {
+    for (const storageProvider of this._storageProvider) {
+      await storageProvider[1].reset();
+    }
+    this.root.clear();
   }
 
   get pinnedGroupId() {

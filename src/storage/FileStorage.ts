@@ -46,6 +46,10 @@ export class FileStorage implements FileFocusStorageProvider {
     /* For file storage this is currently a NOOP.*/
   }
 
+  public async reset() {
+    /* For file storage this is currently a NOOP.*/
+  }
+
   private processConfigFile(config: ProjectConfig, baseUri: Uri) {
     const groups: Group[] = [];
     for (const projectGroup of config.store) {

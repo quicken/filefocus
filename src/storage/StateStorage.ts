@@ -74,6 +74,10 @@ export class StateStorage implements FileFocusStorageProvider {
     this.storage.setValue<GroupStore>("groupmap", groupStore);
   }
 
+  public async reset() {
+    this.storage.deleteValue("groupmap");
+  }
+
   migrateStorageV1() {
     const storeversion = this.storage.getValue<number>("storeversion", 0);
     if (storeversion > 0) {

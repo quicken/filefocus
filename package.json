@@ -63,6 +63,16 @@
         "command": "fileFocusExtension.removeGroupResource",
         "title": "Remove from Focus Group",
         "icon": "$(remove-close)"
+      },
+      {
+        "command": "fileFocusExtension.resetStorage",
+        "title": "Reset the Extension Storage",
+        "icon": "$(remove-close)"
+      },
+      {
+        "command": "fileFocusExtension.reloadStorage",
+        "title": "Reload Storage",
+        "icon": "$(remove-close)"
       }
     ],
     "configuration": [

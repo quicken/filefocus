@@ -5,6 +5,7 @@ export interface FileFocusStorageProvider {
   loadRootNodes(): Promise<Group[]>;
   saveGroup(record: Group): void;
   deleteGroupId(id: string): void;
+  reset(): Promise<void>;
 }
 
 export type Resource = {
