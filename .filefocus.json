@@ -1,0 +1,12 @@
+{
+  "store": [
+    {
+      "name": "Config",
+      "path": ["package.json", ".gitignore", "tsconfig.json"]
+    },
+    {
+      "name": "Entry Points",
+      "path": ["src/extension.ts", "src/test/suite/index.ts"]
+    }
+  ]
+}

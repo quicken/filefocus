@@ -14,6 +14,7 @@ https://github.com/quicken/filefocus
 - Fix an issue where renaming a focus group would loose all resources.
 - On first loading migrate any existing storage groups to the new storage format.
 - Project specific focus gruops can now be defined inside of a .filefocus.json file that is stored in the root of a workspace folder.
+- The Reload Icon now reloads focus groups from all storage locations. Useful when building a file focus project file or adding/removing workspace folders.
 
 ### 1.3.0
 
