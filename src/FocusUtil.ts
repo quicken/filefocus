@@ -37,6 +37,18 @@ export class FocusUtil {
       return Uri.parse(resource.path);
     }
 
+    /*
+    For a single folder workspace, the workspace folder name is ignored.
+    This allows resources to be resolved accross other single folder workspaces.
+    */
+    if (workspace.workspaceFolders?.length === 1) {
+      return Uri.joinPath(workspace.workspaceFolders[0].uri, resource.path);
+    }
+
+    /*
+    For a multi folder workspace, a resource must be matched against a specific workspace.
+    this allows focus groups to contain resources from multiple workspaces.
+    */
     const workspaceUri = FocusUtil.getWorkspaceUriByName(resource.workspace);
     if (workspaceUri) {
       return Uri.joinPath(workspaceUri, resource.path);
