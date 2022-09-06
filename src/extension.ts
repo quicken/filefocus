@@ -92,13 +92,21 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  vscode.commands.registerCommand("fileFocusExtension.resetStorage", () => {
-    groupManager.resetStorage();
-  });
+  vscode.commands.registerCommand(
+    "fileFocusExtension.resetStorage",
+    async () => {
+      await groupManager.resetStorage();
+      fileFocusTreeProvider.refresh();
+    }
+  );
 
-  vscode.commands.registerCommand("fileFocusExtension.reloadStorage", () => {
-    groupManager.loadAll();
-  });
+  vscode.commands.registerCommand(
+    "fileFocusExtension.reloadStorage",
+    async () => {
+      await groupManager.loadAll();
+      fileFocusTreeProvider.refresh();
+    }
+  );
 }
 
 // this method is called when your extension is deactivated
