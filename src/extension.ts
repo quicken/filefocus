@@ -6,6 +6,7 @@ import { FileFocusTreeProvider } from "./tree/FileFocusTreeProvider";
 import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
 import { StateStorage } from "./storage/StateStorage";
+import { FileStorage } from "./storage/FileStorage";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -28,6 +29,8 @@ export async function activate(context: vscode.ExtensionContext) {
       new StateStorage(new StorageService(context.workspaceState))
     );
   }
+
+  groupManager.addStorageProvider(new FileStorage());
 
   await groupManager.loadAll();
 
