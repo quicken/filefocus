@@ -7,13 +7,24 @@ import { GroupItem } from "../tree/GroupItem";
 export class TreeItemBuilder {
   constructor() {}
 
-  public async getResourceForGroup(group: Group): Promise<FocusItem[]> {
+  public async getResourceForGroup(
+    group: Group,
+    sortkey: "path" | "basename"
+  ): Promise<FocusItem[]> {
     const out: FocusItem[] = [];
     const resources = group.resources;
     if (resources) {
-      resources.sort((a, b) =>
-        Utils.basename(a).localeCompare(Utils.basename(b))
-      );
+      switch (sortkey) {
+        case "path":
+          resources.sort((a, b) => a.path.localeCompare(b.path));
+          break;
+        case "basename":
+        default:
+          resources.sort((a, b) =>
+            Utils.basename(a).localeCompare(Utils.basename(b))
+          );
+          break;
+      }
 
       for (const uri of resources) {
         const fileType = await this.getResourceType(uri);

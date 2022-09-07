@@ -83,6 +83,19 @@
             "type": "boolean",
             "default": false,
             "description": "Use global storage to share focus groups accross all workspaces. Global storage will sync accross devices."
+          },
+          "filefocus.sortkey": {
+            "type": "string",
+            "default": "basename",
+            "description": "Change how resources are sorted. Requires reloading vscode for changes to be picked up.",
+            "enum": [
+              "basename",
+              "path"
+            ],
+            "enumDescriptions": [
+              "Sort by File Name",
+              "Sort by Path"
+            ]
           }
         }
       }

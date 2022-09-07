@@ -16,6 +16,7 @@ export class FileFocusTreeProvider
     vscode.TreeDataProvider<FocusItem | GroupItem>,
     vscode.TreeDragAndDropController<FocusItem | GroupItem>
 {
+  sortkey: "path" | "basename" = "basename";
   dropMimeTypes = ["application/vnd.code.tree.fileFocusTree", "text/uri-list"];
   dragMimeTypes = ["text/uri-list"];
   itemBuilder: TreeItemBuilder;
@@ -194,7 +195,9 @@ export class FileFocusTreeProvider
       } else if (element.objtype === "GroupItem") {
         const groupItem = element as GroupItem;
         const group = this.groupManager.root.get(groupItem.groupId);
-        return group ? this.itemBuilder.getResourceForGroup(group) : [];
+        return group
+          ? this.itemBuilder.getResourceForGroup(group, this.sortkey)
+          : [];
       }
     } else {
       return this.itemBuilder.getGroupItem(

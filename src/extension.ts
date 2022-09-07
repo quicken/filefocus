@@ -44,6 +44,10 @@ export async function activate(context: vscode.ExtensionContext) {
     groupManager
   );
 
+  fileFocusTreeProvider.sortkey = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("sortkey") as "path" | "basename";
+
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
   );
