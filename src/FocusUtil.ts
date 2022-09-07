@@ -1,4 +1,4 @@
-import { Uri, workspace } from "vscode";
+import { Uri, workspace, WorkspaceFolder } from "vscode";
 import { Resource } from "./global";
 
 export class FocusUtil {
@@ -32,24 +32,29 @@ export class FocusUtil {
     return resource;
   }
 
-  public static resourceToUri(resource: Resource) {
+  public static resourceToUri(resource: Resource, test?: WorkspaceFolder[]) {
     if (!resource.workspace) {
       return Uri.parse(resource.path);
     }
+
+    const workspaceFolders = test ? test : workspace.workspaceFolders;
 
     /*
     For a single folder workspace, the workspace folder name is ignored.
     This allows resources to be resolved accross other single folder workspaces.
     */
-    if (workspace.workspaceFolders?.length === 1) {
-      return Uri.joinPath(workspace.workspaceFolders[0].uri, resource.path);
+    if (workspaceFolders?.length === 1) {
+      return Uri.joinPath(workspaceFolders[0].uri, resource.path);
     }
 
     /*
     For a multi folder workspace, a resource must be matched against a specific workspace.
     this allows focus groups to contain resources from multiple workspaces.
     */
-    const workspaceUri = FocusUtil.getWorkspaceUriByName(resource.workspace);
+    const workspaceUri = FocusUtil.getWorkspaceUriByName(
+      resource.workspace,
+      test
+    );
     if (workspaceUri) {
       return Uri.joinPath(workspaceUri, resource.path);
     }
@@ -57,9 +62,11 @@ export class FocusUtil {
     return undefined;
   }
 
-  public static getWorkspaceUriByName(name: string) {
-    if (workspace.workspaceFolders) {
-      for (const ws of workspace.workspaceFolders) {
+  public static getWorkspaceUriByName(name: string, test?: WorkspaceFolder[]) {
+    const workspaceFolders = test ? test : workspace.workspaceFolders;
+
+    if (workspaceFolders) {
+      for (const ws of workspaceFolders) {
         if (ws.name === name) {
           return ws.uri;
         }
