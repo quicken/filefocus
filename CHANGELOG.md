@@ -13,8 +13,12 @@ https://github.com/quicken/filefocus
 - When using global storage focus groups will sync between devices.
 - Fix an issue where renaming a focus group would loose all resources.
 - On first loading migrate any existing storage groups to the new storage format.
-- Project specific focus gruops can now be defined inside of a .filefocus.json file that is stored in the root of a workspace folder.
+- Project specific focus groups can now be defined inside of a .filefocus.json file that is stored in the root of a workspace folder.
+- Project specific focus groups have a visual indicator and will not show up in the Group Picker.
 - The Reload Icon now reloads focus groups from all storage locations. Useful when building a file focus project file or adding/removing workspace folders.
+- Add a setting that allows sorting resources by the full path instead of just the filename. Changing this setting requires restarting VSCode.
+- Support mono and multi folder workspaces. Within a mono folder workspace the extension tries to map resources. This allows defining a focus group with files commonly
+  used in your language of choice.
 
 ### 1.3.0
 

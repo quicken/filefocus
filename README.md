@@ -75,8 +75,7 @@ share and I can resolve this issue.
 
 Focus groups can be made available to all users of a project. When the extension is loaded it will search in the root of all workspace folders for a configuration file named: **.filefocus.json**.
 
-File Focus will merge the focus definition in all configuration files with the used personal defined focus groups. The file focus extension does not write to this file. Therefore, any changes
-made to project focus groups will be lost after VS Code exits.
+File Focus will merge the focus definition in all configuration files with the used personal defined focus groups. The file focus extension does not write to this file. Therefore, any changes made to project focus groups will be lost after VS Code exits.
 
 ### Example Configuration File
 
