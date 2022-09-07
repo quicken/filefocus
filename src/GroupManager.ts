@@ -93,6 +93,16 @@ export class GroupManager {
     return names;
   }
 
+  public get writableGroupNames() {
+    const names: string[] = [];
+    this.root.forEach((group) => {
+      if (!group.readonly) {
+        names.push(group.name);
+      }
+    });
+    return names;
+  }
+
   public saveGroup(group: Group) {
     const provider = this._storageProvider.get(
       this.storageMap.get(group.id) || ""

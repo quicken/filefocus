@@ -3,6 +3,7 @@ import { Uri } from "vscode";
 export class Group {
   private _resource: Uri[] = [];
   public name = "";
+  public readonly = false;
 
   constructor(public readonly id: string) {}
 

@@ -99,7 +99,7 @@ export class MenuViewController {
       )?.name;
     } else {
       groupName = await vscode.window.showQuickPick(
-        this.groupManager.groupNames,
+        this.groupManager.writableGroupNames,
         {
           canPickMany: false,
           placeHolder: "Select the focus group for this resource.",

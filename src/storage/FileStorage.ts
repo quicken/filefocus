@@ -56,6 +56,7 @@ export class FileStorage implements FileFocusStorageProvider {
       const groupId = GroupManager.makeGroupId(projectGroup.name);
       const group = new Group(groupId);
       group.name = projectGroup.name;
+      group.readonly = true;
       for (const path of projectGroup.path) {
         const uri = Uri.joinPath(baseUri, path);
         group.addResource(uri);
