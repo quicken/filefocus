@@ -101,7 +101,8 @@ export class TreeItemBuilder {
       group.name,
       group.id,
       vscode.TreeItemCollapsibleState.Collapsed,
-      isFavourite
+      isFavourite,
+      group.readonly
     );
 
     return groupItem;
