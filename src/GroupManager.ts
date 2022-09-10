@@ -1,18 +1,42 @@
 import { v5 as uuidv5 } from "uuid";
 import { Group } from "./Group";
-
 import { FileFocusStorageProvider } from "./global";
 
+/**
+ * Manages how groups are loaded and stored.
+ */
 export class GroupManager {
+  /**
+   * Creates a identifier for a group based on the groups name.
+   *
+   * @name The name of the group.
+   */
   static makeGroupId(name: string) {
     const namespace = "cc51e20a-7c32-434c-971f-5b3ea332deaa";
     return uuidv5(name, namespace);
   }
 
+  /**
+   * Central in memory storage of all managed groups.
+   * Maps group.id to a group to quickly look up a group.
+   */
   public readonly root: Map<string, Group> = new Map();
+
+  /* Looks up which storage provider should be used to persist a group.
+   * Maps group.id to FileFocusStorageProvider.id .
+   */
   private readonly storageMap: Map<string, string> = new Map();
 
+  /**
+   * Identifies which group is currently "pinned".
+   * Added resources are automatically assinged to the "pinned" group.
+   */
   private _pinnedGroupId = "";
+
+  /**
+   * Contains all configured storage providers.
+   * Maps a FileFocusStorageProvider.id to a FileFocusStorageProvider
+   */
   private _storageProvider: Map<string, FileFocusStorageProvider> = new Map();
 
   constructor() {
@@ -21,10 +45,17 @@ export class GroupManager {
     }
   }
 
+  /**
+   * Registers a storage provider.
+   * @param storageProvider The storage provider that is used to load/save groups.
+   */
   addStorageProvider(storageProvider: FileFocusStorageProvider) {
     this._storageProvider.set(storageProvider.id, storageProvider);
   }
 
+  /**
+   * Loads groups from all registered storage providers into the root.
+   */
   async loadAll() {
     this.root.clear();
     for (const storageProvider of this._storageProvider) {
@@ -36,6 +67,9 @@ export class GroupManager {
     }
   }
 
+  /**
+   * Resets/clears all registered storage providers.
+   */
   async resetStorage() {
     for (const storageProvider of this._storageProvider) {
       await storageProvider[1].reset();
@@ -51,12 +85,21 @@ export class GroupManager {
     this._pinnedGroupId = value;
   }
 
+  /**
+   * Adds a group.
+   * @param group The group that is to be added.
+   * @param storageProviderId The id of the storage provider that will manage loading/saving this group.
+   */
   public addGroup = (group: Group, storageProviderId: string) => {
     this.root.set(group.id, group);
     this.storageMap.set(group.id, storageProviderId);
     this.saveGroup(group);
   };
 
+  /**
+   * Removes/Deletes a group.
+   * @param id The ID of the group that should be deleted.
+   */
   public removeGroup = (id: string) => {
     const provider = this._storageProvider.get(this.storageMap.get(id) || "");
 
@@ -69,6 +112,11 @@ export class GroupManager {
     }
   };
 
+  /**
+   * Change the name of a group.
+   * @param id The id of the group that should be renamed.
+   * @param name The new name of the group.
+   */
   public renameGroup = (id: string, name: string) => {
     const provider = this._storageProvider.get(this.storageMap.get(id) || "");
     const src = this.root.get(id);
@@ -85,6 +133,9 @@ export class GroupManager {
     }
   };
 
+  /**
+   * Gets the names of all groups that are currenly being managed.
+   */
   public get groupNames() {
     const names: string[] = [];
     this.root.forEach((group) => {
@@ -93,6 +144,9 @@ export class GroupManager {
     return names;
   }
 
+  /* Gets the names of all groups that are writable. That is excludes groups
+   * which can not be edited.
+   */
   public get writableGroupNames() {
     const names: string[] = [];
     this.root.forEach((group) => {
@@ -103,6 +157,11 @@ export class GroupManager {
     return names;
   }
 
+  /**
+   * Persists a group. A group is only persisted if the group id can be
+   * maped a file focus storage provider.
+   * @param group The group that is to be persisted.
+   */
   public saveGroup(group: Group) {
     const provider = this._storageProvider.get(
       this.storageMap.get(group.id) || ""

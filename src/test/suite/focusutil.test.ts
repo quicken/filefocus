@@ -5,7 +5,6 @@ import * as simple from "simple-mock";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import { FocusUtil } from "../../FocusUtil";
-import { Resource } from "../../global";
 import { Uri, WorkspaceFolder, workspace } from "vscode";
 
 suite("Focus Util Test Suite", () => {
