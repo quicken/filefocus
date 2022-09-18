@@ -6,6 +6,10 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
+### 1.4.2
+
+- Fix bug preventing resources from being removed.
+
 ### 1.4.1
 
 - Files are now stored relative to the workspace folder path.

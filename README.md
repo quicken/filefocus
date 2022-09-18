@@ -91,8 +91,6 @@ The file has the following format:
 This extension expects to find this file in the root of the workspace folder.
 
 ```json
-// ATTENTION: Be sure to remove all comments, otherwise this will not be a valid JSON file!
-
 {
   "store": [
     {
