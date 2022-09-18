@@ -1,16 +1,34 @@
 import { Uri } from "vscode";
 
+/**
+ * A collection of resources that should be shown together are managed by a Group.
+ */
 export class Group {
   private _resource: Uri[] = [];
+
+  /**
+   * The name of the group that is shown in the UI.
+   */
   public name = "";
+
+  /**
+   * A read only group can not he altered or saved into storage.
+   */
   public readonly = false;
 
   constructor(public readonly id: string) {}
 
+  /**
+   * Retuns all resources (files and folders) that are associated with a group.
+   */
   get resources() {
     return this._resource;
   }
 
+  /**
+   * Add a resource (file/folder) to the group.
+   * @param uri The vscode.URI of the resource.
+   */
   public addResource = (uri: Uri) => {
     if (this._resourceContains(uri)) {
       return;
@@ -18,8 +36,14 @@ export class Group {
     this._resource.push(uri);
   };
 
+  /**
+   * Remove a resource (file/folder) from the group.
+   * @param uri
+   */
   public removeResource = (uri: Uri) => {
-    const i = this._resource.indexOf(uri);
+    const i = this._resource.findIndex(
+      (item) => item.toString() === uri.toString()
+    );
     if (i < 0) {
       return;
     }
