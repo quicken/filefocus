@@ -40,6 +40,12 @@ export class FocusUtil {
    */
   public static uriToResource(uri: Uri) {
     let resource: Resource;
+
+    /* Convert remote path to file path. This fixes paths inside WSL. */
+    if (uri.scheme === "vscode-remote") {
+      uri = Uri.file(uri.path);
+    }
+
     const workspaceName = workspace.getWorkspaceFolder(uri)?.name;
     if (workspaceName) {
       resource = {
