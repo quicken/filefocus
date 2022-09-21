@@ -76,8 +76,9 @@ export class MenuViewController {
   }
 
   async addGroupResource(path: string): Promise<void> {
-    /* If no focus group as been defined define a focus group. */
-    if (this.groupManager.root.size === 0) {
+    /* If no writable focus group as been defined define a focus group. */
+
+    if (this.groupManager.writableGroupNames.length === 0) {
       await vscode.window.showInformationMessage(
         "Please setup at least one focus group. Then retry adding this resource.",
         { modal: true }
@@ -88,8 +89,8 @@ export class MenuViewController {
 
     let groupName;
     /* Skip showing the quick picker if there is only one focus group to choose. from. */
-    if (this.groupManager.groupNames.length === 1) {
-      groupName = this.groupManager.groupNames[0];
+    if (this.groupManager.writableGroupNames.length === 1) {
+      groupName = this.groupManager.writableGroupNames[0];
     } else if (
       this.groupManager.pinnedGroupId &&
       this.groupManager.root.has(this.groupManager.pinnedGroupId)
@@ -111,7 +112,7 @@ export class MenuViewController {
       const groupId = GroupManager.makeGroupId(groupName);
       if (this.groupManager.root.has(groupId)) {
         const group = this.groupManager.root.get(groupId);
-        if (group) {
+        if (group && !group.readonly) {
           group.addResource(vscode.Uri.parse(path));
           this.groupManager.saveGroup(group);
           vscode.commands.executeCommand("fileFocusTree.refreshEntry");
