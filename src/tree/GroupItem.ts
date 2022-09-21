@@ -11,7 +11,7 @@ export class GroupItem extends vscode.TreeItem {
     public readonly isReadOnly: boolean
   ) {
     super(label, collapsibleState);
-    this.contextValue = "GroupItem";
+    this.contextValue = isReadOnly ? "GroupItemReadOnly" : "GroupItem";
     this.label = this.isFavourite
       ? `⭐ ${this.label}`
       : this.isReadOnly

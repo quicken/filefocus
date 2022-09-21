@@ -123,7 +123,7 @@ export class MenuViewController {
 
   async removeGroupResource(groupId: string, uri: vscode.Uri): Promise<void> {
     const group = this.groupManager.root.get(groupId);
-    if (group) {
+    if (group && !group.readonly) {
       group.removeResource(uri);
       this.groupManager.saveGroup(group);
       vscode.commands.executeCommand("fileFocusTree.refreshEntry");
