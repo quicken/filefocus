@@ -9,6 +9,10 @@ https://github.com/quicken/filefocus
 ### 1.4.2
 
 - Fix bug preventing resources from being removed.
+- Fix bug preventing drag & drop between focus groups.
+- Fix bug preventing drag to open when working inside of WSL.
+- Do not show edit controls for read only groups.
+- Prevent adding/removing resources from read only groups.
 
 ### 1.4.1
 
