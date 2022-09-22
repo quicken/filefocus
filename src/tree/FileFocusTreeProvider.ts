@@ -46,24 +46,16 @@ export class FileFocusTreeProvider
         return;
       } else {
         const focusItem = item as FocusItem;
-        const uri = focusItem.uri.toString();
         /*
         When working with a wsl remote only file dragged to focus group from the
         file explorer will have "vscode-remote:" as a host. Files added via any other
         means have a host of "file:". However, any file dragged to the editor with a host
-        of file: can not be found. Until there is some mechanism to determin the base path that can be
-        used to contstruct a vscode-remote url. We exlude these file from dragging. This prevent a "file"
-        not found error that is caused when dropping a file: path into an editor operating inside of a wsl remote.
-
-        This if can be removed when a mechanism can be found that conrectly constructs a remote path
-        for a url.
-         */
-        if (
-          uri &&
-          (vscode.env.remoteName !== "wsl" || uri.startsWith("vscode-remote:"))
-        ) {
-          uriList.push(uri);
-        }
+        of file: can not be found. This piece of hackery makes sure that vscode can
+        locate the file when dropping into the editor pane even when working inside WSL.
+        */
+        const externalUri = await vscode.env.asExternalUri(focusItem.uri);
+        const uri = vscode.Uri.parse(externalUri.query);
+        uriList.push(uri.toString());
       }
     }
 
