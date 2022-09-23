@@ -10,6 +10,8 @@ For people that love multi-folder workspaces, you can re-group files and folders
 
 If you want to share or highlight commonly used files and folders with your team you can store a configuration file along with your source code to make groups automatically available to all people working on the project.
 
+Show all opened editors in a focus group.
+
 ![Feature add to Focus Group](https://github.com/quicken/filefocus/blob/master/resources/file-focus_demo.gif?raw=true)
 
 Like this vs-code extension? Please consider subscribing to my channel and sharing the extension with your friends and colleagues.
@@ -23,6 +25,9 @@ For bug reports and code contributions head on over to:
 
 ## What is New
 
+- Setting that automatically adds opened files to the pinned group.
+- Setting that shows all known editors in a special "Editor Group".
+- Setting that allows turning off Project Groups.
 - Added a system setting that allows storing focus groups in the Global State instead of within the Workspace State.
 - When storing focus groups in global storage groups will sync between devices.
 - Resources are now stored relative to workspace folders to support syncing focus groups between different operating systems.
@@ -119,11 +124,4 @@ The path array defines the resources that are shown when the group is expanded. 
 - Switching between global and local workspace storage does not transfer any focus groups.
 - A project configuration file must be in the workspace root.
 - The project configuration file must be created and edited manually.
-
-### Windows Subsystem for Linux (WSL)
-
-Drag to open only works for files that have been added to a "focus group" by drag & drop from the file explorer. Items added to a focus group
-through any other means can not be opened by dragging. This appears to be due to a limitation in the way the vscode SDK operates.
-
-If anyone knows how to determine the base path for a WSL remote inside of an extension or how to convert file paths to vscode remote paths please
-share and I can resolve this issue.
+- The experimental Editor group does not detect all open editors when VSCode is first launched.

@@ -68,6 +68,21 @@ export class GroupManager {
   }
 
   /**
+   * Reloads all groups from the give storage provider.
+   */
+  async reloadProvider(storageProviderId: string) {
+    const storageProvider = this._storageProvider.get(storageProviderId);
+    if (storageProvider) {
+      const groups = await storageProvider.loadRootNodes();
+
+      for (const group of groups) {
+        this.root.set(group.id, group);
+        this.storageMap.set(group.id, storageProvider.id);
+      }
+    }
+  }
+
+  /**
    * Resets/clears all registered storage providers.
    */
   async resetStorage() {

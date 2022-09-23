@@ -6,6 +6,12 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
+### 1.5.0
+
+- Usage of Project Groups can now be turned off in settings.
+- Add a setting that automatically adds opened files to the pinned focus group.
+- Add experimental setting that shows all known editors in special "Editors" group.
+
 ### 1.4.2
 
 - Fix bug preventing resources from being removed.
