@@ -45,6 +45,11 @@
         "icon": "$(pin)"
       },
       {
+        "command": "fileFocusExtension.openGroup",
+        "title": "Open All Files",
+        "icon": "$(folder)"
+      },
+      {
         "command": "fileFocusExtension.removeGroup",
         "title": "Delete Focus Group",
         "icon": "$(trash)"
@@ -161,6 +166,11 @@
         {
           "command": "fileFocusExtension.removeGroupResource",
           "when": "view == fileFocusTree && viewItem == FocusRootItem",
+          "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.openGroup",
+          "when": "view == fileFocusTree && viewItem =~ /GroupItem/",
           "group": "inline"
         }
       ],

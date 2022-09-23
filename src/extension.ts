@@ -163,6 +163,13 @@ function registerCommands(
   );
 
   vscode.commands.registerCommand(
+    "fileFocusExtension.openGroup",
+    (groupItem: GroupItem) => {
+      groupFacade.openGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
     "fileFocusExtension.renameGroup",
     (groupItem: GroupItem) => {
       groupFacade.renameGroup(groupItem.groupId);

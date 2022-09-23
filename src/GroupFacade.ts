@@ -34,6 +34,25 @@ export class GroupFacade {
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
+  async openGroup(groupId: string): Promise<void> {
+    const group = this.groupManager.root.get(groupId);
+    if (group) {
+      let i = 1;
+      for (const resource of group.resources) {
+        await vscode.commands.executeCommand(
+          "vscode.open",
+          resource,
+          {
+            viewColumn: vscode.ViewColumn.Active,
+            preview: false,
+            preserveFocus: true,
+          },
+          group.name
+        );
+      }
+    }
+  }
+
   async removeGroup(groupId: string): Promise<void> {
     const action = await vscode.window.showInformationMessage(
       "Discard this focus group?",

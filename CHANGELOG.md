@@ -12,6 +12,7 @@ https://github.com/quicken/filefocus
 - Add a setting that automatically adds opened files to the pinned focus group.
 - Add experimental setting that shows all known editors in special "Editors" group.
 - All settings changes are now applied without requiring a restart of VSCode.
+- Add icon that opens all files in a group for editing.
 
 ### 1.4.2
 

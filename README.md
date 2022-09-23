@@ -25,6 +25,7 @@ For bug reports and code contributions head on over to:
 
 ## What is New
 
+- Open all files in a file group with one-click.
 - Setting that automatically adds opened files to the pinned group.
 - Setting that shows all known editors in a special "Editor Group".
 - Setting that allows turning off Project Groups.
