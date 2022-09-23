@@ -54,6 +54,14 @@ export class GroupManager {
   }
 
   /**
+   * Removes a storage provider.
+   * @param storageProvider The storage provider that is used to load/save groups.
+   */
+  removeStorageProvider(storageProviderId: string) {
+    this._storageProvider.delete(storageProviderId);
+  }
+
+  /**
    * Loads groups from all registered storage providers into the root.
    */
   async loadAll() {
