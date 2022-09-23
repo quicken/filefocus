@@ -15,13 +15,41 @@ export async function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
 
-  const useGlobalStorage = vscode.workspace
-    .getConfiguration("filefocus")
-    .get("useGlobalStorage");
+  context.globalState.setKeysForSync(["groupmap"]);
 
   const groupManager = new GroupManager();
+
+  applyStateGroupConfiguration(groupManager, context);
+  applyProjectGroupConfiguration(groupManager);
+  applyKnownEditorGroupConfiguration(groupManager);
+
+  await groupManager.loadAll();
+
+  const fileFocusTreeProvider = new FileFocusTreeProvider(
+    context,
+    groupManager
+  );
+
+  applySortKeyConfiguration(fileFocusTreeProvider);
+
+  registerEvents(groupManager, fileFocusTreeProvider, context);
+  registerCommands(groupManager, fileFocusTreeProvider);
+}
+
+// this method is called when your extension is deactivated
+export function deactivate() {}
+
+function applyStateGroupConfiguration(
+  groupManager: GroupManager,
+  context: vscode.ExtensionContext
+) {
+  const useGlobalStorage = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("useGlobalStorage") as boolean;
+
+  groupManager.removeStorageProvider("statestorage");
+
   if (useGlobalStorage) {
-    context.globalState.setKeysForSync(["groupmap"]);
     groupManager.addStorageProvider(
       new StateStorage(new StorageService(context.globalState))
     );
@@ -30,99 +58,55 @@ export async function activate(context: vscode.ExtensionContext) {
       new StateStorage(new StorageService(context.workspaceState))
     );
   }
+}
 
+function applyProjectGroupConfiguration(groupManager: GroupManager) {
   const showProjectGroups = vscode.workspace
     .getConfiguration("filefocus")
     .get("showProjectGroups") as boolean;
 
   if (showProjectGroups) {
     groupManager.addStorageProvider(new FileStorage());
+  } else {
+    groupManager.removeStorageProvider("filestorage");
   }
+}
 
+function applyKnownEditorGroupConfiguration(groupManager: GroupManager) {
   const showKnownEditors = vscode.workspace
     .getConfiguration("filefocus")
     .get("showKnownEditors") as boolean;
 
   if (showKnownEditors) {
     groupManager.addStorageProvider(new TabGroupStorage());
+  } else {
+    groupManager.removeStorageProvider("tabgroup");
   }
+}
 
-  await groupManager.loadAll();
-
-  const menuViewController = new GroupFacade(groupManager);
-
-  const fileFocusTreeProvider = new FileFocusTreeProvider(
-    context,
-    groupManager
-  );
-
+function applySortKeyConfiguration(
+  fileFocusTreeProvider: FileFocusTreeProvider
+) {
   fileFocusTreeProvider.sortkey = vscode.workspace
     .getConfiguration("filefocus")
     .get("sortkey") as "path" | "basename";
+}
 
-  vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
-    fileFocusTreeProvider.refresh()
-  );
-  vscode.commands.registerCommand("fileFocusExtension.addGroup", () => {
-    menuViewController.addGroup();
-  });
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.pinGroup",
-    (groupItem: GroupItem) => {
-      menuViewController.pinGroup(groupItem.groupId);
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.renameGroup",
-    (groupItem: GroupItem) => {
-      menuViewController.renameGroup(groupItem.groupId);
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.removeGroup",
-    (groupItem: GroupItem) => {
-      menuViewController.removeGroup(groupItem.groupId);
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.addGroupResource",
-    (path: string | undefined) => {
-      if (path === undefined) {
-        path = vscode.window.activeTextEditor?.document.uri.toString();
-      }
-
-      if (path) {
-        menuViewController.addGroupResource(path);
-      }
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.removeGroupResource",
-    (focusItem: FocusItem) => {
-      menuViewController.removeGroupResource(focusItem.groupId, focusItem.uri);
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.resetStorage",
-    async () => {
-      await groupManager.resetStorage();
-      fileFocusTreeProvider.refresh();
-    }
-  );
-
-  vscode.commands.registerCommand(
-    "fileFocusExtension.reloadStorage",
-    async () => {
+function registerEvents(
+  groupManager: GroupManager,
+  fileFocusTreeProvider: FileFocusTreeProvider,
+  context: vscode.ExtensionContext
+) {
+  vscode.workspace.onDidChangeConfiguration(async (e) => {
+    if (e.affectsConfiguration("filefocus")) {
+      applyStateGroupConfiguration(groupManager, context);
+      applyProjectGroupConfiguration(groupManager);
+      applyKnownEditorGroupConfiguration(groupManager);
+      applySortKeyConfiguration(fileFocusTreeProvider);
       await groupManager.loadAll();
-      fileFocusTreeProvider.refresh();
+      await fileFocusTreeProvider.refresh();
     }
-  );
+  });
 
   /**
    * Automatically add opened resources to a pinned group.
@@ -158,5 +142,73 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+function registerCommands(
+  groupManager: GroupManager,
+  fileFocusTreeProvider: FileFocusTreeProvider
+) {
+  const groupFacade = new GroupFacade(groupManager);
+
+  vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
+    fileFocusTreeProvider.refresh()
+  );
+  vscode.commands.registerCommand("fileFocusExtension.addGroup", () => {
+    groupFacade.addGroup();
+  });
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.pinGroup",
+    (groupItem: GroupItem) => {
+      groupFacade.pinGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.renameGroup",
+    (groupItem: GroupItem) => {
+      groupFacade.renameGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.removeGroup",
+    (groupItem: GroupItem) => {
+      groupFacade.removeGroup(groupItem.groupId);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.addGroupResource",
+    (path: string | undefined) => {
+      if (path === undefined) {
+        path = vscode.window.activeTextEditor?.document.uri.toString();
+      }
+
+      if (path) {
+        groupFacade.addGroupResource(path);
+      }
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.removeGroupResource",
+    (focusItem: FocusItem) => {
+      groupFacade.removeGroupResource(focusItem.groupId, focusItem.uri);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.resetStorage",
+    async () => {
+      await groupManager.resetStorage();
+      fileFocusTreeProvider.refresh();
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.reloadStorage",
+    async () => {
+      await groupManager.loadAll();
+      fileFocusTreeProvider.refresh();
+    }
+  );
+}

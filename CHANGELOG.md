@@ -11,6 +11,7 @@ https://github.com/quicken/filefocus
 - Usage of Project Groups can now be turned off in settings.
 - Add a setting that automatically adds opened files to the pinned focus group.
 - Add experimental setting that shows all known editors in special "Editors" group.
+- All settings changes are now applied without requiring a restart of VSCode.
 
 ### 1.4.2
 

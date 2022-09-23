@@ -87,7 +87,7 @@
           "filefocus.sortkey": {
             "type": "string",
             "default": "basename",
-            "description": "Change how resources are sorted. Requires reloading vscode for changes to be picked up.",
+            "description": "Control which part of a resource name is used for sorting.",
             "enum": [
               "basename",
               "path"
@@ -100,7 +100,7 @@
           "filefocus.showKnownEditors": {
             "type": "boolean",
             "default": false,
-            "description": "Experimental - Always show a group that lists open editors. (Requires restart of vscode)"
+            "description": "Experimental - Always show a group that lists open editors."
           },
           "filefocus.showProjectGroups": {
             "type": "boolean",
