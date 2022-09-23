@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { GroupManager } from "./GroupManager";
 import { Group } from "./Group";
 
-export class MenuViewController {
+export class GroupFacade {
   constructor(private groupManager: GroupManager) {}
 
   async addGroup(): Promise<void> {

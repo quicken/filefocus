@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { MenuViewController } from "./MenuViewController";
+import { GroupFacade } from "./GroupFacade";
 import { GroupManager } from "./GroupManager";
 import { StorageService } from "./storage/StorageService";
 import { FileFocusTreeProvider } from "./tree/FileFocusTreeProvider";
@@ -49,7 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   await groupManager.loadAll();
 
-  const menuViewController = new MenuViewController(groupManager);
+  const menuViewController = new GroupFacade(groupManager);
 
   const fileFocusTreeProvider = new FileFocusTreeProvider(
     context,
