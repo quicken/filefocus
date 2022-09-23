@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -96,6 +96,21 @@
               "Sort by File Name",
               "Sort by Path"
             ]
+          },
+          "filefocus.showKnownEditors": {
+            "type": "boolean",
+            "default": false,
+            "description": "Experimental - Always show a group that lists open editors. (Requires restart of vscode)"
+          },
+          "filefocus.showProjectGroups": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show groups defined in a Project File. (Requires restart of vscode)"
+          },
+          "filefocus.addToPinnedGroupOnOpen": {
+            "type": "boolean",
+            "default": false,
+            "description": "Experimental - Automatically, add opened files to the pinned group."
           }
         }
       }

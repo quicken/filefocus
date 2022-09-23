@@ -7,6 +7,7 @@ import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
 import { StateStorage } from "./storage/StateStorage";
 import { FileStorage } from "./storage/FileStorage";
+import { TabGroupStorage } from "./storage/TabGroupStorage";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -30,7 +31,21 @@ export async function activate(context: vscode.ExtensionContext) {
     );
   }
 
-  groupManager.addStorageProvider(new FileStorage());
+  const showProjectGroups = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("showProjectGroups") as boolean;
+
+  if (showProjectGroups) {
+    groupManager.addStorageProvider(new FileStorage());
+  }
+
+  const showKnownEditors = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("showKnownEditors") as boolean;
+
+  if (showKnownEditors) {
+    groupManager.addStorageProvider(new TabGroupStorage());
+  }
 
   await groupManager.loadAll();
 
@@ -108,6 +123,33 @@ export async function activate(context: vscode.ExtensionContext) {
       fileFocusTreeProvider.refresh();
     }
   );
+
+  /**
+   * Automatically add opened resources to a pinned group.
+   */
+  vscode.workspace.onDidOpenTextDocument(async (document) => {
+    const addToPinnedGroupOnOpen = vscode.workspace
+      .getConfiguration("filefocus")
+      .get("addToPinnedGroupOnOpen") as boolean;
+
+    if (addToPinnedGroupOnOpen && document.uri.scheme === "file") {
+      const group = groupManager.root.get(groupManager.pinnedGroupId);
+      if (group) {
+        group.addResource(document.uri);
+        await groupManager.saveGroup(group);
+      }
+
+      await groupManager.reloadProvider("tabgroup");
+      fileFocusTreeProvider.refresh();
+    }
+  });
+
+  vscode.workspace.onDidCloseTextDocument(async (document) => {
+    if (document.uri.scheme === "file") {
+      await groupManager.reloadProvider("tabgroup");
+      fileFocusTreeProvider.refresh();
+    }
+  });
 }
 
 // this method is called when your extension is deactivated
