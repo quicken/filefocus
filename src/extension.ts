@@ -128,27 +128,33 @@ export async function activate(context: vscode.ExtensionContext) {
    * Automatically add opened resources to a pinned group.
    */
   vscode.workspace.onDidOpenTextDocument(async (document) => {
+    if (document.uri.scheme !== "file") {
+      return;
+    }
+
     const addToPinnedGroupOnOpen = vscode.workspace
       .getConfiguration("filefocus")
       .get("addToPinnedGroupOnOpen") as boolean;
 
-    if (addToPinnedGroupOnOpen && document.uri.scheme === "file") {
+    if (addToPinnedGroupOnOpen) {
       const group = groupManager.root.get(groupManager.pinnedGroupId);
       if (group) {
         group.addResource(document.uri);
         await groupManager.saveGroup(group);
       }
-
-      await groupManager.reloadProvider("tabgroup");
-      fileFocusTreeProvider.refresh();
     }
+
+    await groupManager.reloadProvider("tabgroup");
+    await fileFocusTreeProvider.refresh();
   });
 
   vscode.workspace.onDidCloseTextDocument(async (document) => {
-    if (document.uri.scheme === "file") {
-      await groupManager.reloadProvider("tabgroup");
-      fileFocusTreeProvider.refresh();
+    if (document.uri.scheme !== "file") {
+      return;
     }
+
+    await groupManager.reloadProvider("tabgroup");
+    await fileFocusTreeProvider.refresh();
   });
 }
 
