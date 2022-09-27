@@ -1,16 +1,16 @@
 # File Focus
 
-File Focus affords you the ability to re-organise frequently used files and folders in virtual groups while keeping your project structure intact.
+File Focus provides quick access to frequently accessed source code and configuration files. Multiple files in a focus group can be opened with a single click to quickly resume
+working on different issues/tickets.
 
-Focus Groups can be defined globally so that they sync across all your devices or are defined specifically for a workspace.
+Pin a focus group to automatically maintain a history of open files. With this feature, you can start working on an Issue/Ticket and file focus will automatically keep track
+of the files you are working on.
 
 If you like having one project per workspace you can group files and folders that are commonly used in your language of choice and file focus will automatically make them available from the groups you have defined.
 
 For people that love multi-folder workspaces, you can re-group files and folders across workspace folders. Great for quick navigation where you can’t remember the file name or when working on big projects to avoid long scrolling through the file explorer.
 
 If you want to share or highlight commonly used files and folders with your team you can store a configuration file along with your source code to make groups automatically available to all people working on the project.
-
-Show all opened editors in a focus group.
 
 ![Feature add to Focus Group](https://github.com/quicken/filefocus/blob/master/resources/file-focus_demo.gif?raw=true)
 
@@ -23,9 +23,19 @@ For bug reports and code contributions head on over to:
 
 - https://github.com/quicken/filefocus
 
+## Features
+
+- Open all files in a group with one click.
+- Sync Groups between devices.
+- Automatically add open files to a group. (History)
+- Define groups for all Project Team Members.
+- Maintains the same icon and git status as the file explorer.
+- Full Drag & Drop Support
+- Show all open editors in a tree view. (Experimental)
+
 ## What is New
 
-- Open all files in a file group with one-click.
+- Open all files in a file group with one click.
 - Setting that automatically adds opened files to the pinned group.
 - Setting that shows all known editors in a special "Editor Group".
 - Setting that allows turning off Project Groups.
@@ -33,15 +43,6 @@ For bug reports and code contributions head on over to:
 - When storing focus groups in global storage groups will sync between devices.
 - Resources are now stored relative to workspace folders to support syncing focus groups between different operating systems.
 - Focus groups can now also be defined inside of a filefocus.json file stored inside of a project root folder. This allows sharing a set of focus groups between team members.
-
-## Features
-
-- Maintains the same icon and git status as the file explorer.
-- Full Drag & Drop Support
-- Sort by File Name or File Path
-- Sync Groups across devices, Share Groups with Project Users.
-- Use the keyboard, Drag & Drop or Context Menu to Add Resources.
-- Hover over a resource to see the full path.
 
 ## Getting Started
 
