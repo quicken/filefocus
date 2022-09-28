@@ -7,7 +7,6 @@ import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
 import { StateStorage } from "./storage/StateStorage";
 import { FileStorage } from "./storage/FileStorage";
-import { TabGroupStorage } from "./storage/TabGroupStorage";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -21,7 +20,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   applyStateGroupConfiguration(groupManager, context);
   applyProjectGroupConfiguration(groupManager);
-  applyKnownEditorGroupConfiguration(groupManager);
 
   await groupManager.loadAll();
 
@@ -72,18 +70,6 @@ function applyProjectGroupConfiguration(groupManager: GroupManager) {
   }
 }
 
-function applyKnownEditorGroupConfiguration(groupManager: GroupManager) {
-  const showKnownEditors = vscode.workspace
-    .getConfiguration("filefocus")
-    .get("showKnownEditors") as boolean;
-
-  if (showKnownEditors) {
-    groupManager.addStorageProvider(new TabGroupStorage());
-  } else {
-    groupManager.removeStorageProvider("tabgroup");
-  }
-}
-
 function applySortKeyConfiguration(
   fileFocusTreeProvider: FileFocusTreeProvider
 ) {
@@ -101,7 +87,6 @@ function registerEvents(
     if (e.affectsConfiguration("filefocus")) {
       applyStateGroupConfiguration(groupManager, context);
       applyProjectGroupConfiguration(groupManager);
-      applyKnownEditorGroupConfiguration(groupManager);
       applySortKeyConfiguration(fileFocusTreeProvider);
       await groupManager.loadAll();
       await fileFocusTreeProvider.refresh();

@@ -2,8 +2,8 @@
   "name": "file-focus",
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
-  "description": "Simplify workspace file and folder navigation. Organise the files and folders related to a specific task inside focus groups for easy access and navigation. ",
-  "version": "1.5.1",
+  "description": "Simplify workspace file and folder navigation. Quick Access to frequently accessed files. Open groups of files in one click.",
+  "version": "1.5.2",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -92,7 +92,7 @@
           "filefocus.sortkey": {
             "type": "string",
             "default": "basename",
-            "description": "Control which part of a resource name is used for sorting.",
+            "description": "Sort files inside groups by filename (basename) or by relative file path.",
             "enum": [
               "basename",
               "path"
@@ -102,20 +102,15 @@
               "Sort by Path"
             ]
           },
-          "filefocus.showKnownEditors": {
-            "type": "boolean",
-            "default": false,
-            "description": "Experimental - Always show a group that lists open editors."
-          },
           "filefocus.showProjectGroups": {
             "type": "boolean",
             "default": true,
-            "description": "Show groups defined in a Project File. (Requires restart of vscode)"
+            "description": "Show Project Groups."
           },
           "filefocus.addToPinnedGroupOnOpen": {
             "type": "boolean",
             "default": false,
-            "description": "Experimental - Automatically, add opened files to the pinned group."
+            "description": "Automatically, add opened files to the pinned group."
           }
         }
       }

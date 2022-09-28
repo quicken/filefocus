@@ -69,7 +69,7 @@ File focus groups are stored globally, available in workspaces and synced to all
 
 By default, focus groups are stored with your workspace allowing you to define a different set of focus groups per workspace.
 
-Changing this setting requires restarting the extension. Focus Groups are NOT transferred between global and workspace storage.
+Focus Groups are NOT transferred between global and workspace storage.
 
 ### Sort Key
 
@@ -79,7 +79,14 @@ Basename, sort resources only by the file name.
 
 Path, sort resources by the full path. Handy when grouping resources from multiple projects and you want to still keep project files together.
 
-Changing this setting requires restarting the extension.
+### Show Project Groups
+
+Enables project group. When enables the extension looks for focus groups defined in a .filefocus file in the root of a workspace folder.
+This allows for defining project groups that are available to all users of a project.
+
+### Add to pinned group on open
+
+When enabled files are automatically added to a focus group when opened in the editor. This allows automatically tracking files you are currently working on.
 
 ## Using Project Specific Focus Groups.
 

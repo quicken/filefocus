@@ -6,6 +6,11 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
+### 1.5.2
+
+- Document Settings in the readme file.
+- Removed experimental editors group.
+
 ### 1.5.0
 
 - Usage of Project Groups can now be turned off in settings.
