@@ -67,7 +67,7 @@ You can open files directly from a focus group. Folders added to a "focus group"
 
 File focus groups are stored globally, available in workspaces and synced to all your devices.
 
-By default, focus groups are stored with your workspace allowing you to define a different set of focus groups per workspace.
+By default, focus groups are stored in your workspace allowing you to define a different set of focus groups per workspace.
 
 Focus Groups are NOT transferred between global and workspace storage.
 
@@ -86,7 +86,7 @@ This allows for defining project groups that are available to all users of a pro
 
 ### Add to pinned group on open
 
-When enabled files are automatically added to a focus group when opened in the editor. This allows automatically tracking files you are currently working on.
+When enabled files are automatically added to a focus group when opened in the editor. This allows automatic tracking of files you are currently working on.
 
 ## Using Project Specific Focus Groups.
 
