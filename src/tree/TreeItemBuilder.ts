@@ -67,7 +67,7 @@ export class TreeItemBuilder {
       vscode.TreeItemCollapsibleState.Collapsed
     );
     folderItem.resourceUri = uri;
-    folderItem.iconPath = vscode.ThemeIcon.File;
+    folderItem.iconPath = vscode.ThemeIcon.Folder;
     folderItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
     return folderItem;
   }
