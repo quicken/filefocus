@@ -5,8 +5,6 @@ import { FocusItem } from "../tree/FocusItem";
 import { GroupItem } from "../tree/GroupItem";
 
 export class TreeItemBuilder {
-  constructor() {}
-
   public async getResourceForGroup(
     group: Group,
     sortkey: "path" | "basename"

@@ -7,6 +7,7 @@ import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
 import { StateStorage } from "./storage/StateStorage";
 import { FileStorage } from "./storage/FileStorage";
+import { FileFacade } from "./FileFacade";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -35,7 +36,7 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+// export function deactivate() {}
 
 function applyStateGroupConfiguration(
   groupManager: GroupManager,
@@ -109,7 +110,7 @@ function registerEvents(
       const group = groupManager.root.get(groupManager.pinnedGroupId);
       if (group) {
         group.addResource(document.uri);
-        await groupManager.saveGroup(group);
+        groupManager.saveGroup(group);
       }
     }
 
@@ -201,6 +202,17 @@ function registerCommands(
     async () => {
       await groupManager.loadAll();
       fileFocusTreeProvider.refresh();
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.renameFileObject",
+    async (focusItem: FocusItem) => {
+      const group = groupManager.root.get(focusItem.groupId);
+      if (group) {
+        await FileFacade.renameFocusItem(group, focusItem);
+        fileFocusTreeProvider.refresh();
+      }
     }
   );
 }

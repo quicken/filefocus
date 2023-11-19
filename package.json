@@ -78,6 +78,11 @@
         "command": "fileFocusExtension.reloadStorage",
         "title": "Reload Storage",
         "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "fileFocusExtension.renameFileObject",
+        "title": "Rename",
+        "icon": "$(edit)"
       }
     ],
     "configuration": [
@@ -167,6 +172,10 @@
           "command": "fileFocusExtension.openGroup",
           "when": "view == fileFocusTree && viewItem =~ /GroupItem/",
           "group": "inline"
+        },
+        {
+          "command": "fileFocusExtension.renameFileObject",
+          "when": "view == fileFocusTree && viewItem == FocusItem"
         }
       ],
       "view/title": [
