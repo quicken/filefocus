@@ -66,7 +66,7 @@ export class TreeItemBuilder {
     );
     folderItem.resourceUri = uri;
     folderItem.iconPath = vscode.ThemeIcon.Folder;
-    folderItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
+    folderItem.contextValue = isRootItem ? "FocusFolderRoot" : "FocusFolder";
     return folderItem;
   }
 
@@ -100,7 +100,7 @@ export class TreeItemBuilder {
     );
     fileItem.resourceUri = uri;
     fileItem.iconPath = new vscode.ThemeIcon("warning");
-    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
+    fileItem.contextValue = isRootItem ? "FocusItemRoot" : "FocusItem";
     return fileItem;
   }
 
@@ -138,7 +138,7 @@ export class TreeItemBuilder {
     };
     fileItem.resourceUri = uri;
     fileItem.iconPath = vscode.ThemeIcon.File;
-    fileItem.contextValue = isRootItem ? "FocusRootItem" : "FocusItem";
+    fileItem.contextValue = isRootItem ? "FocusFileRoot" : "FocusFile";
     return fileItem;
   }
 

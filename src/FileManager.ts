@@ -23,4 +23,21 @@ export class FileManager {
     const pathString = path.join("/");
     return uri.with({ path: pathString });
   }
+
+  /**
+   * Creates a URI for creating a new folder.
+   *
+   * Importantly this method does NOT perfom the file system operation it
+   * only creates the URI.
+   *
+   * @param parentURI The parent uri in which the folder will be created.
+   * @param newFolderName The name of the folder that will be created.
+   * @returns The uri of the new folder.
+   */
+  static newFolderUri(parentUri: Uri, newFolderName: string): Uri {
+    const path = parentUri.path.split("/");
+    path.push(newFolderName);
+    const pathString = path.join("/");
+    return parentUri.with({ path: pathString });
+  }
 }

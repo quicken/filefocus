@@ -22,4 +22,22 @@ export class FileFacade {
       }
     }
   }
+
+  static async createFolder(group: Group, focusItem: FocusItem) {
+    if (focusItem.type !== vscode.FileType.Directory) {
+      return;
+    }
+
+    const parentUri = focusItem.resourceUri;
+    const newFolderName = await vscode.window.showInputBox({
+      prompt: "New folder name",
+      value: "",
+    });
+
+    if (parentUri && newFolderName) {
+      const newFolderUri = FileManager.newFolderUri(parentUri, newFolderName);
+      workspace.fs.createDirectory(newFolderUri);
+      group.addResource(newFolderUri);
+    }
+  }
 }

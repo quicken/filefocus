@@ -83,6 +83,11 @@
         "command": "fileFocusExtension.renameFileObject",
         "title": "Rename",
         "icon": "$(edit)"
+      },
+      {
+        "command": "fileFocusExtension.createFileFolder",
+        "title": "Create Directory in location",
+        "icon": "$(new-folder)"
       }
     ],
     "configuration": [
@@ -165,7 +170,7 @@
         },
         {
           "command": "fileFocusExtension.removeGroupResource",
-          "when": "view == fileFocusTree && viewItem == FocusRootItem",
+          "when": "view == fileFocusTree && (viewItem == FocusItemRoot || viewItem == FocusFileRoot || viewItem == FocusFolderRoot)",
           "group": "inline"
         },
         {
@@ -175,7 +180,11 @@
         },
         {
           "command": "fileFocusExtension.renameFileObject",
-          "when": "view == fileFocusTree && viewItem == FocusItem"
+          "when": "view == fileFocusTree && (viewItem =~ /FocusFile/ || viewItem =~ /FocusFolder/)"
+        },
+        {
+          "command": "fileFocusExtension.createFileFolder",
+          "when": "view == fileFocusTree && (viewItem == FocusFolderRoot || viewItem == FocusFolder)"
         }
       ],
       "view/title": [

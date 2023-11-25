@@ -215,4 +215,15 @@ function registerCommands(
       }
     }
   );
+
+  vscode.commands.registerCommand(
+    "fileFocusExtension.createFileFolder",
+    async (focusItem: FocusItem) => {
+      const group = groupManager.root.get(focusItem.groupId);
+      if (group) {
+        await FileFacade.createFolder(group, focusItem);
+        fileFocusTreeProvider.refresh();
+      }
+    }
+  );
 }
