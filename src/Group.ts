@@ -1,6 +1,4 @@
 import { Uri } from "vscode";
-import * as fs from 'fs/promises';
-
 /**
  * A collection of resources that should be shown together are managed by a Group.
  */
@@ -17,7 +15,7 @@ export class Group {
    */
   public readonly = false;
 
-  constructor(public readonly id: string) { }
+  constructor(public readonly id: string) {}
 
   /**
    * Retuns all resources (files and folders) that are associated with a group.
@@ -30,18 +28,12 @@ export class Group {
    * Add a resource (file/folder) to the group.
    * @param uri The vscode.URI of the resource.
    */
-  public addResource = async (uri: Uri) => {
+  public addResource = (uri: Uri) => {
     if (this._resourceContains(uri)) {
       return;
     }
 
-    // Check if the file or folder at the URI's fsPath exists
-    try {
-      await fs.access(uri.fsPath);
-      this._resource.push(uri);
-    } catch (err) {
-      console.error(`The file or folder at ${uri.fsPath} does not exist`);
-    }
+    this._resource.push(uri);
   };
   /**
    * Remove a resource (file/folder) from the group.
