@@ -5,7 +5,11 @@ import { Group } from "./Group";
 export class GroupFacade {
   constructor(private groupManager: GroupManager) {}
 
-  async addGroup(): Promise<void> {
+  /**
+   * Adds a new Group to which resources can be added.
+   * @param path Optional path that is immediatly added to the group on creation.
+   */
+  async addGroup(path?: string): Promise<void> {
     const groupName = await vscode.window.showInputBox({
       placeHolder: "Enter a name for the focus group",
     });
@@ -25,6 +29,10 @@ export class GroupFacade {
     const group = new Group(groupId);
     group.name = groupName;
     this.groupManager.addGroup(group, "statestorage");
+    if (path) {
+      await this.addGroupResource(path);
+      return;
+    }
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
@@ -96,16 +104,38 @@ export class GroupFacade {
 
   async addGroupResource(path: string): Promise<void> {
     /* If no writable focus group as been defined define a focus group. */
-
     if (this.groupManager.writableGroupNames.length === 0) {
       await vscode.window.showInformationMessage(
         "Please setup at least one focus group. Then retry adding this resource.",
         { modal: true }
       );
-      vscode.commands.executeCommand("fileFocusExtension.addGroup");
+
+      vscode.commands.executeCommand("fileFocusExtension.addGroup", path);
       return;
     }
 
+    const groupName = await this.selectTargetGroup();
+    if (groupName) {
+      const groupId = GroupManager.makeGroupId(groupName);
+      if (this.groupManager.root.has(groupId)) {
+        const group = this.groupManager.root.get(groupId);
+        if (group && !group.readonly) {
+          const uri = vscode.Uri.parse(path);
+          try {
+            await vscode.workspace.fs.stat(uri);
+          } catch (err) {
+            vscode.window.showErrorMessage("Can't find resource in workspace.");
+          }
+
+          group.addResource(uri);
+          this.groupManager.saveGroup(group);
+          vscode.commands.executeCommand("fileFocusTree.refreshEntry");
+        }
+      }
+    }
+  }
+
+  private async selectTargetGroup() {
     let groupName;
     /* Skip showing the quick picker if there is only one focus group to choose. from. */
     if (this.groupManager.writableGroupNames.length === 1) {
@@ -127,17 +157,7 @@ export class GroupFacade {
       );
     }
 
-    if (groupName) {
-      const groupId = GroupManager.makeGroupId(groupName);
-      if (this.groupManager.root.has(groupId)) {
-        const group = this.groupManager.root.get(groupId);
-        if (group && !group.readonly) {
-          group.addResource(vscode.Uri.parse(path));
-          this.groupManager.saveGroup(group);
-          vscode.commands.executeCommand("fileFocusTree.refreshEntry");
-        }
-      }
-    }
+    return groupName;
   }
 
   async removeGroupResource(groupId: string, uri: vscode.Uri): Promise<void> {

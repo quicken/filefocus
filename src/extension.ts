@@ -137,9 +137,12 @@ function registerCommands(
   vscode.commands.registerCommand("fileFocusTree.refreshEntry", () =>
     fileFocusTreeProvider.refresh()
   );
-  vscode.commands.registerCommand("fileFocusExtension.addGroup", () => {
-    groupFacade.addGroup();
-  });
+  vscode.commands.registerCommand(
+    "fileFocusExtension.addGroup",
+    (path?: string) => {
+      groupFacade.addGroup(path);
+    }
+  );
 
   vscode.commands.registerCommand(
     "fileFocusExtension.pinGroup",
