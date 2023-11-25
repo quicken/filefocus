@@ -1,3 +1,11 @@
+# Don't use this Extension
+Almost surely, you should be using https://github.com/quicken/filefocus instead of this extension.
+
+This **fork** only adds a check to avoid adding files to a focus group of the files don't exist.
+
+All credit belongs to [quicken](https://github.com/quicken).
+
+
 # File Focus
 
 File Focus provides quick access to frequently accessed source code and configuration files. Multiple files in a focus group can be opened with a single click to quickly resume
