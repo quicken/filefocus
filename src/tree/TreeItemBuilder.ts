@@ -118,7 +118,7 @@ export class TreeItemBuilder {
     pinnedGroupId: string
   ): Promise<GroupItem[]> {
     const out: GroupItem[] = [];
-    for (const [id, group] of groups) {
+    for (const [, group] of groups) {
       out.push(this.createGroupItem(group, pinnedGroupId));
     }
 

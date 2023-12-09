@@ -16,6 +16,12 @@ type FileFocusDropType =
   | "";
 
 /**
+ * A file focus specifc event type. For working with dragging
+ * and dropping FocusItems.
+ */
+type FileFocusEvent = FocusItem | undefined | null | void;
+
+/**
  * FileFocusTreeProvider implement the functioinality required by the
  * vscode TreeView component to render and manipulate FileFocus data
  * using the concepts of a Tree based UI.
@@ -194,8 +200,8 @@ export class FileFocusTreeProvider
   }
 
   getChildren(element?: any): vscode.ProviderResult<FocusItem[] | GroupItem[]> {
-    /* When   is defined the user has picked an element. */
-    if (element && element.hasOwnProperty("objtype")) {
+    /* When defined the user has picked an element. */
+    if (element?.hasOwnProperty("objtype")) {
       if (element.objtype === "FocusItem") {
         const focusItem = element as FocusItem;
         switch (focusItem.type) {
@@ -261,12 +267,10 @@ export class FileFocusTreeProvider
     return out;
   }
 
-  private _onDidChangeTreeData: vscode.EventEmitter<
-    FocusItem | undefined | null | void
-  > = new vscode.EventEmitter<FocusItem | undefined | null | void>();
-  readonly onDidChangeTreeData: vscode.Event<
-    FocusItem | undefined | null | void
-  > = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<FileFocusEvent> =
+    new vscode.EventEmitter<FileFocusEvent>();
+  readonly onDidChangeTreeData: vscode.Event<FileFocusEvent> =
+    this._onDidChangeTreeData.event;
 
   async refresh(): Promise<void> {
     this._onDidChangeTreeData.fire();
