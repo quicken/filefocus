@@ -6,16 +6,38 @@ import { TreeItemBuilder } from "./TreeItemBuilder";
 import { FocusItem } from "./FocusItem";
 import { GroupItem } from "./GroupItem";
 
+/**
+ * Defines the mime type used to detect when a file
+ * focus TreeViewItem has been dropped.
+ */
 type FileFocusDropType =
   | "application/vnd.code.tree.fileFocusTree"
   | "text/uri-list"
   | "";
 
+/**
+ * FileFocusTreeProvider implement the functioinality required by the
+ * vscode TreeView component to render and manipulate FileFocus data
+ * using the concepts of a Tree based UI.
+ *
+ * Implements any functionality that is directly required by the
+ * VSCode Tree View Component such as implementing Tree View interfaces.
+ *
+ * Any other functioiniality related to working with a Tree view that is
+ * specifically related to FileFocus is manged by the TreeItemBuilder Class.
+ **
+ */
 export class FileFocusTreeProvider
   implements
     vscode.TreeDataProvider<FocusItem | GroupItem>,
     vscode.TreeDragAndDropController<FocusItem | GroupItem>
 {
+  /**
+   * Define how the items shown inside a filefocus group should be sorted (displayed)
+   * path: Sort items based on the full file path
+   * base: Sort only on the filename. This allows grouping the same
+   * filename together even if they are in different folder.
+   */
   sortkey: "path" | "basename" = "basename";
   dropMimeTypes = ["application/vnd.code.tree.fileFocusTree", "text/uri-list"];
   dragMimeTypes = ["text/uri-list"];
