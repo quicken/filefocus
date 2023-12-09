@@ -15,8 +15,6 @@ type ProjectGroup = {
 export class FileStorage implements FileFocusStorageProvider {
   id = "filestorage";
 
-  constructor() {}
-
   public async loadRootNodes() {
     if (!workspace.workspaceFolders) {
       return [];
