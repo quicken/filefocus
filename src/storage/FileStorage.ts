@@ -12,6 +12,10 @@ type ProjectGroup = {
   path: string[];
 };
 
+/**
+ * Store focus group definition inside a JSON file that is stored
+ * inside the root of a workspace.
+ */
 export class FileStorage implements FileFocusStorageProvider {
   id = "filestorage";
 

@@ -23,6 +23,10 @@ type DeprecateGroupRecord = {
   label: string;
 };
 
+/**
+ * This class implement the funtionality to store group definitions
+ * inside of VSCodes built in storage provider.
+ */
 export class StateStorage implements FileFocusStorageProvider {
   id = "statestorage";
 
@@ -78,6 +82,16 @@ export class StateStorage implements FileFocusStorageProvider {
     this.storage.deleteValue("groupmap");
   }
 
+  /**
+   * As a consequence of changing format in which data was stored
+   * we needed a method for migrating the data of users using a previous
+   * version of the extension. In theory we should be able to get rid
+   * of this method when we feel like all users should have been upgraded.
+   *
+   * Without this method users would need to re-create their focus groups.
+   *
+   * @returns
+   */
   migrateStorageV1() {
     const storeversion = this.storage.getValue<number>("storeversion", 0);
     if (storeversion > 0) {

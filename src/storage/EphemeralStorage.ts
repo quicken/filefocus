@@ -1,6 +1,10 @@
 import { FileFocusStorageProvider } from "../global";
 import { Group } from "../Group";
 
+/**
+ * Store group definitions in memory. Any group stored inside this
+ * construct will be wiped when the extension stops running.
+ */
 export class EphemeralStorage implements FileFocusStorageProvider {
   id = "ephemeral";
   _store: Map<string, Group> = new Map();

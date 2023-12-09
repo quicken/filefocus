@@ -1,6 +1,9 @@
 import { Uri } from "vscode";
 /**
  * A collection of resources that should be shown together are managed by a Group.
+ *
+ * Note: In FileFocus a folder is an actual resources like a directory while a Group is a logical (virtual)
+ * folder for arbitraily organising actual resources.
  */
 export class Group {
   private _resource: Uri[] = [];

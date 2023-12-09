@@ -1,8 +1,13 @@
 import { Uri } from "vscode";
 
+/**
+ * A collection of static helper methods used to work with file systems inside of VSCode.
+ *
+ * You should probably be using the FileFacade instead of directly working witht the FileManager.
+ */
 export class FileManager {
   /**
-   * Retunrs the filename from a Uri including the file extension.
+   * Returns the filename from a Uri including the file extension.
    * @param uri The uri to get the filename from.
    * @returns The filename including the file extension.
    */

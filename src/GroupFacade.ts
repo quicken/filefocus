@@ -2,6 +2,13 @@ import * as vscode from "vscode";
 import { GroupManager } from "./GroupManager";
 import { Group } from "./Group";
 
+/**
+ * The GroupFacade provides an abstraction between the vscode UI and the underlying business logic that
+ * manages File Focus Groups.
+ *
+ * Note: In FileFocus a folder is an actual resources like a directory while a Group is a logical (virtual)
+ * folder for arbitraily organising actual resources.
+ */
 export class GroupFacade {
   constructor(private groupManager: GroupManager) {}
 
@@ -36,12 +43,21 @@ export class GroupFacade {
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
+  /**
+   * Pins a FocusGroup. Resources are automatically added to the currently pinned resource
+   * group.
+   * @param groupId The ID of the group that should be pinned.
+   */
   pinGroup(groupId: string): void {
     this.groupManager.pinnedGroupId =
       this.groupManager.pinnedGroupId === groupId ? "" : groupId;
     vscode.commands.executeCommand("fileFocusTree.refreshEntry");
   }
 
+  /**
+   * Opens all file resources in the vscode editor that are in the root of a group.
+   * @param groupId The ID of the group whos root resources are to be opened.
+   */
   async openGroup(groupId: string): Promise<void> {
     const group = this.groupManager.root.get(groupId);
     if (group) {
@@ -61,6 +77,10 @@ export class GroupFacade {
     }
   }
 
+  /**
+   * Initiates the workflow for removing a group.
+   * @param groupId The ID of the group that should be removed.
+   */
   async removeGroup(groupId: string): Promise<void> {
     const action = await vscode.window.showInformationMessage(
       "Discard this focus group?",
@@ -73,6 +93,11 @@ export class GroupFacade {
     }
   }
 
+  /**
+   * Initiates the workflow for renaming a FileFocus Group
+   * @param srcGroupId
+   * @returns
+   */
   async renameGroup(srcGroupId: string): Promise<void> {
     const group = this.groupManager.root.get(srcGroupId);
     if (group) {
@@ -102,6 +127,11 @@ export class GroupFacade {
     }
   }
 
+  /**
+   * Initates the workflow for adding a new resource to a focus group.
+   * @param path The path of the resource that should be added to some group.
+   * @returns
+   */
   async addGroupResource(path: string): Promise<void> {
     /* If no writable focus group as been defined define a focus group. */
     if (this.groupManager.writableGroupNames.length === 0) {
@@ -160,6 +190,12 @@ export class GroupFacade {
     return groupName;
   }
 
+  /**
+   * Initiates the workflow for removing a resource from a Group. This action does NOT
+   * actually delete the resource, it just removes the resource from a group.
+   * @param groupId The ID of the group from which a resource should be remove.
+   * @param uri The uri of the resource that should be removed.
+   */
   async removeGroupResource(groupId: string, uri: vscode.Uri): Promise<void> {
     const group = this.groupManager.root.get(groupId);
     if (group && !group.readonly) {
