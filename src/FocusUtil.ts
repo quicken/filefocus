@@ -109,7 +109,7 @@ export class FocusUtil {
    * @param name The name of the workpace for which the root URI is to be determined.
    * @param test? Only for use in unit testing. Allows passing in an array of workspace folder for UNIT Testing.
    *              by default the function utilises the vscode workspace.workspaceFolders property.
-   * @returns The UIR of the workspace root. Returns undefined if the given workspace can not be found.
+   * @returns The URI of the workspace root. Returns undefined if the given workspace can not be found.
    */
   public static getWorkspaceUriByName(name: string, test?: WorkspaceFolder[]) {
     const workspaceFolders = test ? test : workspace.workspaceFolders;
@@ -123,5 +123,24 @@ export class FocusUtil {
     }
 
     return undefined;
+  }
+
+  /**
+   * Returns the URI of all workspace folders.
+   *
+   * @param test Only for use in unit testing. Allows passing in an array of workspace folder for UNIT Testing.
+   *              by default the function utilises the vscode workspace.workspaceFolders property.
+   * @returns An array of all workspace roots.
+   */
+  public static getWorkspaceUris(test?: WorkspaceFolder[]) {
+    const workspaceFolders = test ? test : workspace.workspaceFolders;
+    const uris: Uri[] = [];
+    if (workspaceFolders) {
+      for (const ws of workspaceFolders) {
+        uris.push(ws.uri);
+      }
+    }
+
+    return uris;
   }
 }
