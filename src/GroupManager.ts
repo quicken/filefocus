@@ -1,5 +1,6 @@
 import { v5 as uuidv5 } from "uuid";
 import { Group } from "./Group";
+import { DynamicGroupFactory } from "./DynamicGroupFactory";
 import { FileFocusStorageProvider } from "./global";
 
 /**
@@ -66,6 +67,10 @@ export class GroupManager {
    */
   async loadAll() {
     this.root.clear();
+    const excludedFileGroup = DynamicGroupFactory.createExcludedFileGroup();
+    excludedFileGroup.refresh();
+    this.root.set(excludedFileGroup.id, excludedFileGroup);
+
     for (const storageProvider of this._storageProvider) {
       const groups = await storageProvider[1].loadRootNodes();
       for (const group of groups) {
@@ -124,7 +129,7 @@ export class GroupManager {
    * @param id The ID of the group that should be deleted.
    */
   public removeGroup = (id: string) => {
-    const provider = this._storageProvider.get(this.storageMap.get(id) || "");
+    const provider = this._storageProvider.get(this.storageMap.get(id) ?? "");
 
     this.root.delete(id);
     this.storageMap.delete(
@@ -141,7 +146,7 @@ export class GroupManager {
    * @param name The new name of the group.
    */
   public renameGroup = (id: string, name: string) => {
-    const provider = this._storageProvider.get(this.storageMap.get(id) || "");
+    const provider = this._storageProvider.get(this.storageMap.get(id) ?? "");
     const src = this.root.get(id);
     if (provider && src) {
       const dst = new Group(GroupManager.makeGroupId(name));
@@ -182,12 +187,12 @@ export class GroupManager {
 
   /**
    * Persists a group. A group is only persisted if the group id can be
-   * maped a file focus storage provider.
+   * maped to a file focus storage provider.
    * @param group The group that is to be persisted.
    */
   public saveGroup(group: Group) {
     const provider = this._storageProvider.get(
-      this.storageMap.get(group.id) || ""
+      this.storageMap.get(group.id) ?? ""
     );
     if (provider) {
       provider.saveGroup(group);
