@@ -14,14 +14,14 @@ export class Group {
   public name = "";
 
   /**
-   * A read only group can not he altered or saved into storage.
+   * A read only group can not be altered or saved into storage.
    */
   public readonly = false;
 
   constructor(public readonly id: string) {}
 
   /**
-   * Retuns all resources (files and folders) that are associated with a group.
+   * Returns all resources (files and folders) that are associated with a group.
    */
   get resources() {
     return this._resource;
@@ -50,6 +50,13 @@ export class Group {
       return;
     }
     this._resource.splice(i, 1);
+  };
+
+  /**
+   * Removes all resources (file/folder) from the group.
+   */
+  public clearResources = () => {
+    this._resource = [];
   };
 
   private _resourceContains = (uri: Uri) => {
