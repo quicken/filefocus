@@ -115,6 +115,11 @@
             "default": true,
             "description": "Show Project Groups."
           },
+          "filefocus.showExcludedGroup": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show a dynamic group containing all excluded workspace files and folders."
+          },
           "filefocus.addToPinnedGroupOnOpen": {
             "type": "boolean",
             "default": false,

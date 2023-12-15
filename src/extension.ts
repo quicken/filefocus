@@ -74,7 +74,10 @@ function applyProjectGroupConfiguration(groupManager: GroupManager) {
 }
 
 function applyDynamicGroupConfiguration(groupManager: GroupManager) {
-  groupManager.addStorageProvider(new DynamicStorage());
+  const showExcluded = vscode.workspace
+    .getConfiguration("filefocus")
+    .get("showExcludedGroup") as boolean;
+  groupManager.addStorageProvider(new DynamicStorage(showExcluded));
 }
 
 function applySortKeyConfiguration(
