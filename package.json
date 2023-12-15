@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Simplify workspace file and folder navigation. Quick Access to frequently accessed files. Open groups of files in one click.",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
@@ -124,6 +124,11 @@
             "type": "boolean",
             "default": false,
             "description": "Automatically, add opened files to the pinned group."
+          },
+          "filefocus.globgroup": {
+            "type": "array",
+            "default": [],
+            "description": "An array of glob configs. Each item corresponds to a focus group that is populated based on glob rules."
           }
         }
       }
