@@ -204,9 +204,15 @@ export class FileFocusTreeProvider
     if (element?.hasOwnProperty("objtype")) {
       if (element.objtype === "FocusItem") {
         const focusItem = element as FocusItem;
+        const group = this.groupManager.root.get(focusItem.groupId);
+        const readonly = group ? group.readonly : false;
         switch (focusItem.type) {
           case vscode.FileType.Directory: {
-            return this.getFolderContents(focusItem.groupId, focusItem.uri);
+            return this.getFolderContents(
+              focusItem.groupId,
+              focusItem.uri,
+              readonly
+            );
           }
 
           case vscode.FileType.File:
@@ -229,7 +235,8 @@ export class FileFocusTreeProvider
 
   private async getFolderContents(
     groupId: string,
-    uri: vscode.Uri
+    uri: vscode.Uri,
+    isReadOnly: boolean
   ): Promise<FocusItem[]> {
     const result = await vscode.workspace.fs.readDirectory(uri);
 
@@ -244,7 +251,8 @@ export class FileFocusTreeProvider
               item[0],
               resourceUri,
               false,
-              groupId
+              groupId,
+              isReadOnly
             )
           );
           break;
@@ -255,7 +263,8 @@ export class FileFocusTreeProvider
               item[0],
               resourceUri,
               false,
-              groupId
+              groupId,
+              isReadOnly
             )
           );
           break;

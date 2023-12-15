@@ -48,18 +48,36 @@ export class TreeItemBuilder {
         switch (fileType) {
           case vscode.FileType.File:
             out.push(
-              this.createFileItem(Utils.basename(uri), uri, true, group.id)
+              this.createFileItem(
+                Utils.basename(uri),
+                uri,
+                true,
+                group.id,
+                group.readonly
+              )
             );
             break;
 
           case vscode.FileType.Directory:
             out.push(
-              this.createFolderItem(Utils.basename(uri), uri, true, group.id)
+              this.createFolderItem(
+                Utils.basename(uri),
+                uri,
+                true,
+                group.id,
+                group.readonly
+              )
             );
             break;
           case vscode.FileType.Unknown:
             out.push(
-              this.createUnknownItem(Utils.basename(uri), uri, true, group.id)
+              this.createUnknownItem(
+                Utils.basename(uri),
+                uri,
+                true,
+                group.id,
+                group.readonly
+              )
             );
             break;
         }
@@ -79,13 +97,15 @@ export class TreeItemBuilder {
    * @param uri The URI the item points to.
    * @param isRootItem True if this item is directly in the root of a Group.
    * @param groupId The id of the Group that this item is owned by.
+   * @param isReadOnly The item should be readonly.
    * @returns A TreeViewItem that represent a Folder.
    */
   public createFolderItem(
     label: string,
     uri: vscode.Uri,
     isRootItem: boolean,
-    groupId: string
+    groupId: string,
+    isReadOnly: boolean
   ) {
     const folderItem = new FocusItem(
       label,
@@ -98,6 +118,9 @@ export class TreeItemBuilder {
     folderItem.resourceUri = uri;
     folderItem.iconPath = vscode.ThemeIcon.Folder;
     folderItem.contextValue = isRootItem ? "FocusFolderRoot" : "FocusFolder";
+    folderItem.contextValue = isReadOnly
+      ? folderItem.contextValue
+      : folderItem.contextValue + "Write";
     return folderItem;
   }
 
@@ -138,13 +161,15 @@ export class TreeItemBuilder {
    * @param uri The URI the item points to.
    * @param isRootItem True if this item is directly in the root of a Group.
    * @param groupId The id of the Group that this item is owned by.
+   * @param isReadOnly The item should be readonly.
    * @returns A TreeViewItem that represent a unknown/missing resource.
    */
   public createUnknownItem(
     label: string,
     uri: vscode.Uri,
     isRootItem: boolean,
-    groupId: string
+    groupId: string,
+    isReadOnly: boolean
   ) {
     const fileItem = new FocusItem(
       label,
@@ -157,6 +182,9 @@ export class TreeItemBuilder {
     fileItem.resourceUri = uri;
     fileItem.iconPath = new vscode.ThemeIcon("warning");
     fileItem.contextValue = isRootItem ? "FocusItemRoot" : "FocusItem";
+    fileItem.contextValue = isReadOnly
+      ? fileItem.contextValue
+      : fileItem.contextValue + "Write";
     return fileItem;
   }
 
@@ -180,13 +208,15 @@ export class TreeItemBuilder {
    * @param uri The URI the item points to.
    * @param isRootItem True if this item is directly in the root of a Group.
    * @param groupId The id of the Group that this item is owned by.
+   * @param isReadOnly The item should be readonly.
    * @returns A TreeViewItem that represent a unknown/missing resource.
    */
   public createFileItem(
     label: string,
     uri: vscode.Uri,
     isRootItem: boolean,
-    groupId: string
+    groupId: string,
+    isReadOnly: boolean
   ) {
     const fileItem = new FocusItem(
       label,
@@ -204,6 +234,9 @@ export class TreeItemBuilder {
     fileItem.resourceUri = uri;
     fileItem.iconPath = vscode.ThemeIcon.File;
     fileItem.contextValue = isRootItem ? "FocusFileRoot" : "FocusFile";
+    fileItem.contextValue = isReadOnly
+      ? fileItem.contextValue
+      : fileItem.contextValue + "Write";
     return fileItem;
   }
 

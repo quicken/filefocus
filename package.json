@@ -13,7 +13,7 @@
     "Other"
   ],
   "keywords": [
-    "virtual folder",
+    "dynamic folders",
     "group files",
     "focus group",
     "active folders"
@@ -178,7 +178,7 @@
         },
         {
           "command": "fileFocusExtension.removeGroupResource",
-          "when": "view == fileFocusTree && (viewItem == FocusItemRoot || viewItem == FocusFileRoot || viewItem == FocusFolderRoot)",
+          "when": "view == fileFocusTree && viewItem =~ /Root/ && viewItem =~ /Write/",
           "group": "inline"
         },
         {
@@ -188,11 +188,11 @@
         },
         {
           "command": "fileFocusExtension.renameFileObject",
-          "when": "view == fileFocusTree && (viewItem =~ /FocusFile/ || viewItem =~ /FocusFolder/)"
+          "when": "view == fileFocusTree && (viewItem =~ /FocusFile/ || viewItem =~ /FocusFolder/) && viewItem =~ /Write/"
         },
         {
           "command": "fileFocusExtension.createFileFolder",
-          "when": "view == fileFocusTree && (viewItem == FocusFolderRoot || viewItem == FocusFolder)"
+          "when": "view == fileFocusTree && viewItem =~ /FocusFolder/ && viewItem =~ /Write/"
         }
       ],
       "view/title": [
