@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Simplify workspace file and folder navigation. Quick Access to frequently accessed files. Open groups of files in one click.",
-  "version": "1.6.0",
+  "version": "1.5.9",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
