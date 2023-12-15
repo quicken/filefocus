@@ -6,6 +6,16 @@ Please submit any issues you find to Git-Hub or better yet submit a pull request
 
 https://github.com/quicken/filefocus
 
+### 1.6.0
+
+- Display files and folders excluded by vscode inside an "Excluded" folder.
+- Define dynamic folders that are automatically populated based on glob patterns.
+- Automatically add a resource to a new focus group.
+- Experimental: Add some limited file management capability. We don't want to replicate the explorer but
+  some basic functionality is handy.
+- Fix: Incorrect icon usage for folders.
+- Fix: Clarify usage of global storage.
+
 ### 1.5.3
 
 - Use an extension-specific icon and context text when the extension is docked in the sidebar.
@@ -19,7 +29,7 @@ https://github.com/quicken/filefocus
 
 - Usage of Project Groups can now be turned off in settings.
 - Add a setting that automatically adds opened files to the pinned focus group.
-  Add an experimental setting that shows all known editors in special "Editors" group.
+  Add an experimental setting that shows all known editors in a special "Editors" group.
 - All settings changes are now applied without requiring a restart of VSCode.
   Add an icon that opens all files in a group for editing.
 
@@ -27,7 +37,7 @@ https://github.com/quicken/filefocus
 
 - Fix bug preventing resources from being removed.
 - Fix bug preventing drag & drop between focus groups.
-  Fix the bug preventing drag to open when working inside of WSL.
+  Fix the bug preventing drag from opening when working inside of WSL.
 - Do not show edit controls for read-only groups.
 - Prevent adding/removing resources from read-only groups.
 
@@ -64,7 +74,7 @@ Fix the bug, the same resource could be added multiple times.
 ### 1.1.0
 
 - Show a hint of the folder location for root items. Handy where multiple root items might have the same name.
-- Drag & Drop Support for Root Items between focus groups.
+  Drag and drop Support for Root Items between focus groups.
 
 ### 1.0.1
 
