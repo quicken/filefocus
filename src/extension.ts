@@ -7,6 +7,7 @@ import { GroupItem } from "./tree/GroupItem";
 import { FocusItem } from "./tree/FocusItem";
 import { StateStorage } from "./storage/StateStorage";
 import { FileStorage } from "./storage/FileStorage";
+import { DynamicStorage } from "./storage/DynamicStorage";
 import { FileFacade } from "./FileFacade";
 
 // this method is called when your extension is activated
@@ -19,6 +20,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const groupManager = new GroupManager();
 
+  applyDynamicGroupConfiguration(groupManager);
   applyStateGroupConfiguration(groupManager, context);
   applyProjectGroupConfiguration(groupManager);
 
@@ -69,6 +71,10 @@ function applyProjectGroupConfiguration(groupManager: GroupManager) {
   } else {
     groupManager.removeStorageProvider("filestorage");
   }
+}
+
+function applyDynamicGroupConfiguration(groupManager: GroupManager) {
+  groupManager.addStorageProvider(new DynamicStorage());
 }
 
 function applySortKeyConfiguration(

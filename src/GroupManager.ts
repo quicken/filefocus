@@ -1,6 +1,5 @@
 import { v5 as uuidv5 } from "uuid";
 import { Group } from "./Group";
-import { DynamicGroupFactory } from "./DynamicGroupFactory";
 import { FileFocusStorageProvider } from "./global";
 
 /**
@@ -67,9 +66,6 @@ export class GroupManager {
    */
   async loadAll() {
     this.root.clear();
-    const excludedFileGroup = DynamicGroupFactory.createExcludedFileGroup();
-    excludedFileGroup.refresh();
-    this.root.set(excludedFileGroup.id, excludedFileGroup);
 
     for (const storageProvider of this._storageProvider) {
       const groups = await storageProvider[1].loadRootNodes();
@@ -81,7 +77,7 @@ export class GroupManager {
   }
 
   /**
-   * Reloads all groups from the give storage provider.
+   * Reloads all groups from the given storage provider.
    */
   async reloadProvider(storageProviderId: string) {
     const storageProvider = this._storageProvider.get(storageProviderId);
