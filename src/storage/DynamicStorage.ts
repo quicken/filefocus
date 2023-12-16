@@ -1,4 +1,4 @@
-import { workspace, GlobPattern, Uri, ConfigurationTarget } from "vscode";
+import { workspace, Uri, ConfigurationTarget } from "vscode";
 import { FileFocusStorageProvider } from "../global";
 import { FileFacade } from "../FileFacade";
 import { FocusUtil } from "../FocusUtil";
@@ -15,11 +15,11 @@ type GlobConfig = {
   /**
    * The glob pattern that is used to determine which workspace files will be included as group resources.
    */
-  include: GlobPattern;
+  include: string;
   /**
    * The glob pattern that is used to determine which workspace files will be excluded from the group resources.
    */
-  exclude?: GlobPattern;
+  exclude?: string;
 };
 
 /**
@@ -97,8 +97,19 @@ export class DynamicStorage implements FileFocusStorageProvider {
    */
   private createFileGlobGroup(id: string, config: GlobConfig) {
     const findFilesFilter = async () => {
-      const files = workspace.findFiles(config.include, config.exclude);
-      return files;
+      const resources: Uri[] = [];
+      const workspaceUris = FocusUtil.getWorkspaceUris();
+      const include = config.include ? [config.include] : [];
+      const exclude = config.exclude ? [config.exclude] : [];
+      for (const workspaceUri of workspaceUris) {
+        const uris = await FileFacade.searchAllFilesAndFolders(
+          workspaceUri,
+          include,
+          exclude
+        );
+        resources.push(...uris);
+      }
+      return resources;
     };
 
     const globGroup = new DynamicGroup(id, findFilesFilter);

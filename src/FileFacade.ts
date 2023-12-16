@@ -31,7 +31,6 @@ export class FileFacade {
     });
 
     if (oldPath && newFilenName) {
-      vscode.workspace.workspaceFolders;
       const newPath = FileManager.renameFilenameInUri(oldPath, newFilenName);
       workspace.fs.rename(oldPath, newPath, { overwrite: false });
       if (focusItem.isRootItem) {
@@ -75,12 +74,14 @@ export class FileFacade {
    * may work slightly differently.
    *
    * @param baseUri The base uri from which to start the search. This must be a folder URI.
-   * @param patterns An array of GLOB patterns that define what should be matched.
+   * @param includes An array of GLOB patterns that define what should be matched.
+   * @param excludes An array of GLOB patterns that define what should not be matched.
    * @returns An array of URIs that match the glob pattern.
    */
   static async searchAllFilesAndFolders(
     baseUri: Uri,
-    patterns: string[]
+    includes: string[],
+    excludes: string[] = []
   ): Promise<Uri[]> {
     const matches: Uri[] = [];
     const listing = await workspace.fs.readDirectory(baseUri);
@@ -89,14 +90,25 @@ export class FileFacade {
       if (type === vscode.FileType.Directory) {
         const uris = await FileFacade.searchAllFilesAndFolders(
           entryUri,
-          patterns
+          includes,
+          excludes
         );
         matches.push(...uris);
       }
-      for (const pattern of patterns) {
-        if (minimatch(name, pattern)) {
-          matches.push(entryUri);
+
+      let doMatch = true;
+      for (const exclude of excludes) {
+        if (minimatch(entryUri.path, exclude, { dot: true })) {
+          doMatch = false;
           break;
+        }
+      }
+      if (doMatch) {
+        for (const include of includes) {
+          if (minimatch(entryUri.path, include, { dot: true })) {
+            matches.push(entryUri);
+            break;
+          }
         }
       }
     }

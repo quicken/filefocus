@@ -2,6 +2,11 @@
 
 Below is a loose collection of notes related to working with the code base.
 
+## VSCode API Docs
+
+- https://code.visualstudio.com/api
+- https://vscode-api.js.org/modules.html
+
 ## Context Ids
 
 One of the challenges is correctly decorating the various tree items with the correct icons and menu context based on the
@@ -21,8 +26,8 @@ As it stands there are the following different permutations.
 
 ### Notes:
 
-A user can only add files and folders at the root of a focus group. When a folder is added to a focus group the extension enables the user to browse all subfoldes and files within those "real" folders. As such when affording user the option to remove resources we need to be able to distinguish between items in the group root and items
-that are nested inside a real folder. Currently, we do this by embedding the keyword Root in the context id.
+A user can only add files and folders at the root of a focus group. When a folder is added to a focus group the extension enables the user to browse all subfoldes and files within those "real" folders. As such when affording users the option to remove resources we need to be able to distinguish between items in the group root and items
+that are nested inside a real folder. Currently, we do this by embedding the keyword Root in the contextid.
 
 | Name            | Description                                                                                                |
 | --------------- | ---------------------------------------------------------------------------------------------------------- |
