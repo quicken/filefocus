@@ -80,7 +80,7 @@ export class DynamicStorage implements FileFocusStorageProvider {
       const groupId = "filefocus-glob-" + index;
       let group: DynamicGroup;
       if (this._store.has(groupId)) {
-        group = this._store.get(this.excludeGroupId) as DynamicGroup;
+        group = this._store.get(groupId) as DynamicGroup;
       } else {
         group = this.createFileGlobGroup(groupId, globConfig);
       }
