@@ -15,11 +15,15 @@ type GlobConfig = {
   /**
    * The glob pattern that is used to determine which workspace files will be included as group resources.
    */
-  include: string;
+  include: string[];
   /**
    * The glob pattern that is used to determine which workspace files will be excluded from the group resources.
    */
-  exclude?: string;
+  exclude?: string[];
+  /**
+   * Traverse directories default is true.
+   */
+  recurse?: boolean;
 };
 
 /**
@@ -77,6 +81,7 @@ export class DynamicStorage implements FileFocusStorageProvider {
 
     for (let index = 0; index < globgroup.length; index++) {
       const globConfig = globgroup[index];
+
       const groupId = "filefocus-glob-" + index;
       let group: DynamicGroup;
       if (this._store.has(groupId)) {
@@ -99,13 +104,16 @@ export class DynamicStorage implements FileFocusStorageProvider {
     const findFilesFilter = async () => {
       const resources: Uri[] = [];
       const workspaceUris = FocusUtil.getWorkspaceUris();
-      const include = config.include ? [config.include] : [];
-      const exclude = config.exclude ? [config.exclude] : [];
+
+      config.exclude ??= [];
+      config.recurse ??= true;
+
       for (const workspaceUri of workspaceUris) {
         const uris = await FileFacade.searchAllFilesAndFolders(
           workspaceUri,
-          include,
-          exclude
+          config.include,
+          config.exclude,
+          config.recurse
         );
         resources.push(...uris);
       }
