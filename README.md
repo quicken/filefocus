@@ -98,7 +98,7 @@ Enabling this option may require a restart to pick up changes.
 Glob groups are shown inside "File Focus" as folders that are automatically populated with files that match a specific glob pattern.
 
 The following example configures a folder named "Hidden Files" that automatically shows all hidden files inside workspaces but
-excludes any hidden files inside any "node_modules" folder.
+excludes any hidden files inside any "node_modules" folder as well as the .git ignore folder and any files inside .git ignore.
 
 Open the Vscode settings file and search for the property filefocus.globgroup then add the following item to the "globgroup" array:
 
@@ -106,13 +106,17 @@ Open the Vscode settings file and search for the property filefocus.globgroup th
 globgroup:[
   {
     "name":"Hidden Files",
-    "include":"**/.*",
-    "exclude":"**/node_modules/**"
+    "include":["**/.*"],
+    "exclude":["**/.git{,/**/*}","**/node_modules/**"],
+    "recurse":true
   }
 ]
 ```
 
-Note: It is possible to define multiple glob groups with different patterns for each group. Simply, add more items to the globgroup array with your configuration.
+### Note:
+
+It is possible to define multiple glob groups with different patterns for each group. Simply, add more items to the globgroup array with your configuration.
+Also, currently, the extension uses the minimatch npm modules for globbing. Therefore, globbing works slightly differently to vscode globbing. If someone can find a way to use the same globbing as vscode that would be much better.
 
 ## Using Project-Specific Focus Groups.
 
@@ -160,3 +164,5 @@ The path array defines the resources that are shown when the group is expanded. 
 - A project configuration file must be in the workspace root.
 - The project configuration file must be created and edited manually.
 - Some settings might require restarting vscode to be picked up.
+- The extension will only work with files that are inside workspace folders.
+- The excluded group might not match some items because the extension can't use the same globbing engine as vscode.
