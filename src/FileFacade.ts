@@ -81,17 +81,19 @@ export class FileFacade {
   static async searchAllFilesAndFolders(
     baseUri: Uri,
     includes: string[],
-    excludes: string[] = []
+    excludes: string[] = [],
+    recurse: boolean = true
   ): Promise<Uri[]> {
     const matches: Uri[] = [];
     const listing = await workspace.fs.readDirectory(baseUri);
     for (const [name, type] of listing) {
       const entryUri = vscode.Uri.joinPath(baseUri, name);
-      if (type === vscode.FileType.Directory) {
+      if (recurse && type === vscode.FileType.Directory) {
         const uris = await FileFacade.searchAllFilesAndFolders(
           entryUri,
           includes,
-          excludes
+          excludes,
+          recurse
         );
         matches.push(...uris);
       }
