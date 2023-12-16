@@ -5,6 +5,11 @@ import { Group } from "./Group";
 import { FocusItem } from "./tree/FocusItem";
 import { minimatch } from "minimatch";
 
+type SearchOptions = {
+  recurse?: boolean;
+  greedy?: boolean;
+};
+
 /**
  * This class implements methods to afford users some limited capabilities to
  * manipulate workspace resources (file system) in a similar fashion to the native vscode
@@ -66,54 +71,73 @@ export class FileFacade {
   }
 
   /**
-   * Recursively search for all files and folders that match the passed in glob patterns in
-   * all workspace folders. This method also searches files that would normally be excluded by VSCode.
+   * Search for all files and folders that match the passed in glob patterns inside the given
+   * base folders. This method also finds files that would normally be excluded by VSCode.
    *
-   * Note: This may work slightly different to the VSCode glob matching as VSCode currently provides
-   * no direct access to its implementation. As such we rely on a third party glob package that
-   * may work slightly differently.
+   * Note: GLOB matching uses a third party package that works slightly different to the VSCode glob matching.
+   * Ideally we would use the same code as VSCode for glob matching in the future.
    *
    * @param baseUri The base uri from which to start the search. This must be a folder URI.
    * @param includes An array of GLOB patterns that define what should be matched.
    * @param excludes An array of GLOB patterns that define what should not be matched.
+   * @options Search options.
+   * recurse: Set to true to search into subfolders.
+   * greedy: Set to false to stop traversing into subfolders if the folder name is matched.
    * @returns An array of URIs that match the glob pattern.
    */
-  static async searchAllFilesAndFolders(
+  static async search(
     baseUri: Uri,
     includes: string[],
     excludes: string[] = [],
-    recurse: boolean = true
+    options?: SearchOptions
   ): Promise<Uri[]> {
+    options ??= {};
+    options.recurse ??= true;
+    options.greedy ??= true;
+
     const matches: Uri[] = [];
     const listing = await workspace.fs.readDirectory(baseUri);
+
     for (const [name, type] of listing) {
       const entryUri = vscode.Uri.joinPath(baseUri, name);
-      if (recurse && type === vscode.FileType.Directory) {
-        const uris = await FileFacade.searchAllFilesAndFolders(
+
+      if (FileFacade.isMatch(entryUri.path, includes, excludes)) {
+        matches.push(entryUri);
+        /* If the folder is matched don't bother also adding a files within the
+        folder because when a folder is added to a group expanding the folder will
+        automatically show all resouces. */
+        if (!options.greedy && type === vscode.FileType.Directory) {
+          continue;
+        }
+      }
+
+      if (options.recurse && type === vscode.FileType.Directory) {
+        const uris = await FileFacade.search(
           entryUri,
           includes,
           excludes,
-          recurse
+          options
         );
         matches.push(...uris);
       }
-
-      let doMatch = true;
-      for (const exclude of excludes) {
-        if (minimatch(entryUri.path, exclude, { dot: true })) {
-          doMatch = false;
-          break;
-        }
-      }
-      if (doMatch) {
-        for (const include of includes) {
-          if (minimatch(entryUri.path, include, { dot: true })) {
-            matches.push(entryUri);
-            break;
-          }
-        }
-      }
     }
     return matches;
+  }
+
+  private static isMatch(path: string, includes: string[], excludes: string[]) {
+    if (FileFacade.matchesPatterns(path, excludes)) {
+      return false;
+    }
+
+    return FileFacade.matchesPatterns(path, includes);
+  }
+
+  private static matchesPatterns(path: string, patterns: string[]) {
+    for (const pattern of patterns) {
+      if (minimatch(path, pattern, { dot: true })) {
+        return true;
+      }
+    }
+    return false;
   }
 }

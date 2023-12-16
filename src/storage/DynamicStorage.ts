@@ -109,11 +109,11 @@ export class DynamicStorage implements FileFocusStorageProvider {
       config.recurse ??= true;
 
       for (const workspaceUri of workspaceUris) {
-        const uris = await FileFacade.searchAllFilesAndFolders(
+        const uris = await FileFacade.search(
           workspaceUri,
           config.include,
           config.exclude,
-          config.recurse
+          { recurse: config.recurse, greedy: false }
         );
         resources.push(...uris);
       }
@@ -145,10 +145,9 @@ export class DynamicStorage implements FileFocusStorageProvider {
       const resources: Uri[] = [];
       const workspaceUris = FocusUtil.getWorkspaceUris();
       for (const workspaceUri of workspaceUris) {
-        const uris = await FileFacade.searchAllFilesAndFolders(
-          workspaceUri,
-          globs
-        );
+        const uris = await FileFacade.search(workspaceUri, globs, [], {
+          greedy: false,
+        });
         resources.push(...uris);
       }
 
