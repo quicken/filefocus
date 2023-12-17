@@ -24,7 +24,7 @@ For bug reports and code contributions head on over to:
 - Re-organize frequently accessed and important files in virtual folders.
 - Define dynamic folders based on glob patterns.
 - Open all files in a group with one click.
-- Show files & folders excluded by vscode.
+- Show files & folders excluded by vscode (experimental).
 - Groups recently worked on files by issue/ticket.
 - Define virtual groups inside your codebase.
 - Sync groups between devices (work/home).
