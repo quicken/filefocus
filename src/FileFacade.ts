@@ -66,7 +66,6 @@ export class FileFacade {
     if (parentUri && newFolderName) {
       const newFolderUri = FileManager.newFolderUri(parentUri, newFolderName);
       workspace.fs.createDirectory(newFolderUri);
-      group.addResource(newFolderUri);
     }
   }
 
@@ -94,7 +93,6 @@ export class FileFacade {
         return;
       }
       await workspace.fs.writeFile(fileUri, new Uint8Array());
-      group.addResource(fileUri);
       vscode.workspace.openTextDocument(fileUri).then((doc) => {
         vscode.window.showTextDocument(doc);
       });
