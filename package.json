@@ -34,47 +34,47 @@
       },
       {
         "command": "fileFocusExtension.addGroup",
-        "title": "Add Focus Group",
+        "title": "Add group",
         "icon": "$(new-folder)"
       },
       {
         "command": "fileFocusExtension.pinGroup",
-        "title": "Pin Group",
+        "title": "Pin group",
         "icon": "$(pin)"
       },
       {
         "command": "fileFocusExtension.openGroup",
-        "title": "Open All Files",
+        "title": "Open all files",
         "icon": "$(folder)"
       },
       {
         "command": "fileFocusExtension.removeGroup",
-        "title": "Delete Focus Group",
+        "title": "Delete group",
         "icon": "$(trash)"
       },
       {
         "command": "fileFocusExtension.renameGroup",
-        "title": "Rename Focus Group",
+        "title": "Rename group",
         "icon": "$(edit)"
       },
       {
         "command": "fileFocusExtension.addGroupResource",
-        "title": "Add to Focus Group",
+        "title": "Add to focus group",
         "icon": "$(tag-add)"
       },
       {
         "command": "fileFocusExtension.removeGroupResource",
-        "title": "Remove from Focus Group",
+        "title": "Remove from group",
         "icon": "$(remove-close)"
       },
       {
         "command": "fileFocusExtension.resetStorage",
-        "title": "Reset the Extension Storage",
+        "title": "Reset storage",
         "icon": "$(remove-close)"
       },
       {
         "command": "fileFocusExtension.reloadStorage",
-        "title": "Reload Storage",
+        "title": "Reload",
         "icon": "$(extensions-refresh)"
       },
       {
@@ -84,12 +84,12 @@
       },
       {
         "command": "fileFocusExtension.createFileFolder",
-        "title": "Create Directory in location",
+        "title": "New folder...",
         "icon": "$(new-folder)"
       },
       {
         "command": "fileFocusExtension.createFile",
-        "title": "Create File in location",
+        "title": "New file...",
         "icon": "$(new-file)"
       }
     ],
@@ -100,40 +100,40 @@
           "filefocus.useGlobalStorage": {
             "type": "boolean",
             "default": false,
-            "description": "Use global storage to share focus groups accross all workspaces. Global storage will sync accross devices."
+            "description": "Store groups in vscode global storage. Allows syncing groups with vscode accounts."
           },
           "filefocus.sortkey": {
             "type": "string",
             "default": "basename",
-            "description": "Sort files inside groups by filename (basename) or by relative file path.",
+            "description": "Group files by filename or by path.",
             "enum": [
               "basename",
               "path"
             ],
             "enumDescriptions": [
-              "Sort by File Name",
-              "Sort by Path"
+              "Group by name",
+              "Group by path"
             ]
           },
           "filefocus.showProjectGroups": {
             "type": "boolean",
             "default": true,
-            "description": "Show Project Groups."
+            "description": "Disable to hide all groups defined inside .filefocus.json files."
           },
           "filefocus.showExcludedGroup": {
             "type": "boolean",
             "default": false,
-            "description": "Show a dynamic group containing all excluded workspace files and folders."
+            "description": "Show a group containing all files matching vscodes files.exclude file. (experimental)"
           },
           "filefocus.addToPinnedGroupOnOpen": {
             "type": "boolean",
             "default": false,
-            "description": "Automatically, add opened files to the pinned group."
+            "description": "Automatically add opened files to the currently pinned group."
           },
           "filefocus.globgroup": {
             "type": "array",
             "default": [],
-            "description": "An array of glob configs. Each item corresponds to a focus group that is populated based on glob rules."
+            "description": "Defines dynamic groups based on glob patterns. See project readme/home page for details."
           }
         }
       }
