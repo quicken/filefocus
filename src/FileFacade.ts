@@ -83,22 +83,25 @@ export class FileFacade {
    * @options Search options.
    * recurse: Set to true to search into subfolders.
    * greedy: Set to false to stop traversing into subfolders if the folder name is matched.
+   * @readDirectory Only use for unit-testing. It would have been nicer to be able to mock vscode.workspace.fs.readDirectory with
+   * simple-mock but I just could not get that working this is more simple and just works.
    * @returns An array of URIs that match the glob pattern.
    */
   static async search(
     baseUri: Uri,
     includes: string[],
     excludes: string[] = [],
-    options?: SearchOptions
+    options?: SearchOptions,
+    readDirectory: any = workspace.fs.readDirectory
   ): Promise<Uri[]> {
     options ??= {};
     options.recurse ??= true;
     options.greedy ??= true;
 
     const matches: Uri[] = [];
-    const listing = await workspace.fs.readDirectory(baseUri);
+    const directory = await readDirectory(baseUri);
 
-    for (const [name, type] of listing) {
+    for (const [name, type] of directory) {
       const entryUri = vscode.Uri.joinPath(baseUri, name);
 
       if (FileFacade.isMatch(entryUri.path, includes, excludes)) {
@@ -116,7 +119,8 @@ export class FileFacade {
           entryUri,
           includes,
           excludes,
-          options
+          options,
+          readDirectory
         );
         matches.push(...uris);
       }
