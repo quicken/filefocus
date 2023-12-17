@@ -71,6 +71,51 @@ export class FileFacade {
   }
 
   /**
+   * Create a new file resource inside the specifed folder location.
+   *
+   * @param group The group to which the new folder should be added.
+   * @param focusItem The focus item in which the new file should be created.
+   * @returns
+   */
+  static async createFile(group: Group, focusItem: FocusItem) {
+    if (focusItem.type !== vscode.FileType.Directory) {
+      return;
+    }
+
+    const parentUri = focusItem.resourceUri;
+    const newFileName = await vscode.window.showInputBox({
+      prompt: "New file name",
+      value: "",
+    });
+
+    if (parentUri && newFileName) {
+      const fileUri = Uri.joinPath(parentUri, newFileName);
+      if (await FileFacade.uriExists(fileUri)) {
+        return;
+      }
+      await workspace.fs.writeFile(fileUri, new Uint8Array());
+      group.addResource(fileUri);
+      vscode.workspace.openTextDocument(fileUri).then((doc) => {
+        vscode.window.showTextDocument(doc);
+      });
+    }
+  }
+
+  /**
+   * Check if a given Uri already exists as a file or folder in the file system.
+   * @param uri The uri that should be checked.
+   * @returns
+   */
+  static async uriExists(uri: Uri) {
+    try {
+      await workspace.fs.stat(uri);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
    * Search for all files and folders that match the passed in glob patterns inside the given
    * base folders. This method also finds files that would normally be excluded by VSCode.
    *
