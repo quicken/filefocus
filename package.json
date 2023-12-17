@@ -86,6 +86,11 @@
         "command": "fileFocusExtension.createFileFolder",
         "title": "Create Directory in location",
         "icon": "$(new-folder)"
+      },
+      {
+        "command": "fileFocusExtension.createFile",
+        "title": "Create File in location",
+        "icon": "$(new-file)"
       }
     ],
     "configuration": [
@@ -192,6 +197,10 @@
         },
         {
           "command": "fileFocusExtension.createFileFolder",
+          "when": "view == fileFocusTree && viewItem =~ /FocusFolder/ && viewItem =~ /Write/"
+        },
+        {
+          "command": "fileFocusExtension.createFile",
           "when": "view == fileFocusTree && viewItem =~ /FocusFolder/ && viewItem =~ /Write/"
         }
       ],
