@@ -125,7 +125,7 @@ It is possible to ignore groups defined by a .filefocus.json file in settings.
 
 ### Use global storage
 
-When enabled your manually created groups are stored inside vscodes global storage system. If configured vscode will sync your manual groups to all your devices.
+When enabled your manually created groups are stored inside the vscodes global storage system. If configured vscode will sync your manual groups to all your devices.
 
 By default (disabled), manually created groups are stored in your workspace allowing you to define a different set of focus groups per workspace.
 
