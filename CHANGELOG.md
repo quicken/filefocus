@@ -8,11 +8,10 @@ https://github.com/quicken/filefocus
 
 ### 1.6.0
 
-- Display files and folders excluded by vscode inside an "Excluded" folder.
 - Define dynamic folders that are automatically populated based on glob patterns.
+- Display files and folders excluded by vscode inside an "Excluded" folder.
 - Automatically add a resource to a new focus group.
-- Experimental: Add some limited file management capability. We don't want to replicate the explorer but
-  some basic functionality is handy.
+- Experimental: Add context menu (right click) on a folder/file inside a writable group to rename, create a folder or create a new file. We don't want to replicate the explorer but should at least have these basics.
 - Fix: Incorrect icon usage for folders.
 - Fix: Clarify usage of global storage.
 

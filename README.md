@@ -1,16 +1,10 @@
 # File Focus
 
-File Focus provides quick access to frequently accessed source code and configuration files. Multiple files in a focus group can be opened with a single click to quickly resume
-working on different issues/tickets.
+File Focus facilitates a streamlined workflow by allowing you to reorganize mono repos or other big projects virtually.
 
-Organise files in dynamic folders based on glob patterns.
+Files and folders can be grouped dynamically using glob patterns or organized manually into virtual folders best suited to your workflow.
 
-Pin a focus group to automatically maintain a history of open files. With this feature, you can start working on an Issue/Ticket and file focus will automatically keep track
-of the files you are working on.
-
-If you like having one project per workspace you can group files and folders that are commonly used in your language of choice and file focus will automatically make them available from the groups you have defined.
-
-For people who love multi-folder workspaces, you can re-group files and folders across workspace folders. Great for quick navigation where you can’t remember the file name or when working on big projects to avoid long scrolling through the file explorer.
+A pinned virtual folder automatically keeps track of files you are working on so you can quickly pick up where you left off when working on multiple issues/tickets.
 
 If you want to share or highlight commonly used files and folders with your team you can store a configuration file along with your source code to make groups automatically available to all people working on the project.
 
@@ -27,14 +21,15 @@ For bug reports and code contributions head on over to:
 
 ## Features
 
+- Re-organize frequently accessed and important files in virtual folders.
 - Define dynamic folders based on glob patterns.
-- Show files & folders excluded by vscode.
 - Open all files in a group with one click.
-- Define groups for all Project Team Members.
-- Maintains the same icon and git status as the file explorer.
-- Sync groups between devices.
+- Show files & folders excluded by vscode.
+- Groups recently worked on files by issue/ticket.
+- Define virtual groups inside your codebase.
+- Sync groups between devices (work/home).
 
-## What is New
+## What is new
 
 - Define dynamic folders that are automatically populated based on glob patterns.
 - Display files and folders excluded by vscode inside an "Excluded" folder.
@@ -42,7 +37,7 @@ For bug reports and code contributions head on over to:
 - Experimental: Add some limited file management capability. We don't want to replicate the explorer but
   some basic functionality is handy.
 
-## Getting Started
+## Getting started
 
 1. Expand the File Focus Explorer View.
 2. Click the Add Icon (see image below). Type a name for your focus group.
@@ -57,43 +52,9 @@ You can open files directly from a focus group. Folders added to a "focus group"
 
 - Drag the File-Focus Tree above the File Explorer for a better experience as Focus Groups should only contain a few items.
 - Alternatively, drag the File Focus Tree on to Left Hand Tab Bar.
-- Pin a focus group to skip choosing a group when adding focus groups.
+- Pin a focus group to skip choosing a group when adding focus groups. For example, create a new group per ticket then pin the current ticket you are working on to automatically track files per ticket.
 
-## Extension Settings
-
-### Use Global Storage
-
-File focus groups are stored globally, available in workspaces and synced to all your devices.
-
-By default, focus groups are stored in your workspace allowing you to define a different set of focus groups per workspace.
-
-Focus Groups are NOT transferred between global and workspace storage.
-
-### Sort Key
-
-Choose how resources are sorted.
-
-Basename, sort resources only by the file name.
-
-Path, sort resources by the full path. Handy when grouping resources from multiple projects and you want to still keep project files together.
-
-### Show Project Groups
-
-Enables project group. When enabled the extension looks for focus groups defined in a .filefocus file in the root of a workspace folder.
-
-This allows for defining project groups that are available to all users of a project.
-
-### Add to pinned group on open
-
-When enabled files are automatically added to a focus group when opened in the editor. This allows automatic tracking of files you are currently working on.
-
-### Show excluded files group.
-
-When enabled a dynamic group is shown that will contain all files and folders that match what has been defined inside the vscode exclude file.
-
-Enabling this option may require a restart to pick up changes.
-
-## Creating Dynamic Folders with Glob Patterns
+## Creating dynamic folders with glob patterns
 
 Glob groups are shown inside "File Focus" as folders that are automatically populated with files that match a specific glob pattern.
 
@@ -116,9 +77,10 @@ globgroup:[
 ### Note:
 
 It is possible to define multiple glob groups with different patterns for each group. Simply, add more items to the globgroup array with your configuration.
+
 Also, currently, the extension uses the minimatch npm modules for globbing. Therefore, globbing works slightly differently to vscode globbing. If someone can find a way to use the same globbing as vscode that would be much better.
 
-## Using Project-Specific Focus Groups.
+## Using project-specific focus groups.
 
 Focus groups can be made available to all users of a project by manually creating a **.filefocus.json** file in the root of your workspace folders.
 
@@ -128,7 +90,7 @@ Currently, it is required that this file be manually created and populated.
 
 The file has the following format:
 
-### Example Configuration File
+### Example configuration file
 
 **.filefocus.json**
 
@@ -155,7 +117,48 @@ The name property of a focus group defines the name that is shown in the user in
 
 The path array defines the resources that are shown when the group is expanded. Each path is a string that contains the relative path to the resources.
 
-## Known Issues
+### Note
+
+It is possible to ignore groups defined by a .filefocus.json file in settings.
+
+## Extension settings
+
+### Use global storage
+
+When enabled your manually created groups are stored inside vscodes global storage system. If configured vscode will sync your manual groups to all your devices.
+
+By default (disabled), manually created groups are stored in your workspace allowing you to define a different set of focus groups per workspace.
+
+Toggling this option will NOT transfer groups between global and workspace storage.
+
+### Sort key
+
+Choose how resources are sorted.
+
+| Option   | Description                                                                              |
+| -------- | ---------------------------------------------------------------------------------------- |
+| Basename | Sort resources only by the file name. Files with the same name will be grouped together. |
+| Path     | Sort resources by the full path. Files with same path will be grouped..                  |
+
+Sorting by path can be handy when grouping resources from multiple projects and you want to still keep project files together.
+
+### Show project groups
+
+When enabled the extension looks for a ".filefocus" file in the root of every workspace folder.
+
+See the section: "Using project-specific focus groups." for more information.
+
+### Add to pinned group on open
+
+When enabled files are automatically added to a focus group when opened in the editor. This allows automatic tracking of files you are currently working on.
+
+### Show excluded files group.
+
+When enabled a dynamic group is shown that will contain all files and folders that match what has been defined inside the vscode exclude file.
+
+Enabling this option may require a restart to pick up changes.
+
+## Known issues
 
 - Only one level of "focus groups" can be created.
 - Status changes and Changes to the workspace might not be automatically reflected. Click the refresh icon in the File Focus Pane to reload focus groups.
