@@ -135,11 +135,6 @@ export class GroupFacade {
   async addGroupResource(path: string): Promise<void> {
     /* If no writable focus group as been defined define a focus group. */
     if (this.groupManager.writableGroupNames.length === 0) {
-      await vscode.window.showInformationMessage(
-        "Please setup at least one focus group. Then retry adding this resource.",
-        { modal: true }
-      );
-
       vscode.commands.executeCommand("fileFocusExtension.addGroup", path);
       return;
     }
