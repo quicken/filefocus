@@ -123,7 +123,6 @@ function registerEvents(
       }
     }
 
-    await groupManager.reloadProvider("tabgroup");
     await fileFocusTreeProvider.refresh();
   });
 
@@ -132,7 +131,6 @@ function registerEvents(
       return;
     }
 
-    await groupManager.reloadProvider("tabgroup");
     await fileFocusTreeProvider.refresh();
   });
 }
