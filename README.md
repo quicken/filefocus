@@ -34,25 +34,42 @@ For bug reports and code contributions head on over to:
 - Define dynamic folders that are automatically populated based on glob patterns.
 - Display files and folders excluded by vscode inside an "Excluded" folder.
 - Automatically add a resource to a new focus group.
-- Experimental: Add some limited file management capability. We don't want to replicate the explorer but
-  some basic functionality is handy.
+- Create new files and folders from the tree view (inside existing folders only)
 
 ## Getting started
+
+File focus affords you the ability to re-organize frequently used files and folders inside
+groups (focus groups).
+
+To get started with your first group:
 
 1. Expand the File Focus Explorer View.
 2. Click the Add Icon (see image below). Type a name for your focus group.
 3. As you work open the context menu in the file explorer or editor and select: Add to focus group.
 4. You can also use "ctrl + shift + 8" to add the file open in the active editor to a focus group.
 
-You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
-
 ![Adding the first Focus Group](https://github.com/quicken/filefocus/blob/master/resources/started.png?raw=true)
 
-### Tips & Tricks
+Conceptually a group is a container of bookmarks that link to files and folders within one or more workspaces.
+
+Files and folders can be manually added to a group as your work, dynamically based on glob patterns or based on config files
+saved into your project.
+
+You can open files directly from a focus group. Folders added to a "focus group" can be navigated like any other folder.
+
+## Tips & Tricks
 
 - Drag the File-Focus Tree above the File Explorer for a better experience as Focus Groups should only contain a few items.
 - Alternatively, drag the File Focus Tree on to Left Hand Tab Bar.
 - Pin a focus group to skip choosing a group when adding focus groups. For example, create a new group per ticket then pin the current ticket you are working on to automatically track files per ticket.
+
+### File tools
+
+The extension provides some basic tools for creating files and folders. For all other needs use the vscodes file explorer.
+
+- To create files and folders right click on a folder that has been added to a group and select the option from the context menu.
+- New files and folders can not be created inside dynamic or other read-only groups.
+- New files and folders can not be created inside a group, but only inside an existing folder.
 
 ## Creating dynamic folders with glob patterns
 
