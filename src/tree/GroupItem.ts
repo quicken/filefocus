@@ -28,13 +28,20 @@ export class GroupItem extends vscode.TreeItem {
   ) {
     super(label, collapsibleState);
     this.contextValue = isReadOnly ? "GroupItemReadOnly" : "GroupItem";
-    this.label = this.annotateLabel(label, this.isFavourite);
+    this.label = this.annotateLabel(label);
+    this.iconPath = this.icon();
   }
 
-  private annotateLabel(label: string, isFavourite: boolean) {
-    if (isFavourite) {
-      return `⭐ ${label}`;
+  private icon() {
+    if (this.isFavourite) {
+      return new vscode.ThemeIcon("folder-active");
     }
-    return this.isReadOnly ? `🔹 ${label}` : label;
+    return this.isReadOnly
+      ? new vscode.ThemeIcon("folder-library")
+      : new vscode.ThemeIcon("folder");
+  }
+
+  private annotateLabel(label: string) {
+    return this.isFavourite ? `⭐ ${label}` : label;
   }
 }
