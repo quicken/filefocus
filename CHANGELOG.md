@@ -8,12 +8,30 @@ https://github.com/quicken/filefocus
 
 ### 1.6.0
 
+These are the highlights introduced since 1.5.3
+
 - Define dynamic folders that are automatically populated based on glob patterns.
 - Display files and folders excluded by vscode inside an "Excluded" folder.
 - Automatically add a resource to a new focus group.
-- Experimental: Add context menu (right click) on a folder/file inside a writable group to rename, create a folder or create a new file. We don't want to replicate the explorer but should at least have these basics.
-- Fix: Incorrect icon usage for folders.
-- Fix: Clarify usage of global storage.
+- Create files and folders inside any folder that has been added to a group.
+- Rename files and folders from the tree view.
+- Updated icons for groups and group actions.
+- Updated description to be more clear.
+
+### 1.5.11b
+
+- Improve the description of settings.
+- Groups are now displayed with icons to distinguish them from files and folders.
+- Read Only Groups, Pinned Groups and regular groups can now be distinguished by the icon.
+- Update icon used to open all files in a group.
+- Fixed an issue where renaming a root resource would orphan the file inside the group.
+- Get glob patterns to work more closely as they do in .gitignore files.
+- Re-order the annotations of actions shown for groups in tree view items.
+- Removed the prompt shown when adding a resource and no groups exist. The extension now prompts for the first group name instead.
+
+### 1.5.10b
+
+- Dynamic groups can choose not to traverse folders.
 
 ### 1.5.3
 
