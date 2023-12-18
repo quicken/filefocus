@@ -4,8 +4,8 @@ Below is a loose collection of notes related to working with the code base.
 
 ## VSCode API Docs
 
-- https://code.visualstudio.com/api
-- https://vscode-api.js.org/modules.html
+- API Reference: https://code.visualstudio.com/api
+- Icon Reference: https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
 
 ## To-Do
 
