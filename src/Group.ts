@@ -59,6 +59,17 @@ export class Group {
     this._resource = [];
   };
 
+  /**
+   * Replaces one resource with another.
+   *
+   * @param from The resource that will be removed.
+   * @param to The resource that will be added in place.
+   */
+  public replaceResource = (from: Uri, to: Uri) => {
+    const i = this._resource.indexOf(from);
+    this._resource[i] = to;
+  };
+
   private _resourceContains = (uri: Uri) => {
     return this._resource.some((value) => value.fsPath === uri.fsPath);
   };

@@ -38,10 +38,9 @@ export class FileFacade {
 
     if (oldPath && newFilenName) {
       const newPath = FileManager.renameFilenameInUri(oldPath, newFilenName);
-      workspace.fs.rename(oldPath, newPath, { overwrite: false });
+      await workspace.fs.rename(oldPath, newPath, { overwrite: false });
       if (focusItem.isRootItem) {
-        group.removeResource(oldPath);
-        group.addResource(newPath);
+        group.replaceResource(oldPath, newPath);
       }
     }
   }
@@ -66,7 +65,7 @@ export class FileFacade {
 
     if (parentUri && newFolderName) {
       const newFolderUri = FileManager.newFolderUri(parentUri, newFolderName);
-      workspace.fs.createDirectory(newFolderUri);
+      await workspace.fs.createDirectory(newFolderUri);
     }
   }
 

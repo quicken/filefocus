@@ -221,6 +221,7 @@ function registerCommands(
       const group = groupManager.root.get(focusItem.groupId);
       if (group) {
         await FileFacade.renameFocusItem(group, focusItem);
+        groupManager.saveGroup(group);
         fileFocusTreeProvider.refresh();
       }
     }
