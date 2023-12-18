@@ -102,7 +102,7 @@
             "default": false,
             "description": "Store groups in vscode global storage. Allows syncing groups with vscode accounts."
           },
-          "filefocus.sortkey": {
+          "filefocus.sortKey": {
             "type": "string",
             "default": "basename",
             "description": "Group files by filename or by path.",
