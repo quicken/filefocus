@@ -167,28 +167,28 @@
       ],
       "view/item/context": [
         {
-          "command": "fileFocusExtension.removeGroup",
-          "when": "view == fileFocusTree && viewItem == GroupItem",
-          "group": "inline"
+          "command": "fileFocusExtension.openGroup",
+          "when": "view == fileFocusTree && viewItem =~ /GroupItem/",
+          "group": "inline@3"
         },
         {
           "command": "fileFocusExtension.pinGroup",
           "when": "view == fileFocusTree && viewItem == GroupItem",
-          "group": "inline"
+          "group": "inline@4"
         },
         {
           "command": "fileFocusExtension.renameGroup",
           "when": "view == fileFocusTree && viewItem == GroupItem",
-          "group": "inline"
+          "group": "inline@2"
+        },
+        {
+          "command": "fileFocusExtension.removeGroup",
+          "when": "view == fileFocusTree && viewItem == GroupItem",
+          "group": "inline@1"
         },
         {
           "command": "fileFocusExtension.removeGroupResource",
           "when": "view == fileFocusTree && viewItem =~ /Root/ && viewItem =~ /Write/",
-          "group": "inline"
-        },
-        {
-          "command": "fileFocusExtension.openGroup",
-          "when": "view == fileFocusTree && viewItem =~ /GroupItem/",
           "group": "inline"
         },
         {
