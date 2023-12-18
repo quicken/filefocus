@@ -45,7 +45,7 @@
       {
         "command": "fileFocusExtension.openGroup",
         "title": "Open all files",
-        "icon": "$(folder)"
+        "icon": "$(multiple-windows)"
       },
       {
         "command": "fileFocusExtension.removeGroup",
