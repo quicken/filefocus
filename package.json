@@ -118,7 +118,7 @@
           "filefocus.showProjectGroups": {
             "type": "boolean",
             "default": true,
-            "description": "Disable to hide all groups defined inside .filefocus.json files."
+            "description": "Show groups defined inside .filefocus.json files found in any workspace root."
           },
           "filefocus.showExcludedGroup": {
             "type": "boolean",
@@ -130,7 +130,7 @@
             "default": false,
             "description": "Automatically add opened files to the currently pinned group."
           },
-          "filefocus.globgroup": {
+          "filefocus.globGroup": {
             "type": "array",
             "default": [],
             "description": "Defines dynamic groups based on glob patterns. See project readme/home page for details."

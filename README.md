@@ -78,10 +78,10 @@ Glob groups are shown inside "File Focus" as folders that are automatically popu
 The following example configures a folder named "Hidden Files" that automatically shows all hidden files inside workspaces but
 excludes any hidden files inside any "node_modules" folder as well as the .git ignore folder and any files inside .git ignore.
 
-Open the Vscode settings file and search for the property filefocus.globgroup then add the following item to the "globgroup" array:
+Open the Vscode settings file and search for the property filefocus.globGroup then add the following item to the "globGroup" array:
 
 ```json
-globgroup:[
+globGroup:[
   {
     "name":"Hidden Files",
     "include":["**/.*"],
@@ -93,7 +93,7 @@ globgroup:[
 
 ### Note:
 
-It is possible to define multiple glob groups with different patterns for each group. Simply, add more items to the globgroup array with your configuration.
+It is possible to define multiple glob groups with different patterns for each group. Simply, add more items to the globGroup array with your configuration.
 
 Also, currently, the extension uses the minimatch npm modules for globbing. Therefore, globbing works slightly differently to vscode globbing. If someone can find a way to use the same globbing as vscode that would be much better.
 

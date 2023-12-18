@@ -77,7 +77,7 @@ export class DynamicStorage implements FileFocusStorageProvider {
   private async addGlobGroupsToRoot() {
     const globgroup = workspace
       .getConfiguration("filefocus")
-      .get("globgroup") as GlobConfig[];
+      .get("globGroup") as GlobConfig[];
 
     for (let index = 0; index < globgroup.length; index++) {
       const globConfig = globgroup[index];
