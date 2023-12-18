@@ -9,6 +9,33 @@ Below is a loose collection of notes related to working with the code base.
 
 ## To-Do
 
+By default, all root resources are rendered as a flat view. However, it would be good to also
+have a feature that automatically organizes root resources as a tree. For example:
+given a group "Focus" with the resources: src/tree/Group.ts, docs/readme.md and src/lib/util.ts
+the default is to render the resources flat such as:
+
+Group.ts
+readme.md
+util.ts
+
+With a new option "tree" the extension would render the resources as:
+
+```
+{workspacename} |- src
+                    |-tree
+                         |- Group.ts
+                    |-lib
+                         |- util.ts
+                |-docs
+                    |- readme.md
+```
+
+For this to work we might need another type of FocusItem, such as "virtualFolder". Or, it may be possible to just render the root of each folder as normal and then filter out any resources that have not been added to the group.
+
+Since resources can only be added to the root of a group folders are already represented as as a tree. Therefore, we only need to consider organizing files added to the root into virtual folders.
+
+One approach may be to iterate over all roots that are files and to extract the 1st path element which would yield: [src, docs]. src and docs would be rendered as virtual folder tree items. Expanding src we would again iterate over all file resources. Any resource matching /src/ would be rendered as a normal root item and our next virtual folders would yield: [src/tree,src/lib]. Expanding src/lib would then just render items.
+
 ## About root items files and subfolders
 
 Since groups are virtual they do not have a URI that maps to any filesystem. Also, having the ability to add both files and folders to a group brings about the need to distinguish between files and folders that have been added to a group from those that are within a subfolder. Items that have been added to a group are designated as Root items.
