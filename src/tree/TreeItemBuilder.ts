@@ -3,6 +3,9 @@ import { Utils } from "vscode-uri";
 import { Group } from "../Group";
 import { FocusItem } from "../tree/FocusItem";
 import { GroupItem } from "../tree/GroupItem";
+import { BinderItem } from "./BinderItem";
+import { FocusUtil } from "../FocusUtil";
+import { Resource } from "../global";
 
 /**
  * The TreeItemBuilder class is helper class used by the FileFocusTreeProvider.
@@ -47,15 +50,37 @@ export class TreeItemBuilder {
         const fileType = await this.getResourceType(uri);
         switch (fileType) {
           case vscode.FileType.File:
-            out.push(
-              this.createFileItem(
-                Utils.basename(uri),
-                uri,
-                true,
-                group.id,
-                group.readonly
-              )
-            );
+            {
+              const isFlat = false;
+              if (isFlat) {
+                out.push(
+                  this.createFileItem(
+                    Utils.basename(uri),
+                    uri,
+                    true,
+                    group.id,
+                    group.readonly
+                  )
+                );
+              } else {
+                const fileResource = FocusUtil.uriToResource(uri);
+                const pathResource = { ...fileResource };
+                pathResource.path = pathResource.path.split("/").shift() ?? "";
+                const pathUri = FocusUtil.resourceToUri(pathResource);
+                if (pathUri) {
+                  out.push(
+                    this.createBinderItem(
+                      Utils.basename(pathUri),
+                      pathUri,
+                      true,
+                      group.id,
+                      group.readonly,
+                      fileResource
+                    )
+                  );
+                }
+              }
+            }
             break;
 
           case vscode.FileType.Directory:
@@ -186,6 +211,32 @@ export class TreeItemBuilder {
       ? fileItem.contextValue
       : fileItem.contextValue + "Write";
     return fileItem;
+  }
+
+  public createBinderItem(
+    label: string,
+    uri: vscode.Uri,
+    isRootItem: boolean,
+    groupId: string,
+    isReadOnly: boolean,
+    resource: Resource
+  ) {
+    const binderItem = new BinderItem(
+      vscode.FileType.Directory,
+      label,
+      uri,
+      isRootItem,
+      groupId,
+      vscode.TreeItemCollapsibleState.Collapsed,
+      resource
+    );
+    binderItem.resourceUri = uri;
+    binderItem.iconPath = new vscode.ThemeIcon("remote-explorer-feedback");
+    binderItem.contextValue = isRootItem ? "FocusFolderRoot" : "FocusFolder";
+    binderItem.contextValue = isReadOnly
+      ? binderItem.contextValue
+      : binderItem.contextValue + "Write";
+    return binderItem;
   }
 
   private createGroupItem(group: Group, pinnedGroupId: string) {

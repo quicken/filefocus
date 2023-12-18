@@ -5,6 +5,7 @@ import { FocusUtil } from "../FocusUtil";
 import { TreeItemBuilder } from "./TreeItemBuilder";
 import { FocusItem } from "./FocusItem";
 import { GroupItem } from "./GroupItem";
+import { BinderItem } from "./BinderItem";
 
 /**
  * Defines the mime type used to detect when a file
@@ -202,6 +203,14 @@ export class FileFocusTreeProvider
   getChildren(element?: any): vscode.ProviderResult<FocusItem[] | GroupItem[]> {
     /* When defined the user has picked an element. */
     if (element?.hasOwnProperty("objtype")) {
+      if (element.objtype === "BinderItem") {
+        const binderItem = element as BinderItem;
+        if (!binderItem.resourceUri) {
+          return [];
+        }
+        const resource = FocusUtil.uriToResource(binderItem.resourceUri);
+        return [];
+      }
       if (element.objtype === "FocusItem") {
         const focusItem = element as FocusItem;
         const group = this.groupManager.root.get(focusItem.groupId);
