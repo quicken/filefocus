@@ -4,6 +4,7 @@ import { FileManager } from "./FileManager";
 import { Group } from "./Group";
 import { FocusItem } from "./tree/FocusItem";
 import { minimatch } from "minimatch";
+import { gitignoreToMinimatch } from "@humanwhocodes/gitignore-to-minimatch";
 
 type SearchOptions = {
   recurse?: boolean;
@@ -181,7 +182,8 @@ export class FileFacade {
 
   private static matchesPatterns(path: string, patterns: string[]) {
     for (const pattern of patterns) {
-      if (minimatch(path, pattern, { dot: true })) {
+      const minimatchPattern = gitignoreToMinimatch(pattern);
+      if (minimatch(path, minimatchPattern, { dot: true })) {
         return true;
       }
     }

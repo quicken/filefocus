@@ -91,6 +91,18 @@ suite("File Facade Test Suite", () => {
     assert.strictEqual(file.length, 12);
   });
 
+  test("search (recursive all files inside src. gitignore pattern)", async () => {
+    const file = await FileFacade.search(
+      vscode.Uri.parse("/test"),
+      [".git/"],
+      undefined,
+      undefined,
+      readVirtualDirectory
+    );
+
+    assert.strictEqual(file.length, 7);
+  });
+
   test("search (recursive all files inside src folder.)", async () => {
     const file = await FileFacade.search(
       vscode.Uri.parse("/test"),

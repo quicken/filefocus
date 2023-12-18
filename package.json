@@ -252,6 +252,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "@humanwhocodes/gitignore-to-minimatch": "^1.0.2",
     "minimatch": "^9.0.3",
     "uuid": "^9.0.1",
     "vscode-uri": "^3.0.8"
