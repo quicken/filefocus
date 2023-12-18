@@ -7,6 +7,20 @@ Below is a loose collection of notes related to working with the code base.
 - https://code.visualstudio.com/api
 - https://vscode-api.js.org/modules.html
 
+## To-Do
+
+## About root items files and subfolders
+
+Since groups are virtual they do not have a URI that maps to any filesystem. Also, having the ability to add both files and folders to a group brings about the need to distinguish between files and folders that have been added to a group from those that are within a subfolder. Items that have been added to a group are designated as Root items.
+
+In regards to renaming, renaming files and folders that are within sub folders is straight forward as we can just rename the file/folder in the file system and we are done.
+
+However, renaming root resources is challenging as renaming a resource in the file system will orphan any groups that the item has been added to.
+
+Now, orphans are not necessarily bad and in some cases desirable for example when syncing groups across devices/workspaces you may very well want to have a group that references some common files that may not necessarily exist in all workspaces being worked on.
+
+My current thinking is that renaming a resource in a specific group should not alter mappings in any other group even if it does orphan files.
+
 ## Context Ids
 
 One of the challenges is correctly decorating the various tree items with the correct icons and menu context based on the
