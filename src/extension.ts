@@ -85,7 +85,7 @@ function applySortKeyConfiguration(
 ) {
   fileFocusTreeProvider.sortkey = vscode.workspace
     .getConfiguration("filefocus")
-    .get("sortkey") as "path" | "basename";
+    .get("sortKey") as "path" | "basename";
 }
 
 function registerEvents(
