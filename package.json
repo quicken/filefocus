@@ -3,7 +3,7 @@
   "displayName": "File Focus",
   "icon": "images/icon.PNG",
   "description": "Reorganize your project into virtual folders. Organize files manually or with glob patterns, open groups with one click, and more.",
-  "version": "1.5.11",
+  "version": "1.6.0",
   "publisher": "herdingbits",
   "repository": "https://github.com/quicken/filefocus",
   "engines": {
