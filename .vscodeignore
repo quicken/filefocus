@@ -10,3 +10,6 @@ vsc-extension-quickstart.md
 **/*.ts
 docs/**
 .github/**
+node_modules
+src/
+tsconfig.json
