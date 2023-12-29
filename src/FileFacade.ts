@@ -32,7 +32,7 @@ export class FileFacade {
   static async renameFocusItem(group: Group, focusItem: FocusItem) {
     const oldPath = focusItem.resourceUri;
     const newFilenName = await vscode.window.showInputBox({
-      prompt: "New file name",
+      prompt: vscode.l10n.t("New file name"),
       value: oldPath?.path.split("/").pop(),
     });
 
@@ -59,7 +59,7 @@ export class FileFacade {
 
     const parentUri = focusItem.resourceUri;
     const newFolderName = await vscode.window.showInputBox({
-      prompt: "New folder name",
+      prompt: vscode.l10n.t("New folder name"),
       value: "",
     });
 
@@ -83,7 +83,7 @@ export class FileFacade {
 
     const parentUri = focusItem.resourceUri;
     const newFileName = await vscode.window.showInputBox({
-      prompt: "New file name",
+      prompt: vscode.l10n.t("New file name"),
       value: "",
     });
 

@@ -1,4 +1,4 @@
-import { workspace, Uri, ConfigurationTarget } from "vscode";
+import { workspace, Uri, ConfigurationTarget, l10n } from "vscode";
 import { FileFocusStorageProvider } from "../global";
 import { FileFacade } from "../FileFacade";
 import { FocusUtil } from "../FocusUtil";
@@ -158,7 +158,7 @@ export class DynamicStorage implements FileFocusStorageProvider {
       this.excludeGroupId,
       excludedFiles
     );
-    excludedFileGroup.name = "Excluded";
+    excludedFileGroup.name = l10n.t("Excluded");
     return excludedFileGroup;
   }
 }

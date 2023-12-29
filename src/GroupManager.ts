@@ -29,7 +29,7 @@ export class GroupManager {
 
   /**
    * Identifies which group is currently "pinned".
-   * Added resources are automatically assinged to the "pinned" group.
+   * Added resources are automatically assigned to the "pinned" group.
    */
   private _pinnedGroupId = "";
 

@@ -18,7 +18,7 @@ export class GroupFacade {
    */
   async addGroup(path?: string): Promise<void> {
     const groupName = await vscode.window.showInputBox({
-      placeHolder: "Enter a name for the focus group",
+      placeHolder: vscode.l10n.t("Enter a name for the focus group"),
     });
 
     if (!groupName || groupName.trim() === "") {
@@ -28,7 +28,7 @@ export class GroupFacade {
     const groupId = GroupManager.makeGroupId(groupName);
     if (this.groupManager.root.has(groupId)) {
       await vscode.window.showErrorMessage(
-        "A focus group with this name already exists."
+        vscode.l10n.t("A focus group with this name already exists.")
       );
       return;
     }
@@ -83,7 +83,7 @@ export class GroupFacade {
    */
   async removeGroup(groupId: string): Promise<void> {
     const action = await vscode.window.showInformationMessage(
-      "Discard this focus group?",
+      vscode.l10n.t("Discard this focus group?"),
       { modal: true },
       "Discard"
     );
@@ -102,7 +102,7 @@ export class GroupFacade {
     const group = this.groupManager.root.get(srcGroupId);
     if (group) {
       const groupName = await vscode.window.showInputBox({
-        placeHolder: "Enter a name for the focus group",
+        placeHolder: vscode.l10n.t("Enter a name for the focus group"),
         value: group.name,
       });
 
@@ -117,7 +117,7 @@ export class GroupFacade {
       const destinationId = GroupManager.makeGroupId(groupName);
       if (this.groupManager.root.has(destinationId)) {
         await vscode.window.showErrorMessage(
-          "A focus group with this name already exists."
+          vscode.l10n.t("A focus group with this name already exists.")
         );
         return;
       }
@@ -149,7 +149,9 @@ export class GroupFacade {
           try {
             await vscode.workspace.fs.stat(uri);
           } catch (err) {
-            vscode.window.showErrorMessage("Can't find resource in workspace.");
+            vscode.window.showErrorMessage(
+              vscode.l10n.t("Can't find resource in workspace.")
+            );
           }
 
           group.addResource(uri);
@@ -177,7 +179,9 @@ export class GroupFacade {
         this.groupManager.writableGroupNames,
         {
           canPickMany: false,
-          placeHolder: "Select the focus group for this resource.",
+          placeHolder: vscode.l10n.t(
+            "Select the focus group for this resource."
+          ),
         }
       );
     }

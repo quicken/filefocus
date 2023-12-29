@@ -25,71 +25,72 @@
   "preview": false,
   "activationEvents": [],
   "main": "./out/extension.js",
+  "l10n": "./l10n",
   "contributes": {
     "commands": [
       {
         "command": "fileFocusTree.refreshEntry",
-        "title": "Refresh",
+        "title": "%fileFocusTree.refresh%",
         "icon": "$(extensions-refresh)"
       },
       {
         "command": "fileFocusExtension.addGroup",
-        "title": "Add group",
+        "title": "%fileFocusExtension.addGroup%",
         "icon": "$(new-folder)"
       },
       {
         "command": "fileFocusExtension.pinGroup",
-        "title": "Pin group",
+        "title": "%fileFocusExtension.pinGroup%",
         "icon": "$(pin)"
       },
       {
         "command": "fileFocusExtension.openGroup",
-        "title": "Open all files",
+        "title": "%fileFocusExtension.openGroup%",
         "icon": "$(multiple-windows)"
       },
       {
         "command": "fileFocusExtension.removeGroup",
-        "title": "Delete group",
+        "title": "%fileFocusExtension.removeGroup%",
         "icon": "$(trash)"
       },
       {
         "command": "fileFocusExtension.renameGroup",
-        "title": "Rename group",
+        "title": "%fileFocusExtension.renameGroup%",
         "icon": "$(edit)"
       },
       {
         "command": "fileFocusExtension.addGroupResource",
-        "title": "Add to focus group",
+        "title": "%fileFocusExtension.addGroupResource%",
         "icon": "$(tag-add)"
       },
       {
         "command": "fileFocusExtension.removeGroupResource",
-        "title": "Remove from group",
+        "title": "%fileFocusExtension.removeGroupResource%",
         "icon": "$(remove-close)"
       },
       {
         "command": "fileFocusExtension.resetStorage",
-        "title": "Reset storage",
+        "title": "%fileFocusExtension.resetStorage%",
         "icon": "$(remove-close)"
       },
       {
         "command": "fileFocusExtension.reloadStorage",
-        "title": "Reload",
+        "title": "%fileFocusExtension.reloadStorage%",
         "icon": "$(extensions-refresh)"
       },
       {
         "command": "fileFocusExtension.renameFileObject",
-        "title": "Rename",
+        "title": "%fileFocusExtension.renameFileObject%",
         "icon": "$(edit)"
       },
       {
         "command": "fileFocusExtension.createFileFolder",
-        "title": "New folder...",
+        "title": "%fileFocusExtension.createFileFolder%",
         "icon": "$(new-folder)"
       },
       {
         "command": "fileFocusExtension.createFile",
-        "title": "New file...",
+        "title": "%fileFocusExtension.createFile%",
         "icon": "$(new-file)"
       }
     ],
@@ -100,40 +101,40 @@
           "filefocus.useGlobalStorage": {
             "type": "boolean",
             "default": false,
-            "description": "Store groups in vscode global storage. Allows syncing groups with vscode accounts."
+            "description": "%filefocus.useGlobalStorage%"
           },
           "filefocus.sortKey": {
             "type": "string",
             "default": "basename",
-            "description": "Group files by filename or by path.",
+            "description": "%filefocus.sortKey%",
             "enum": [
               "basename",
               "path"
             ],
             "enumDescriptions": [
-              "Group by name",
-              "Group by path"
+              "%filefocus.sortKey.basename%",
+              "%filefocus.sortKey.path%"
             ]
           },
           "filefocus.showProjectGroups": {
             "type": "boolean",
             "default": true,
-            "description": "Show groups defined inside .filefocus.json files found in any workspace root."
+            "description": "%filefocus.showProjectGroups%"
           },
           "filefocus.showExcludedGroup": {
             "type": "boolean",
             "default": false,
-            "description": "Show a group containing all files matching vscodes files.exclude file. (experimental)"
+            "description": "%filefocus.showExcludedGroup%"
           },
           "filefocus.addToPinnedGroupOnOpen": {
             "type": "boolean",
             "default": false,
-            "description": "Automatically add opened files to the currently pinned group."
+            "description": "%filefocus.addToPinnedGroupOnOpen%"
           },
           "filefocus.globGroup": {
             "type": "array",
             "default": [],
-            "description": "Defines dynamic groups based on glob patterns. See project readme/home page for details."
+            "description": "%filefocus.globGroup%"
           }
         }
       }

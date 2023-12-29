@@ -1,0 +1,23 @@
+{
+  "fileFocusTree.refresh": "Refresh",
+  "fileFocusExtension.addGroup": "Add group",
+  "fileFocusExtension.pinGroup": "Pin group",
+  "fileFocusExtension.openGroup": "Open all files",
+  "fileFocusExtension.removeGroup": "Delete group",
+  "fileFocusExtension.renameGroup": "Rename group",
+  "fileFocusExtension.addGroupResource": "Add to focus group",
+  "fileFocusExtension.removeGroupResource": "Remove from group",
+  "fileFocusExtension.resetStorage": "Reset storage",
+  "fileFocusExtension.reloadStorage": "Reload",
+  "fileFocusExtension.renameFileObject": "Rename",
+  "fileFocusExtension.createFileFolder": "New folder...",
+  "fileFocusExtension.createFile": "New file...",
+  "filefocus.useGlobalStorage": "Store groups in vscode global storage. Allows syncing groups with vscode accounts.",
+  "filefocus.sortKey": "Group files by filename or by path.",
+  "filefocus.sortKey.basename": "Group by name",
+  "filefocus.sortKey.path": "Group by path",
+  "filefocus.showProjectGroups": "Show groups defined inside .filefocus.json files found in any workspace root.",
+  "filefocus.showExcludedGroup": "Show a group containing all files matching vscodes files.exclude file. (experimental)",
+  "filefocus.addToPinnedGroupOnOpen": "Automatically add opened files to the currently pinned group.",
+  "filefocus.globGroup": "Defines dynamic groups based on glob patterns. See project readme/home page for details."
+}

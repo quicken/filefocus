@@ -1,0 +1,10 @@
+{
+  "Enter a name for the focus group": "Enter a name for the focus group",
+  "A focus group with this name already exists.": "A focus group with this name already exists.",
+  "Discard this focus group?": "Discard this focus group?",
+  "Can't find resource in workspace.": "Can't find resource in workspace.",
+  "Select the focus group for this resource.": "Select the focus group for this resource.",
+  "New file name": "New file name",
+  "New folder name": "New folder name",
+  "Excluded": "Excluded"
+}
