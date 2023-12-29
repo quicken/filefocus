@@ -1,0 +1,23 @@
+{
+  "fileFocusTree.refresh": "Aktualisieren",
+  "fileFocusExtension.addGroup": "Gruppe hinzufügen",
+  "fileFocusExtension.pinGroup": "Gruppe anheften",
+  "fileFocusExtension.openGroup": "Alle Dateien öffnen",
+  "fileFocusExtension.removeGroup": "Gruppe löschen",
+  "fileFocusExtension.renameGroup": "Gruppe umbenennen",
+  "fileFocusExtension.addGroupResource": "Zur Fokusgruppe hinzufügen",
+  "fileFocusExtension.removeGroupResource": "Aus Gruppe entfernen",
+  "fileFocusExtension.resetStorage": "Speicher zurücksetzen",
+  "fileFocusExtension.reloadStorage": "Neu laden",
+  "fileFocusExtension.renameFileObject": "Umbenennen...",
+  "fileFocusExtension.createFileFolder": "Neuer Ordner...",
+  "fileFocusExtension.createFile": "Neue Datei...",
+  "filefocus.useGlobalStorage": "Gruppen im globalen VSCode-Speicher speichern. Ermöglicht die Synchronisierung von Gruppen mit VSCode-Konten.",
+  "filefocus.sortKey": "Dateien nach Dateinamen oder Pfad gruppieren.",
+  "filefocus.sortKey.basename": "Nach Name gruppieren",
+  "filefocus.sortKey.path": "Nach Pfad gruppieren",
+  "filefocus.showProjectGroups": "Gruppen anzeigen, die in .filefocus.json-Dateien in beliebigen Workspace-Wurzeln definiert sind.",
+  "filefocus.showExcludedGroup": "Eine Gruppe anzeigen, die alle Dateien enthält, die mit der vscodes files.exclude-Datei übereinstimmen. (experimentell)",
+  "filefocus.addToPinnedGroupOnOpen": "Geöffnete Dateien automatisch zur aktuell angehefteten Gruppe hinzufügen.",
+  "filefocus.globGroup": "Definiert dynamische Gruppen basierend auf Glob-Mustern. Details finden Sie in der Projekt-Readme/Homepage."
+}

@@ -1,0 +1,10 @@
+{
+  "Enter a name for the focus group": "Geben Sie einen Namen für die Fokusgruppe ein",
+  "A focus group with this name already exists.": "Eine Fokusgruppe mit diesem Namen existiert bereits.",
+  "Discard this focus group?": "Diese Fokusgruppe verwerfen?",
+  "Can't find resource in workspace.": "Ressource im Workspace nicht gefunden.",
+  "Select the focus group for this resource.": "Wählen Sie die Fokusgruppe für diese Ressource aus.",
+  "New file name": "Neuer Dateiname",
+  "New folder name": "Neuer Ordnername",
+  "Excluded": "Ausgeschlossen"
+}
