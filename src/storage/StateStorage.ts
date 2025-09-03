@@ -12,6 +12,8 @@ type GroupRecord = {
   id: string;
   name: string;
   resources: Resource[];
+  childGroups?: GroupRecord[]; // Nested child groups
+  parentId?: string; // ID of parent group (if nested)
 };
 
 type DeprecateGroupStore = {
@@ -39,43 +41,132 @@ export class StateStorage implements FileFocusStorageProvider {
 
     const storeMap = new Map(Object.entries(groupStore));
     const groups: Group[] = [];
+    
+    // First pass: Create all groups without establishing parent-child relationships
+    const allGroups = new Map<string, Group>();
     for (const [groupId, groupRecord] of storeMap) {
-      const group = new Group(groupRecord.id);
-      group.name = groupRecord.name;
-      for (const resource of groupRecord.resources) {
-        const uri = FocusUtil.resourceToUri(resource);
-        if (uri) {
-          group.addResource(uri);
+      const group = this.createGroupFromRecord(groupRecord);
+      allGroups.set(group.id, group);
+    }
+    
+    // Second pass: Establish parent-child relationships and collect root groups
+    for (const [groupId, groupRecord] of storeMap) {
+      const group = allGroups.get(groupId);
+      if (!group) {
+        continue;
+      }
+      
+      // If this group has child groups, add them
+      if (groupRecord.childGroups) {
+        for (const childRecord of groupRecord.childGroups) {
+          const childGroup = allGroups.get(childRecord.id);
+          if (childGroup) {
+            group.addChildGroup(childGroup);
+          }
         }
       }
-
-      groups.push(group);
+      
+      // If this is a root group (no parentId), add it to the result
+      if (!groupRecord.parentId) {
+        groups.push(group);
+      }
     }
 
     return groups;
   }
 
+  /**
+   * Creates a Group object from a GroupRecord, including nested child groups.
+   */
+  private createGroupFromRecord(groupRecord: GroupRecord): Group {
+    const group = new Group(groupRecord.id);
+    // Ensure the name is always a string to prevent [object Object] issues
+    group.name = typeof groupRecord.name === 'string' ? groupRecord.name : String(groupRecord.name || '');
+    
+    // Add resources
+    for (const resource of groupRecord.resources) {
+      const uri = FocusUtil.resourceToUri(resource);
+      if (uri) {
+        group.addResource(uri);
+      }
+    }
+
+    return group;
+  }
+
   public saveGroup(group: Group) {
-    const groupRecord: GroupRecord = {
-      id: group.id,
-      name: group.name,
-      resources: group.resources.map((uri) => FocusUtil.uriToResource(uri)),
-    };
+    const groupRecord = this.createGroupRecord(group);
 
     let groupStore = this.storage.getValue<GroupStore>("groupmap", {});
     const storeMap = new Map(Object.entries(groupStore));
-    storeMap.set(groupRecord.id, groupRecord);
+    
+    // Save the group and all its descendants
+    this.saveGroupRecordRecursive(storeMap, groupRecord);
 
     groupStore = Object.fromEntries(storeMap.entries());
     this.storage.setValue<GroupStore>("groupmap", groupStore);
   }
 
+  /**
+   * Creates a GroupRecord from a Group, including nested child groups.
+   */
+  private createGroupRecord(group: Group): GroupRecord {
+    const childGroupRecords: GroupRecord[] = [];
+    for (const childGroup of group.childGroups) {
+      childGroupRecords.push(this.createGroupRecord(childGroup));
+    }
+
+    return {
+      id: group.id,
+      name: group.name,
+      resources: group.resources.map((uri) => FocusUtil.uriToResource(uri)),
+      childGroups: childGroupRecords.length > 0 ? childGroupRecords : undefined,
+      parentId: group.parentGroup?.id,
+    };
+  }
+
+  /**
+   * Recursively saves a group record and all its children to the store map.
+   */
+  private saveGroupRecordRecursive(storeMap: Map<string, GroupRecord>, groupRecord: GroupRecord) {
+    storeMap.set(groupRecord.id, groupRecord);
+    
+    if (groupRecord.childGroups) {
+      for (const childRecord of groupRecord.childGroups) {
+        this.saveGroupRecordRecursive(storeMap, childRecord);
+      }
+    }
+  }
+
   public deleteGroupId(id: string) {
     let groupStore = this.storage.getValue<GroupStore>("groupmap", {});
     const storeMap = new Map(Object.entries(groupStore));
-    storeMap.delete(id);
+    
+    // Recursively delete the group and all its children
+    this.deleteGroupRecursive(storeMap, id);
+    
     groupStore = Object.fromEntries(storeMap.entries());
     this.storage.setValue<GroupStore>("groupmap", groupStore);
+  }
+
+  /**
+   * Recursively deletes a group and all its child groups from the store map.
+   */
+  private deleteGroupRecursive(storeMap: Map<string, GroupRecord>, groupId: string) {
+    const groupRecord = storeMap.get(groupId);
+    if (!groupRecord) {
+      return;
+    }
+    
+    // Delete all child groups first
+    if (groupRecord.childGroups) {
+      for (const childRecord of groupRecord.childGroups) {
+        this.deleteGroupRecursive(storeMap, childRecord.id);
+      }
+    }
+    
+    // Delete the group itself
+    storeMap.delete(groupId);
   }
 
   public async reset() {

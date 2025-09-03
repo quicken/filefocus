@@ -10,6 +10,7 @@ type ProjectConfig = {
 type ProjectGroup = {
   name: string;
   path: string[];
+  groups?: ProjectGroup[]; // Nested child groups using "groups" property
 };
 
 /**
@@ -55,18 +56,41 @@ export class FileStorage implements FileFocusStorageProvider {
   private processConfigFile(config: ProjectConfig, baseUri: Uri) {
     const groups: Group[] = [];
     for (const projectGroup of config.store) {
-      const groupId = GroupManager.makeGroupId(projectGroup.name);
-      const group = new Group(groupId);
-      group.name = projectGroup.name;
-      group.readonly = true;
-      for (const path of projectGroup.path) {
-        const uri = Uri.joinPath(baseUri, path);
-        group.addResource(uri);
-      }
+      const group = this.createGroupFromProjectGroup(projectGroup, baseUri);
       groups.push(group);
     }
 
     return groups;
+  }
+
+  /**
+   * Creates a Group from a ProjectGroup, including nested child groups.
+   */
+  private createGroupFromProjectGroup(projectGroup: ProjectGroup, baseUri: Uri, parentGroup?: Group): Group {
+    const groupId = GroupManager.makeGroupId(projectGroup.name);
+    const group = new Group(groupId);
+    group.name = projectGroup.name;
+    group.readonly = true;
+    
+    // Set parent relationship if provided
+    if (parentGroup) {
+      parentGroup.addChildGroup(group);
+    }
+    
+    // Add resources
+    for (const path of projectGroup.path) {
+      const uri = Uri.joinPath(baseUri, path);
+      group.addResource(uri);
+    }
+    
+    // Add child groups recursively
+    if (projectGroup.groups) {
+      for (const childProjectGroup of projectGroup.groups) {
+        this.createGroupFromProjectGroup(childProjectGroup, baseUri, group);
+      }
+    }
+    
+    return group;
   }
 
   private async loadTextFile(uri: Uri) {

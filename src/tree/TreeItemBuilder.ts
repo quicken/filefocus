@@ -44,12 +44,22 @@ export class TreeItemBuilder {
       }
 
       for (const uri of resources) {
+        // Skip invalid or null URIs
+        if (!uri) {
+          continue;
+        }
+        
         const fileType = await this.getResourceType(uri);
+        const basename = Utils.basename(uri);
+        
+        // Ensure basename is a string
+        const safeBasename = typeof basename === 'string' ? basename : String(basename || 'Unknown');
+        
         switch (fileType) {
           case vscode.FileType.File:
             out.push(
               this.createFileItem(
-                Utils.basename(uri),
+                safeBasename,
                 uri,
                 true,
                 group.id,
@@ -61,7 +71,7 @@ export class TreeItemBuilder {
           case vscode.FileType.Directory:
             out.push(
               this.createFolderItem(
-                Utils.basename(uri),
+                safeBasename,
                 uri,
                 true,
                 group.id,
@@ -72,7 +82,7 @@ export class TreeItemBuilder {
           case vscode.FileType.Unknown:
             out.push(
               this.createUnknownItem(
-                Utils.basename(uri),
+                safeBasename,
                 uri,
                 true,
                 group.id,
@@ -190,11 +200,35 @@ export class TreeItemBuilder {
 
   private createGroupItem(group: Group, pinnedGroupId: string) {
     const isFavourite = group.id === pinnedGroupId;
+    // Ensure the name is always a string to prevent [object Object] display
+    const groupName = typeof group.name === 'string' ? group.name : String(group.name || '');
     const groupItem = new GroupItem(
-      group.name,
+      groupName,
       group.id,
       vscode.TreeItemCollapsibleState.Collapsed,
       isFavourite,
+      group.readonly
+    );
+
+    return groupItem;
+  }
+
+  /**
+   * Create new TreeViewItem for representing a Group inside a vscode TreeView.
+   * This is the public version that can be used to create individual group items.
+   *
+   * @param group The group to create an item for.
+   * @param isPinned Whether this group is currently pinned.
+   * @returns A TreeViewItem that represents a group.
+   */
+  public createGroupItemPublic(group: Group, isPinned: boolean) {
+    // Ensure the name is always a string to prevent [object Object] display
+    const groupName = typeof group.name === 'string' ? group.name : String(group.name || '');
+    const groupItem = new GroupItem(
+      groupName,
+      group.id,
+      vscode.TreeItemCollapsibleState.Collapsed,
+      isPinned,
       group.readonly
     );
 

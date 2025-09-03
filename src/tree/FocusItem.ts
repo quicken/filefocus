@@ -27,7 +27,9 @@ export class FocusItem extends vscode.TreeItem {
     public readonly groupId: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState
   ) {
-    super(label, collapsibleState);
+    // Ensure label is always a string to prevent [object Object] display
+    const safeLabel = typeof label === 'string' ? label : String(label || 'Unknown');
+    super(safeLabel, collapsibleState);
     this.tooltip = `${uri.fsPath}`;
     this.description = this.getResourceLocationHint(uri);
   }
@@ -41,5 +43,6 @@ export class FocusItem extends vscode.TreeItem {
         .join("/");
       return `[${parentFolders}]`;
     }
+    return undefined; // Explicitly return undefined instead of implicit undefined
   }
 }

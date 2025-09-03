@@ -26,9 +26,11 @@ export class GroupItem extends vscode.TreeItem {
     public readonly isFavourite: boolean,
     public readonly isReadOnly: boolean
   ) {
-    super(label, collapsibleState);
+    // Ensure label is always a string to prevent [object Object] display
+    const safeLabel = typeof label === 'string' ? label : String(label || '');
+    super(safeLabel, collapsibleState);
     this.contextValue = isReadOnly ? "GroupItemReadOnly" : "GroupItem";
-    this.label = this.annotateLabel(label);
+    this.label = this.annotateLabel(safeLabel);
     this.iconPath = this.icon();
   }
 
